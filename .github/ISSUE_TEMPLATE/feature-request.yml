@@ -1,0 +1,30 @@
+name: "\U0001F680 기능 요청"
+description: 42 SSR 기능에 대한 제안/요청을 제출합니다.
+labels: [ "feature" ]
+body:
+  - type: textarea
+    id: feature-request
+    validations:
+      required: true
+    attributes:
+      label: 기능 요청
+      description: |
+        기능 제안에 대한 명확하고 간결한 설명입니다. 가능한 경우 예시와 코드 링크를 제공해주세요.
+
+  - type: textarea
+    id: motivation
+    validations:
+      required: true
+    attributes:
+      label: 동기
+      description: |
+        제안의 동기를 자세히 작성해주세요. 당신의 기능 요청이 어떤 문제와 관련이 있는지 설명해주세요. 예: 항상 [...] 할 때마다 불편해요. 이것이 다른 GitHub 이슈와 관련이 있다면 여기에 링크해주세요.
+
+  - type: textarea
+    id: contribution
+    validations:
+      required: true
+    attributes:
+      label: 당신의 기여
+      description: |
+        어떤 방식으로든 도움을 줄 수 있다면 남겨주세요. 예를 들어 PR을 제출함으로써 도움을 주실 수 있나요? CONTRIBUTING.MD [readme](https://github.com/42GGS/reference/blob/main/CONTRIBUTING.md)를 반드시 읽어주세요.

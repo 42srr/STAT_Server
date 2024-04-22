@@ -1,0 +1,74 @@
+name: "\U0001F41B 버그 보고"
+description: 42 SSR를 개선하는 데 도움이 되는 버그 보고서를 제출합니다.
+body:
+  - type: textarea
+    id: system-info
+    attributes:
+      label: 시스템 정보
+      description: `rpm -qa | grep browsername ` 명령을 실행하고 출력 내용을 여기에 복사하여 공유해주세요.
+      placeholder: 브라우저 버전, 플랫폼 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: who-can-help
+    attributes:
+      label: 누가 도와줄 수 있나요?
+      description: |
+        이슈는 @로 태그할 적절한 사람을 찾으면 더 빠르게 답변받을 수 있습니다. 만약 git blame을 사용하는 방법을 알고 있다면 그게 가장 쉬운 방법이겠지만, 그렇지 않은 경우, **누구를 태그해야 할지** 대략적인 안내를 드리겠습니다.
+        모든 이슈는 메인테이너 중 한명에게 읽힙니다. 그래서 누구를 태그해야 할지 모르는 경우 이 부분을 비워두시면 메인테이너가 적절한 사람을 알려줄 것입니다.
+        부디 3명 이하로 태그해주세요.
+
+        서버: @joejaeyoung, @joonwan
+        
+        프론트엔드: @ghkgus, @eaststar113
+        
+        iOS: @DonsNote, @devoogie
+
+      placeholder: "@username ..."
+
+  - type: checkboxes
+    id: information-scripts-examples
+    attributes:
+      label: 정보
+      description: '이 버전에서 문제가 발생합니다:'
+      options:
+        - label: "공식 배포 버전"
+        - label: "내가 수정한 버전"
+
+  - type: checkboxes
+    id: information-tasks
+    attributes:
+      label: 작업
+      description: "저는 다음과 같은 작업을 수행 중입니다:"
+      options:
+        - label: "서비스에서 공식으로 지원되는 작업 (예: 출석 시간 조회, 제공된 통계 기능 사용 ...)"
+        - label: "내 작업 또는 API 활용 스크립트 (아래에 세부 정보를 제공해주세요)"
+
+  - type: textarea
+    id: reproduction
+    validations:
+      required: true
+    attributes:
+      label: 재현
+      description: |
+        발생한 문제를 재현하는 단계 또는 코드 샘플을 제공해주세요. URL 링크이거나 코드 스니펫일 수 있습니다.
+        코드 스니펫, 오류 메시지, 스택 추적을 제공해주세요.
+        중요! 코드를 올바르게 포맷하려면 코드 태그를 사용하세요. https://help.github.com/en/github/writing-on-github/creating-and-highlighting-code-blocks#syntax-highlighting 를 참조하세요.
+        다른 사람이 코드를 복사하여 붙여넣을 수 있도록 스크린샷을 사용하지 마세요.
+
+      placeholder: |
+        동작을 재현하는 단계:
+          
+          1.
+          2.
+          3.
+          
+
+  - type: textarea
+    id: expected-behavior
+    validations:
+      required: true
+    attributes:
+      label: 예상 동작
+      description: "기대되는 동작에 대한 명확하고 간결한 설명입니다."
