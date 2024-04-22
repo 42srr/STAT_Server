@@ -5,7 +5,7 @@ body:
     id: system-info
     attributes:
       label: 시스템 정보
-      description: `rpm -qa | grep browsername ` 명령을 실행하고 출력 내용을 여기에 복사하여 공유해주세요.
+      description: 시스템 정보를 출력한 내용을 여기에 복사하여 공유해주세요.
       placeholder: 브라우저 버전, 플랫폼 ...
     validations:
       required: true
