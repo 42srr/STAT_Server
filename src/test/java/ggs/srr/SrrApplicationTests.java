@@ -1,10 +1,10 @@
-package com.example.server;
+package ggs.srr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerApplicationTests {
+class SrrApplicationTests {
 
 	@Test
 	void contextLoads() {
