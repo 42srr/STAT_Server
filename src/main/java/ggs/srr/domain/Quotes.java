@@ -11,7 +11,6 @@ public class Quotes {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
     private String name;
     private String content;
 

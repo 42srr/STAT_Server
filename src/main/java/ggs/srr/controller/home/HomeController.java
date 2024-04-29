@@ -23,7 +23,6 @@ public class HomeController {
 
     @PostMapping("/quotes")
     public void addQuotes(@RequestBody QuotesDto quotesDto){
-
         Quotes quotes = new Quotes(quotesDto.getName(), quotesDto.getContent());
         quotesService.addQuotes(quotes);
     }
