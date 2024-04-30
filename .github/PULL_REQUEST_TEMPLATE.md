@@ -22,7 +22,7 @@ PR이 병합되면 설정한 제목과 함께 릴리즈 노트에 표시되므�
 
 <!-- PR은 @로 태그할 적절한 사람을 찾으면 더 빠르게 리뷰받을 수 있습니다. 만약 git blame을 사용하는 방법을 알고 있다면 그게 가장 쉬운 방법이겠지만, 그렇지 않은 경우 부디 3명 이하로 태그해주세요.
 
-PM: @wonhseo
+PM: @wonhyeongseo
 서버: @joejaeyoung, @joonwan
 프론트엔드: @ghkgus, @eaststar113, @Bebsae-Utae
 iOS: @DonsNote, @devoogie
