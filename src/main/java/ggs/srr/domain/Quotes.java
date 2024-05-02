@@ -9,15 +9,15 @@ import lombok.Getter;
 @Entity @Getter
 public class Quotes {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue
     private Long id;
-
     private String name;
     private String content;
 
     public Quotes(){
     }
-    public Quotes(String name, String content) {
+    public Quotes(Long id, String name, String content) {
+        this.id = id;
         this.name = name;
         this.content = content;
     }
