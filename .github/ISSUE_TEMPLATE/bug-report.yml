@@ -19,10 +19,9 @@ body:
         모든 이슈는 메인테이너 중 한명에게 읽힙니다. 그래서 누구를 태그해야 할지 모르는 경우 이 부분을 비워두시면 메인테이너가 적절한 사람을 알려줄 것입니다.
         부디 3명 이하로 태그해주세요.
 
+        PM: @wonhyeongseo
         서버: @joejaeyoung, @joonwan
-        
-        프론트엔드: @ghkgus, @eaststar113
-        
+        프론트엔드: @ghkgus, @eaststar113, @Bebsae-Utae
         iOS: @DonsNote, @devoogie
 
       placeholder: "@username ..."
