@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class OAuth2LoginConfig {
 
     @Value("${42.client-id}")
@@ -54,7 +54,7 @@ public class OAuth2LoginConfig {
                 .clientSecret(CLIENT_SECRET)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri("http://localhost:8080/login/oauth2/code/42")
+                .redirectUri("http://118.67.134.143:8080/login/oauth2/code/42")
                 .scope("public", "projects", "profile", "tig", "forum")
                 .authorizationUri("https://api.intra.42.fr/oauth/authorize")
                 .tokenUri("https://api.intra.42.fr/oauth/token")
