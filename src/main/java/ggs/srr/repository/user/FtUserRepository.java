@@ -6,6 +6,8 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class FtUserRepository {
 
@@ -41,6 +43,11 @@ public class FtUserRepository {
         } catch (NoResultException e) {
         }
         return result;
+    }
+
+    public List<FtUser> findAll(){
+        return em.createQuery("select m from FtUser as m", FtUser.class)
+                .getResultList();
     }
 
 }
