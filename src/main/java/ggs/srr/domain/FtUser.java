@@ -43,9 +43,6 @@ public class FtUser {
 
     @Override
     public String toString() {
-        return "FtUser{" +
-                "level=" + level +
-                ", intraId='" + intraId + '\'' +
-                '}';
+        return String.format("FtUser{level=%f, intraId='%s'}", level, intraId);
     }
 }
