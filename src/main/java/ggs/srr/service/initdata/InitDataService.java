@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -152,6 +153,14 @@ public class InitDataService {
 
     private FtUser parseUser(LinkedHashMap<String, Object> data){
 
+        double level = 0L;
+        Object cursusUsers = data.get("cursus_users");
+        List<LinkedHashMap<String, Object>> usersData = (List<LinkedHashMap<String, Object>>)cursusUsers;
+        for (LinkedHashMap<String, Object> user: usersData) {
+            if (user.get("grade") != null && user.get("grade").toString().equals("Learner")){
+                level = Double.parseDouble(user.get("level").toString());
+            }
+        }
         Long resourceOwnerId = Long.parseLong(data.get("id").toString());
         String email = data.get("email").toString();
         String intraId = data.get("login").toString();
@@ -159,7 +168,7 @@ public class InitDataService {
         String imgUri = getImgUri(imageData);
         int correction_point = Integer.parseInt(data.get("correction_point").toString());
         int wallet = Integer.parseInt(data.get("wallet").toString());
-        return new FtUser(resourceOwnerId, email, intraId, imgUri,correction_point, wallet);
+        return new FtUser(level, resourceOwnerId, email, intraId, imgUri,correction_point, wallet);
     }
 
     private String getImgUri(LinkedHashMap<String, Object> imageData){

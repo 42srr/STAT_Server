@@ -17,6 +17,7 @@ public class FtUser {
     @Id @GeneratedValue
     private Long id;
 
+    private double level;
     private Long resourceOwnerId;
     private String email;
     private String intraId;
@@ -30,7 +31,8 @@ public class FtUser {
     public FtUser() {
     }
 
-    public FtUser(Long resourceOwnerId, String email, String intraId, String image, int correction_point, int wallet) {
+    public FtUser(double level, Long resourceOwnerId, String email, String intraId, String image, int correction_point, int wallet) {
+        this.level = level;
         this.resourceOwnerId = resourceOwnerId;
         this.email = email;
         this.intraId = intraId;
@@ -39,5 +41,8 @@ public class FtUser {
         this.wallet = wallet;
     }
 
-
+    @Override
+    public String toString() {
+        return String.format("FtUser{level=%f, intraId='%s'}", level, intraId);
+    }
 }

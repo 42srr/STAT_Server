@@ -6,6 +6,7 @@ import ggs.srr.domain.Project;
 import ggs.srr.domain.ProjectUser;
 import ggs.srr.domain.Quotes;
 import ggs.srr.repository.project.ProjectRepository;
+import ggs.srr.repository.user.FtUserRepository;
 import ggs.srr.service.quotes.QuotesService;
 import ggs.srr.service.user.FtUserService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,8 @@ public class HomeController {
     private final QuotesService quotesService;
     private final FtUserService userService;
     private final ProjectRepository projectRepository;
+    private final FtUserRepository ftUserRepository;
+
 
     @GetMapping("/")
     public String home(@RegisteredOAuth2AuthorizedClient("42")OAuth2AuthorizedClient client){
@@ -82,6 +85,12 @@ public class HomeController {
         System.out.println(map);
         return map;
     }
+
+    @GetMapping("/levels")
+    public Map<Integer, Integer> levelInfo() {
+        return userService.levelDistributionInfo();
+    }
+
 
     @GetMapping("/quotes")
     public QuotesDto getQuotes(){
