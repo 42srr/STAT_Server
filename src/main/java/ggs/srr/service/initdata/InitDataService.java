@@ -169,7 +169,7 @@ public class InitDataService {
         String imgUri = getImgUri(imageData);
         int correction_point = Integer.parseInt(data.get("correction_point").toString());
         int wallet = Integer.parseInt(data.get("wallet").toString());
-        return new FtUser(level,resourceOwnerId, email, intraId, imgUri,correction_point, wallet);
+        return new FtUser(level, resourceOwnerId, email, intraId, imgUri,correction_point, wallet);
     }
 
     private String getImgUri(LinkedHashMap<String, Object> imageData){
