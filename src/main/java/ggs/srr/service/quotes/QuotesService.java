@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuotesService {
 
-
     private final QuotesRepository repository;
 
     public int randomQuotesId() {
