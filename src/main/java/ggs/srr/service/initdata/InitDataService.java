@@ -156,7 +156,6 @@ public class InitDataService {
         double level = 0L;
         Object cursusUsers = data.get("cursus_users");
         List<LinkedHashMap<String, Object>> usersData = (List<LinkedHashMap<String, Object>>)cursusUsers;
-        System.out.println(usersData);
         for (LinkedHashMap<String, Object> user: usersData) {
             if (user.get("grade") != null && user.get("grade").toString().equals("Learner")){
                 level = Double.parseDouble(user.get("level").toString());
