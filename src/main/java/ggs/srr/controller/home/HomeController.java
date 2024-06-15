@@ -1,6 +1,7 @@
 package ggs.srr.controller.home;
 
 import ggs.srr.controller.home.dto.QuotesDto;
+import ggs.srr.service.user.dto.RankingEvalPointDto;
 import ggs.srr.domain.FtUser;
 import ggs.srr.domain.Project;
 import ggs.srr.domain.ProjectUser;
@@ -12,16 +13,12 @@ import ggs.srr.service.user.FtUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -38,7 +35,6 @@ public class HomeController {
     private final FtUserService userService;
     private final ProjectRepository projectRepository;
     private final FtUserRepository ftUserRepository;
-
 
     @GetMapping("/")
     public String home(@RegisteredOAuth2AuthorizedClient("42")OAuth2AuthorizedClient client){
@@ -91,6 +87,10 @@ public class HomeController {
         return userService.levelDistributionInfo();
     }
 
+    @GetMapping("/ranking/evalpoint")
+    public List<RankingEvalPointDto> rankingEvalPointInfo() {
+        return userService.rankingEvalPoint();
+    }
 
     @GetMapping("/quotes")
     public QuotesDto getQuotes(){
@@ -124,6 +124,4 @@ public class HomeController {
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
-
 }

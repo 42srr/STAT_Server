@@ -2,7 +2,9 @@ package ggs.srr.service.user;
 
 import ggs.srr.domain.FtUser;
 import ggs.srr.repository.user.FtUserRepository;
+import ggs.srr.service.user.dto.RankingEvalPointDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,7 @@ import java.util.Map;
 import java.util.Comparator; 
 import java.util.ArrayList;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -53,5 +56,20 @@ public class FtUserService {
             }
         }
         return levelInfo;
+    }
+
+    public List<RankingEvalPointDto> rankingEvalPoint() {
+        List<FtUser> ftUsers = repository.findAll();
+        List<RankingEvalPointDto> result = new ArrayList<>();
+        Collections.sort(ftUsers, new Comparator<FtUser>() {
+            @Override
+            public int compare(FtUser o1, FtUser o2) { return o2.getCorrection_point() - o1.getCorrection_point(); }
+        });
+        ftUsers.forEach(ftUser -> {
+            log.info("user" + ftUser);
+            if (ftUser.getLevel() != 0.00)
+                result.add(new RankingEvalPointDto(ftUser.getImage(), ftUser.getIntraId(), ftUser.getCorrection_point()));
+        });
+        return result;
     }
 }
