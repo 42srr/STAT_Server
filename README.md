@@ -1,17 +1,17 @@
 ## 2024.06.14
 ---
 #### Endpoint 관련 설명
-`/project`
+`/project` : `GET'
 - 42 본과정 과제와 참여 중인 사람의 수를 반환합니다.
 
   
-`/project/intraid`
+`/project/intraid` : `GET'
 - intraid에 해당하는 유저의 참여중인 과제를 반환합니다.
 
   
-`/levels`
+`/levels` : `GET'
 - 현재 42경산 유저(lv 0.00 초과)의 레벨 분포를 정수 단위로 계산하여 각 레벨과 레벨에 해당하는 유저 수를 반환합니다.
 
   
-`/ranking/evalpoint`
+`/ranking/evalpoint` : `GET'
 - 현재 42경산 유저(lv 0.00 초과)들의 평가 포인트 랭킹을 내림차순으로 {유저 프로필 사진, 유저 인트라 아이디, 평가포인트 개수}를 반환합니다.
