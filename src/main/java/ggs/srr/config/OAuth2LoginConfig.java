@@ -30,32 +30,34 @@ public class OAuth2LoginConfig {
     private final CustomOauth2userService userService;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
                 )
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint(userInfoEndpointConfig ->
-                            userInfoEndpointConfig.userService(userService)
+                                userInfoEndpointConfig.userService(userService)
                         ));
         return http.build();
     }
 
     @Bean
-    public ClientRegistrationRepository clientRegistrationRepository(){
+    public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(this.ftClientRegistration());
     }
 
-    private ClientRegistration ftClientRegistration(){
+    private ClientRegistration ftClientRegistration() {
 
         return ClientRegistration.withRegistrationId("42")
                 .clientId(CLIENT_ID)
                 .clientSecret(CLIENT_SECRET)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri("http://118.67.134.143:8080/login/oauth2/code/42")
+                .redirectUri("http://localhost:8080/login/oauth2/code/42")
                 .scope("public", "projects", "profile", "tig", "forum")
                 .authorizationUri("https://api.intra.42.fr/oauth/authorize")
                 .tokenUri("https://api.intra.42.fr/oauth/token")

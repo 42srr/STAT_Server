@@ -13,7 +13,7 @@ public class InitDataController {
 
     private final InitDataService initDataService;
 
-    @GetMapping("/init_data")
+    @GetMapping("/admin/init_data")
     public String init(@RegisteredOAuth2AuthorizedClient("42") OAuth2AuthorizedClient client) throws InterruptedException {
         initDataService.initUserAndProjectData(client);
         return "ok";
