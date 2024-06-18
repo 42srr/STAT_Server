@@ -1,4 +1,4 @@
-package ggs.srr.controller.init;
+package ggs.srr.controller.admin;
 
 import ggs.srr.service.initdata.InitDataService;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class InitDataController {
+public class AdminController {
 
     private final InitDataService initDataService;
 
-    @GetMapping("/init_data")
+    @GetMapping("/admin/test")
+    public String test() {
+        return "admin user";
+    }
+
+    @GetMapping("/admin/init_data")
     public String init(@RegisteredOAuth2AuthorizedClient("42") OAuth2AuthorizedClient client) throws InterruptedException {
         initDataService.initUserAndProjectData(client);
         return "ok";
