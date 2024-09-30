@@ -1,19 +1,44 @@
 package ggs.srr.config;
 
+import ggs.srr.filter.CorsFilter;
+import ggs.srr.filter.OAuth2AuthenticationFilter;
+import ggs.srr.oauth.client.ClientManager;
+import ggs.srr.oauth.provider.ProviderManager;
+import jakarta.servlet.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        // 모든 경로에 접속 허용
-        registry.addMapping("/**")
-                // 모든 도메인 접속 허용
-                .allowedOrigins("*")
-                // GET, POST 방식 요청 허용
-                .allowedMethods("GET", "POST");
+    private ClientManager clientManager;
+    private ProviderManager providerManager;
+
+    @Autowired
+    public WebConfig(ClientManager clientManager, ProviderManager providerManager) {
+        this.clientManager = clientManager;
+        this.providerManager = providerManager;
     }
+
+    @Bean
+    public FilterRegistrationBean<Filter> oauth2Filter(){
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new OAuth2AuthenticationFilter(clientManager, providerManager));
+        filterRegistrationBean.setOrder(1);
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> corsFilter(){
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new CorsFilter());
+        filterRegistrationBean.setOrder(0);
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+
+
 }
