@@ -2,10 +2,8 @@ package ggs.srr.oauth.provider.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class TokenResponseDto {
+public class OAuth2Token {
     private String access_token;
     private String token_type;
     private long expires_in;

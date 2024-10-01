@@ -29,7 +29,8 @@ public class OAuth2Config {
                             .redirectURL("http://localhost:8080/login/oauth2/code/42")
                             .authorizationUri("https://api.intra.42.fr/oauth/authorize")
                             .tokenUri("https://api.intra.42.fr/oauth/token")
-                            .scope("public", "profile")
+                            .userInfoUri("https://api.intra.42.fr/v2/me")
+                            .scope( "profile", "public", "projects", "elearning", "tig", "forum")
                             .build();
         clientManager.addClient(client42);
         clientManager.getClients().forEach((client) -> log.info("{}", client));

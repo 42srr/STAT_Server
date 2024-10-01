@@ -24,30 +24,28 @@ public class OAuth2AuthenticationFilter extends OncePerRequestFilter {
         this.providerManager = providerManager;
     }
 
-    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String url = request.getRequestURL().toString();
+        String requestURL = request.getRequestURL().toString();
+        System.out.println(requestURL);
         Client client = clientManager.getClient("42");
-        String redirectURL = client.getRedirectURL();
-
-
-        if (url.equals(redirectURL)) {
+        if (requestURL.equals(client.getRedirectURL())){
+            log.info("redirect uri = {}" , client.getRedirectURL());
             authentication(request, client);
             response.sendRedirect("http://localhost:8080");
+            return ;
+        }
+        HttpSession session = request.getSession(false);
+        if (session == null){
+            log.info("session is null");
+            response.sendRedirect(client.getAuthorizationUri());
             return;
         }
-        else {
-            HttpSession session = request.getSession();
-            if (session.getAttribute("42SessionId") == null) {
-                log.info("null session id");
-                response.sendRedirect(client.getAuthorizationUri());
-                return;
-            }
-        }
+        log.info("session = {}", session.getAttribute("42SessionId"));
         doFilter(request, response, filterChain);
     }
 
     private void authentication(HttpServletRequest request, Client client) {
         providerManager.attemptAuthentication(request, client);
     }
+
 }

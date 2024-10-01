@@ -16,11 +16,12 @@ public class Client {
     private String clientSecret;
     private String redirectURL;
     private String authorizationUri;
+    private String userInfoUri;
     private String tokenUri;
     private List<String> scope;
 
     public Client(String grantType, String name, String clientId, String clientSecret, String redirectURL,
-                  String authorizationUri, String tokenUri, List<String> scope) {
+                  String authorizationUri, String tokenUri, String userInfoUri ,List<String> scope) {
         this.grantType = grantType;
         this.name = name;
         this.clientId = clientId;
@@ -28,6 +29,7 @@ public class Client {
         this.redirectURL = redirectURL;
         this.authorizationUri = authorizationUri;
         this.tokenUri = tokenUri;
+        this.userInfoUri = userInfoUri;
         this.scope = scope;
     }
 

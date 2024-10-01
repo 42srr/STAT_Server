@@ -12,6 +12,7 @@ public class ClientBuilder {
     private String redirectURL;
     private String authorizationUri;
     private String tokenUri;
+    private String userInfoUri;
     private List<String> scope = new ArrayList<>();
 
     public ClientBuilder grantType(String grant_type){
@@ -55,8 +56,13 @@ public class ClientBuilder {
         return this;
     }
 
+    public ClientBuilder userInfoUri(String userInfoUri){
+        this.userInfoUri = userInfoUri;
+        return this;
+    }
+
     public Client build(){
         return new Client(this.grant_type, this.name, this.clientId, this.clientSecret, this.redirectURL,
-                    this.authorizationUri, this.tokenUri, this.scope);
+                    this.authorizationUri, this.tokenUri, this.userInfoUri, this.scope);
     }
 }
