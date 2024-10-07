@@ -29,12 +29,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	//security
-	implementation "org.springframework.boot:spring-boot-starter-security"
-	//OAuth2 client
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
-	testImplementation("org.springframework.security:spring-security-test:6.3.1")
+	//jwt dependencies
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
 }
 
 tasks.named('test') {
