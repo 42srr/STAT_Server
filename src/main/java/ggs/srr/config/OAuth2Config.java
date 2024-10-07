@@ -26,7 +26,7 @@ public class OAuth2Config {
                             .name("42")
                             .clientId(clientId)
                             .clientSecret(clientSecret)
-                            .redirectURL("http://localhost:8080/login/oauth2/code/42")
+                            .redirectURL("http://localhost:3000")
                             .authorizationUri("https://api.intra.42.fr/oauth/authorize")
                             .tokenUri("https://api.intra.42.fr/oauth/token")
                             .userInfoUri("https://api.intra.42.fr/v2/me")

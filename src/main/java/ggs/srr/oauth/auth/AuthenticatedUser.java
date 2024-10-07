@@ -1,6 +1,6 @@
 package ggs.srr.oauth.auth;
 
-import ggs.srr.domain.user.ft.FtUser;
+import ggs.srr.domain.user.FtUser;
 import ggs.srr.oauth.client.Client;
 import ggs.srr.oauth.provider.dto.OAuth2Token;
 import lombok.Getter;

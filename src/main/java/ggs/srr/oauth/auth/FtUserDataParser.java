@@ -1,27 +1,29 @@
 package ggs.srr.oauth.auth;
 
-import ggs.srr.domain.user.ft.FtUser;
+import ggs.srr.domain.user.FtUser;
 import ggs.srr.oauth.auth.dto.Image;
-import ggs.srr.oauth.client.Client;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FtUserDataParser {
 
-    public FtUser parseUser(ResponseEntity<HashMap> responseEntity, Client client){
+    public FtUser parseUser(ResponseEntity<HashMap> responseEntity){
         HashMap<String, Object> body = responseEntity.getBody();
 
+        System.out.println(body);
         int fdId = Integer.parseInt(body.get("id").toString());
         String intraId = body.get("login").toString();
+        String role = getRole(intraId);
         String email = body.get("email").toString();
         String url = body.get("url").toString();
         int wallet = Integer.parseInt(body.get("wallet").toString());
         int collectionPoint = Integer.parseInt(body.get("correction_point").toString());
         double level = getUserLevel(body.get("cursus_users"));
-        Image image = getImageDto(body.get("image"));
-        return new FtUser(fdId, intraId ,email, url, wallet, collectionPoint, level, image);
+        String image = getImageDto(body.get("image")).getSmall();
+        return new FtUser(fdId, intraId , role, email, url, wallet, collectionPoint, level, image);
     }
 
     private double getUserLevel(Object cursusUsers){
@@ -41,5 +43,13 @@ public class FtUserDataParser {
         imageDto.setSmall(versions.get("small"));
         imageDto.setMicro(versions.get("micro"));
         return imageDto;
+    }
+
+    private String getRole(String intraId){
+        List<String> adminList = List.of("joojeon", "jajo");
+        if (adminList.contains(intraId)){
+            return "ADMIN";
+        }
+        return "USER";
     }
 }

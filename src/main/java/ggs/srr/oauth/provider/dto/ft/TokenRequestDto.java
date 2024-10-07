@@ -1,4 +1,4 @@
-package ggs.srr.oauth.provider.dto;
+package ggs.srr.oauth.provider.dto.ft;
 
 import lombok.Data;
 
