@@ -1,5 +1,6 @@
 package ggs.srr.config;
 
+import ggs.srr.filter.AuthorizationFilter;
 import ggs.srr.filter.CorsFilter;
 import ggs.srr.jwt.JWTExceptionHandler;
 import ggs.srr.jwt.JWTFilter;
@@ -39,6 +40,15 @@ public class WebConfig {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new JWTFilter(jwtUtil, jwtExceptionHandler));
         filterRegistrationBean.setOrder(2);
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> authorizationFilter(){
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new AuthorizationFilter(jwtUtil));
+        filterRegistrationBean.setOrder(3);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
