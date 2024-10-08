@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class FtUserDataParser {
 
@@ -27,9 +28,18 @@ public class FtUserDataParser {
     }
 
     private double getUserLevel(Object cursusUsers){
+        double level = 0L;
         ArrayList<HashMap<String, Object>> data = (ArrayList<HashMap<String, Object>>)  cursusUsers;
-        HashMap<String, Object> cardetData = data.get(1);
-        return Double.parseDouble(cardetData.get("level").toString());
+
+        for(HashMap<String , Object> datum : data) {
+            int cursusId = (int) datum.get("cursus_id");
+            if (cursusId == 21){
+                level = Double.parseDouble(datum.get("level").toString());
+                System.out.println("level = " + level);
+            }
+
+        }
+        return level;
     }
 
     private Image getImageDto(Object image){
