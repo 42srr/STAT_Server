@@ -3,6 +3,7 @@ package ggs.srr.controller.main;
 import ggs.srr.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
+import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.project.ProjectRepository;
 import ggs.srr.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -13,12 +14,10 @@ import ggs.srr.service.ranking.RankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -38,6 +37,18 @@ public class MainController {
 
     @GetMapping("/ranking/wallet")
     public List<RankingWalletDto> rankingWalletInfo() { return rankingService.rankingWallet(); }
+
+    @GetMapping("/projects/{intraId}")
+    public String projectUserInfo(@PathVariable String intraId) {
+        Optional<FtUser> ftUser = userService.findByIntraId(intraId);
+        List<ProjectUser> projectUsers = ftUser.get().getProjectUsers();
+        log.info("project size = {}", projectUsers.size());
+        projectUsers.forEach(p -> {
+            if (!p.getProject().getName().contains("Exam") && p.getStatus().equals("in_progress"))
+                log.info("now = {}", p.getProject().getName());
+        });
+        return ("ok");
+    }
 
     @GetMapping("/projects")
     public Map<String, Integer> projectInfo() {
