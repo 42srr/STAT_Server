@@ -5,7 +5,9 @@ import ggs.srr.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -33,5 +35,21 @@ public class UserService {
 
     public List<FtUser> findAll(){
         return userRepository.findAll();
+    }
+
+    public Map<Integer, Integer> getLevelInfo() {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < 21; i++) {
+            map.put(i, 0);
+        }
+        List<FtUser> users = userRepository.findAll();
+        for (FtUser user : users) {
+            Double level = user.getLevel();
+            if (level == 0.00)
+                continue;
+            Integer levelInfo = (int) Math.floor(level);
+            map.put(levelInfo, map.get(levelInfo) + 1);
+        }
+        return map;
     }
 }
