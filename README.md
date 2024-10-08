@@ -1,4 +1,7 @@
 ## 2024.06.14
+
+java version : 21.0.4
+spring boot version : 3.2.5
 ---
 #### Endpoint 관련 설명
 `/projects` : `GET`
