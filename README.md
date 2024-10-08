@@ -82,7 +82,8 @@ spring boot version : 3.2.5
 
   
 `/projects/intraid` : `GET`
-- intraid에 해당하는 유저의 참여중인 과제를 반환합니다.
+- intraid에 해당하는 유저의 참여중인 과제를 서버 Log에 남깁니다.
+
 
   
 `/levels` : `GET`
