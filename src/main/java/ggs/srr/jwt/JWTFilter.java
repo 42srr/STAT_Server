@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
 
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
@@ -22,7 +20,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     public JWTFilter(JWTUtil jwtUtil, JWTExceptionHandler jwtExceptionHandler) {
         this.jwtUtil = jwtUtil;
-
         this.jwtExceptionHandler = jwtExceptionHandler;
     }
 
@@ -42,7 +39,6 @@ public class JWTFilter extends OncePerRequestFilter {
             log.info("jwt null");
             return ;
         }
-
 
         String token = authorization.split(" ")[1];
         try {

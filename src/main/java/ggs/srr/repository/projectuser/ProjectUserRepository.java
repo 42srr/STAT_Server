@@ -1,4 +1,4 @@
-package ggs.srr.repository;
+package ggs.srr.repository.projectuser;
 
 import ggs.srr.domain.projectuser.ProjectUser;
 import jakarta.persistence.EntityManager;

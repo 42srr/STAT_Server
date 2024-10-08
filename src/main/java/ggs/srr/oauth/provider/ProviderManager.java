@@ -15,7 +15,7 @@ public class ProviderManager {
     private Provider provider;
 
     @Autowired
-    public ProviderManager (Provider provider, ClientManager clientManager){
+    public ProviderManager (Provider provider){
         this.provider = provider;
     }
 
