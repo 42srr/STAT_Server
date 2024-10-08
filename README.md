@@ -139,5 +139,19 @@ spring boot version : 3.2.5
 
 `/ranking/wallet` : `GET`
 - 현재 42경산 유저(lv 0.00 초과)들의 알타리안달러 랭킹을 내림차순으로 {유저 프로필 사진, 유저 인트라 아이디, 알타리안달러 개수}를 반환합니다.
+```
+[
+    {
+        "photo": "https://cdn.intra.42.fr/users/bcd026b5a1be87890c9893dbc6c5db8a/small_taeng.gif",
+        "intraId": "taeng",
+        "dollar": 3813
+    },
+    {
+        "photo": "https://cdn.intra.42.fr/users/fcea0110d5a42e08e3e763eb5d78695f/small_bonikoo.jpg",
+        "intraId": "bonikoo",
+        "dollar": 137
+    }
+]
+```
 
 - 
