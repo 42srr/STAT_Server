@@ -1,5 +1,6 @@
 package ggs.srr.controller.main;
 
+import ggs.srr.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.repository.project.ProjectRepository;
@@ -7,6 +8,7 @@ import ggs.srr.service.user.UserService;
 import lombok.AllArgsConstructor;
 
 import ggs.srr.controller.user.dto.RankingEvalPointDto;
+import ggs.srr.controller.user.dto.RankingWalletDto;
 import ggs.srr.service.ranking.RankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,10 @@ public class MainController {
 
     @GetMapping("/ranking/evalpoint")
     public List<RankingEvalPointDto> rankingEvalPointInfo() { return rankingService.rankingEvalPoint(); }
+
+
+    @GetMapping("/ranking/wallet")
+    public List<RankingWalletDto> rankingWalletInfo() { return rankingService.rankingWallet(); }
 
     @GetMapping("/projects")
     public Map<String, Integer> projectInfo() {
