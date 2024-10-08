@@ -16,19 +16,22 @@ import java.util.HashMap;
 @Component
 public class AuthenticatedUserManager {
 
-    public AuthenticatedUser createAuthenticatedUser(OAuth2Token responseDto, Client client){
+    public FtUser createFtUser(OAuth2Token responseDto, Client client){
 
         String tokenType = responseDto.getToken_type();
-        String accessToken = responseDto.getAccess_token();
-        log.info("access token = {}", accessToken);
+        String oAuth2AccessToken = responseDto.getAccess_token();
+        String oAuth2RefreshToken = responseDto.getRefresh_token();
+        log.info("access token = {}", oAuth2AccessToken);
 
-        HttpHeaders headers = createHeader(tokenType, accessToken);
+        HttpHeaders headers = createHeader(tokenType, oAuth2AccessToken);
         HttpEntity request = new HttpEntity(headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HashMap> responseEntity = restTemplate.exchange(client.getUserInfoUri(), HttpMethod.GET, request, HashMap.class);
+
         FtUserDataParser ftUserDataParser = new FtUserDataParser();
-        FtUser ftUser = ftUserDataParser.parseUser(responseEntity);
-        return new AuthenticatedUser(ftUser, client, responseDto);
+        FtUser user= ftUserDataParser.parseUser(responseEntity);
+        user.setOauth2Token(oAuth2AccessToken, oAuth2RefreshToken);
+        return user;
     }
 
     private HttpHeaders createHeader(String tokenType, String accessToken){

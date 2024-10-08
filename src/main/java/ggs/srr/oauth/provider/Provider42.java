@@ -39,16 +39,19 @@ public class Provider42 implements Provider{
         TokenRequestDto requestDto = getTokenRequestDto(client, authorizationCode);
         RestTemplate restTemplate = new RestTemplate();
         OAuth2Token tokenResponseDto = restTemplate.postForObject(client.getTokenUri(), requestDto, OAuth2Token.class);
-        AuthenticatedUser authenticatedUser = userManager.createAuthenticatedUser(tokenResponseDto, client);
+        FtUser user = userManager.createFtUser(tokenResponseDto, client);
 
-        String accessToken = jwtUtil.createJWT(authenticatedUser.getUser().getIntraId(), authenticatedUser.getUser().getRole(), ACCESS_TOKEN_EXPIRE_MS);
-        String refreshToken = jwtUtil.createJWT(authenticatedUser.getUser().getIntraId(), authenticatedUser.getUser().getRole(), REFRESH_TOKEN_EXPIRE_MS);
-        FtUser user = authenticatedUser.getUser();
+        String accessToken = jwtUtil.createJWT(user.getIntraId(), user.getRole(), ACCESS_TOKEN_EXPIRE_MS);
+        String refreshToken = jwtUtil.createJWT(user.getIntraId(), user.getRole(), REFRESH_TOKEN_EXPIRE_MS);
+
         user.setJwtToken(accessToken, refreshToken);
 
-        Optional<FtUser> findUser = userService.findByIntraId(user.getIntraId());
-        if (findUser.isEmpty()) {
+        Optional<FtUser> findUserOptional = userService.findByIntraId(user.getIntraId());
+        if (findUserOptional.isEmpty()) {
             userService.save(user);
+        } else {
+            FtUser findUser = findUserOptional.get();
+            findUser.setOauth2Token(tokenResponseDto.getAccess_token(), tokenResponseDto.getRefresh_token());
         }
 
         log.info("jwt = {}", accessToken);
