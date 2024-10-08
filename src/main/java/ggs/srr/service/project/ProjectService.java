@@ -1,7 +1,7 @@
 package ggs.srr.service.project;
 
 import ggs.srr.domain.project.Project;
-import ggs.srr.repository.projectuser.ProjectRepository;
+import ggs.srr.repository.project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

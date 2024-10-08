@@ -1,7 +1,7 @@
 package ggs.srr.service.projectuser;
 
 import ggs.srr.domain.projectuser.ProjectUser;
-import ggs.srr.repository.ProjectUserRepository;
+import ggs.srr.repository.projectuser.ProjectUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

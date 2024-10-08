@@ -5,8 +5,6 @@ import ggs.srr.domain.user.FtUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -14,6 +12,8 @@ public class ProjectUser {
 
     @Id @GeneratedValue
     private long id;
+
+    private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,5 +32,9 @@ public class ProjectUser {
     public void initProject(Project project) {
         this.project = project;
         project.getProjectUsers().add(this);
+    }
+
+    public void initStatus(String status) {
+        this.status = status;
     }
 }

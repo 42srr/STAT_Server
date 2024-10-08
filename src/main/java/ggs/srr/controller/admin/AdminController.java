@@ -19,30 +19,17 @@ public class AdminController {
 
 
     private final InitDataManager initDataManager;
-    private final ProjectService projectService;
 
     @Autowired
-    public AdminController(InitDataManager initDataManager, ProjectService projectService) {
+    public AdminController(InitDataManager initDataManager) {
         this.initDataManager = initDataManager;
-        this.projectService = projectService;
     }
 
     @GetMapping("/admin/init_data")
     public String initData(HttpServletRequest request) {
-
         String authorization = request.getHeader("Authorization");
         String token = authorization.split(" ")[1];
         initDataManager.initData(token);
-
         return "init user data";
     }
-
-    @PostMapping("/admin/projects")
-    public ResponseProjectDto registerProject(@RequestBody RequestProjectDto dto) {
-        String name = dto.getName();
-        projectService.save(new Project(name));
-        return new ResponseProjectDto("Ok", "create project: " + name);
-    }
-
-
 }
