@@ -1,6 +1,7 @@
 package ggs.srr.service.ranking;
 
 import ggs.srr.controller.user.dto.RankingEvalPointDto;
+import ggs.srr.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,25 @@ public class RankingService {
             if (ftUser.getLevel() != 0.00)
                 result.add(new RankingEvalPointDto(ftUser.getImage(), ftUser.getIntraId(), ftUser.getCollectionPoint()));
         });
+
+        return result;
+    }
+
+    public List<RankingWalletDto> rankingWallet() {
+        List<FtUser> ftUsers = userRepository.findAll();
+        List<RankingWalletDto> result = new ArrayList<>();
+
+        Collections.sort(ftUsers, new Comparator<FtUser>() {
+            @Override
+            public int compare(FtUser o1, FtUser o2) { return o2.getWallet() - o1.getWallet(); }
+        });
+
+        ftUsers.forEach(ftUser -> {
+            if (ftUser.getLevel() != 0.00) {
+                result.add(new RankingWalletDto(ftUser.getImage(), ftUser.getIntraId(), ftUser.getWallet()));
+            }
+        });
+
         return result;
     }
 }
