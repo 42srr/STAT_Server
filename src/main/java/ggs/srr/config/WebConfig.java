@@ -25,7 +25,7 @@ public class WebConfig {
         this.jwtExceptionHandler = jwtExceptionHandler;
     }
 
-//    @Bean
+    @Bean
     public FilterRegistrationBean<Filter> corsFilter(){
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new CorsFilter());
@@ -35,7 +35,7 @@ public class WebConfig {
     }
 
 
-//    @Bean
+    @Bean
     public FilterRegistrationBean<Filter> jwtFilter(){
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new JWTFilter(jwtUtil, jwtExceptionHandler));
@@ -44,7 +44,7 @@ public class WebConfig {
         return filterRegistrationBean;
     }
 
-//    @Bean
+    @Bean
     public FilterRegistrationBean<Filter> authorizationFilter(){
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new AuthorizationFilter(jwtUtil));
