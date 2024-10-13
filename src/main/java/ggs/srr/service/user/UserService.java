@@ -25,6 +25,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(readOnly = false)
+    public void updateJWTTokens(String intraId, String accessToken, String refreshToken) {
+
+        Optional<FtUser> byIntraId = findByIntraId(intraId);
+        if (byIntraId.isEmpty())
+            throw new RuntimeException("intra id is invalid");
+        FtUser findUser = byIntraId.get();
+        findUser.setJwtToken(accessToken, refreshToken);
+    }
+
     public FtUser findById(long id) {
         return userRepository.findById(id);
     }

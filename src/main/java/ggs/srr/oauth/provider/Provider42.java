@@ -58,7 +58,8 @@ public class Provider42 implements Provider{
             findUser.setOauth2Token(user.getOAuth2AccessToken(), user.getOauth2RefreshToken());
         }
 
-        log.info("jwt = {}", accessToken);
+        log.info("jwt access= {}", accessToken);
+        log.info("jwt refresh = {}", refreshToken);
         return new JwtToken(accessToken, refreshToken);
     }
 

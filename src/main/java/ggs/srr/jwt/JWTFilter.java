@@ -28,7 +28,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
 
-        if (requestURI.startsWith("/login")){
+        if (requestURI.startsWith("/login") || requestURI.startsWith("/refresh")) {
             doFilter(request, response, filterChain);
             return;
         }
