@@ -12,7 +12,8 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    public static final long ACCESS_TOKEN_EXPIRE_MS = 30  * 60 * 1000L;
+//    public static final long ACCESS_TOKEN_EXPIRE_MS = 30  * 60 * 1000L;
+    public static final long ACCESS_TOKEN_EXPIRE_MS = 30 * 60 * 1000L;
     public static final long REFRESH_TOKEN_EXPIRE_MS = 24 * 60 * 60 * 1000L;
 
     private final SecretKey secretKey;

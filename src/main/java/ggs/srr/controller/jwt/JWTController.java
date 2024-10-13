@@ -28,16 +28,14 @@ public class JWTController {
     @PostMapping("/refresh")
     public JwtToken refresh(HttpServletRequest request, @RequestBody RefreshTokenDto dto) {
 
-        String authorization = request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
+        String refreshToken = dto.getRefreshToken();
+        String intraId = jwtUtil.getIntraId(refreshToken);
 
-        String intraId = jwtUtil.getIntraId(token);
         Optional<FtUser> byIntraId = userService.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
             throw new RuntimeException("없는 사용자.");
         }
         FtUser user = byIntraId.get();
-        String refreshToken = user.getJwtRefreshToken();
         if (!refreshToken.equals(dto.getRefreshToken())) {
             throw new RuntimeException("초기화 토큰 불일치");
         }

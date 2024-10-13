@@ -29,7 +29,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/login")){
+        if (requestURI.startsWith("/login") || requestURI.startsWith("/refresh")){
             filterChain.doFilter(request, response);
             return ;
         }
