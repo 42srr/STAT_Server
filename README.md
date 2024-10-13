@@ -1,10 +1,10 @@
-java version : 21.0.4
-spring boot version : 3.2.5
+# 42 SRR BE
+- java version : 21.0.4
+- spring boot version : 3.2.5
 
 ---
 
 ## API 명세
-
 - http://118.67.134.143:8080/swagger-ui/index.html
 
 ## 2024.10.14 개발 로그
