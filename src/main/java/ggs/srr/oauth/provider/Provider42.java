@@ -11,6 +11,7 @@ import ggs.srr.oauth.provider.dto.OAuth2Token;
 import ggs.srr.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -19,6 +20,7 @@ import static ggs.srr.jwt.JWTUtil.ACCESS_TOKEN_EXPIRE_MS;
 import static ggs.srr.jwt.JWTUtil.REFRESH_TOKEN_EXPIRE_MS;
 
 @Component
+@Transactional(readOnly = true)
 @Slf4j
 public class Provider42 implements Provider{
 
@@ -32,6 +34,7 @@ public class Provider42 implements Provider{
         this.userService = userService;
     }
 
+    @Transactional(readOnly = false)
     @Override
     public JwtToken authentication(String authorizationCode, Client client) {
 
@@ -51,7 +54,8 @@ public class Provider42 implements Provider{
             userService.save(user);
         } else {
             FtUser findUser = findUserOptional.get();
-            findUser.setOauth2Token(tokenResponseDto.getAccess_token(), tokenResponseDto.getRefresh_token());
+            findUser.setJwtToken(accessToken, refreshToken);
+            findUser.setOauth2Token(user.getOAuth2AccessToken(), user.getOauth2RefreshToken());
         }
 
         log.info("jwt = {}", accessToken);

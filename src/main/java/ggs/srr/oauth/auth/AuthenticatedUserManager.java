@@ -22,6 +22,7 @@ public class AuthenticatedUserManager {
         String oAuth2AccessToken = responseDto.getAccess_token();
         String oAuth2RefreshToken = responseDto.getRefresh_token();
         log.info("access token = {}", oAuth2AccessToken);
+        log.info("refresh token = {}", oAuth2RefreshToken);
 
         HttpHeaders headers = createHeader(tokenType, oAuth2AccessToken);
         HttpEntity request = new HttpEntity(headers);
