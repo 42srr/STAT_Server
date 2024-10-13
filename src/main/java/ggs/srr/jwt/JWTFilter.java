@@ -27,8 +27,8 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-
-        if (requestURI.startsWith("/login") || requestURI.startsWith("/refresh")) {
+        log.info("request uri = {}", requestURI);
+        if (requestURI.startsWith("/login") || requestURI.startsWith("/refresh") || requestURI.startsWith("/index")) {
             doFilter(request, response, filterChain);
             return;
         }
@@ -55,4 +55,6 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
     }
+
+
 }
