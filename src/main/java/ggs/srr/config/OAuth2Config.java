@@ -18,6 +18,9 @@ public class OAuth2Config {
     @Value("${42.client-secret}")
     private String clientSecret;
 
+    @Value("${42.redirect-uri}")
+    private String redirectURI;
+
     @Bean
     public ClientManager clientManager(){
         ClientManager clientManager = new ClientManager();
@@ -26,14 +29,13 @@ public class OAuth2Config {
                             .name("42")
                             .clientId(clientId)
                             .clientSecret(clientSecret)
-                            .redirectURL("http://localhost:3000")
+                            .redirectURL(redirectURI)
                             .authorizationUri("https://api.intra.42.fr/oauth/authorize")
                             .tokenUri("https://api.intra.42.fr/oauth/token")
                             .userInfoUri("https://api.intra.42.fr/v2/me")
                             .scope( "profile", "public", "projects", "elearning", "tig", "forum")
                             .build();
         clientManager.addClient(client42);
-        clientManager.getClients().forEach((client) -> log.info("{}", client));
         return clientManager;
     }
 }

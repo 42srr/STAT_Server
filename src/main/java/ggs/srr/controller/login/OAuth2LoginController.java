@@ -29,5 +29,4 @@ public class OAuth2LoginController {
         Client client = clientManager.getClient("42");
         return providerManager.attemptAuthentication(code, client);
     }
-
 }

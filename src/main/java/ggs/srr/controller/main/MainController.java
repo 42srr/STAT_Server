@@ -1,6 +1,7 @@
 package ggs.srr.controller.main;
 
 import ggs.srr.controller.main.dto.ProjectUserInfoDto;
+import ggs.srr.controller.main.dto.ProjectsDto;
 import ggs.srr.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
@@ -51,23 +52,21 @@ public class MainController {
     }
 
     @GetMapping("/projects")
-    public Map<String, Integer> projectInfo() {
-        Map<String, Integer> map = new HashMap<>();
+    public List<ProjectsDto> projectInfo() {
+        List<ProjectsDto> res = new ArrayList<>();
         List<Project> projects = projectRepository.findAll();
         for (Project project : projects) {
             int count = 0;
-            String name = project.getName();
-            List<ProjectUser> users = project.getProjectUsers();
-
-            for(ProjectUser user : users) {
-                if (user.getUser().getLevel() != 0.0 && user.getStatus().equals("in_progress")) {
-                    String intraId = user.getUser().getIntraId();
-                    log.info("intra id = {} project = {}", intraId, project.getName());
+            String projectName = project.getName();
+            List<ProjectUser> projectUsers = project.getProjectUsers();
+            for (ProjectUser projectUser : projectUsers) {
+                if (projectUser.getStatus().equals("in_progress")){
                     count++;
                 }
             }
-            map.put(name, count);
+            ProjectsDto projectsDto = new ProjectsDto(project.getName(), count);
+            res.add(projectsDto);
         }
-        return map;
+        return res;
     }
 }
