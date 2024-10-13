@@ -1,5 +1,6 @@
 package ggs.srr.controller.main;
 
+import ggs.srr.controller.main.dto.ProjectUserInfoDto;
 import ggs.srr.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
@@ -39,15 +40,14 @@ public class MainController {
     public List<RankingWalletDto> rankingWalletInfo() { return rankingService.rankingWallet(); }
 
     @GetMapping("/projects/{intraId}")
-    public String projectUserInfo(@PathVariable String intraId) {
+    public List<ProjectUserInfoDto> projectUserInfo(@PathVariable String intraId) {
         Optional<FtUser> ftUser = userService.findByIntraId(intraId);
         List<ProjectUser> projectUsers = ftUser.get().getProjectUsers();
-        log.info("project size = {}", projectUsers.size());
-        projectUsers.forEach(p -> {
-            if (!p.getProject().getName().contains("Exam") && p.getStatus().equals("in_progress"))
-                log.info("now = {}", p.getProject().getName());
-        });
-        return ("ok");
+        List<ProjectUserInfoDto> res = new ArrayList<>();
+        for(ProjectUser projectUser : projectUsers) {
+            res.add(new ProjectUserInfoDto(projectUser.getStatus(), projectUser.getProject().getName()));
+        }
+        return res;
     }
 
     @GetMapping("/projects")
