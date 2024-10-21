@@ -24,7 +24,7 @@ public class OAuth2LoginController {
     }
 
     @GetMapping("/login")
-    public JwtToken login(@RequestParam(name = "code")String code){
+    public LoginInfoDto login(@RequestParam(name = "code")String code){
         log.info("login controller 호출");
         Client client = clientManager.getClient("42");
         return providerManager.attemptAuthentication(code, client);
