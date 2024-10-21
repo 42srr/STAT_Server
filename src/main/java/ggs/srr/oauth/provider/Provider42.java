@@ -1,5 +1,6 @@
 package ggs.srr.oauth.provider;
 
+import ggs.srr.controller.login.LoginInfoDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.auth.AuthenticatedUser;
@@ -36,7 +37,7 @@ public class Provider42 implements Provider{
 
     @Transactional(readOnly = false)
     @Override
-    public JwtToken authentication(String authorizationCode, Client client) {
+    public LoginInfoDto authentication(String authorizationCode, Client client) {
 
 
         TokenRequestDto requestDto = getTokenRequestDto(client, authorizationCode);
@@ -60,7 +61,8 @@ public class Provider42 implements Provider{
 
         log.info("jwt access= {}", accessToken);
         log.info("jwt refresh = {}", refreshToken);
-        return new JwtToken(accessToken, refreshToken);
+        String intraId = user.getIntraId();
+        return new LoginInfoDto(intraId, accessToken, refreshToken);
     }
 
     private static TokenRequestDto getTokenRequestDto(Client client, String code) {

@@ -1,6 +1,7 @@
 package ggs.srr.oauth.provider;
 
 
+import ggs.srr.controller.login.LoginInfoDto;
 import ggs.srr.oauth.client.Client;
 import ggs.srr.oauth.client.ClientManager;
 import ggs.srr.oauth.provider.dto.JwtToken;
@@ -19,7 +20,7 @@ public class ProviderManager {
         this.provider = provider;
     }
 
-    public JwtToken attemptAuthentication(String authorizationCode, Client client){
+    public LoginInfoDto attemptAuthentication(String authorizationCode, Client client){
         return provider.authentication(authorizationCode, client);
     }
 }
