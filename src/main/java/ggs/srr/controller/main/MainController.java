@@ -1,5 +1,6 @@
 package ggs.srr.controller.main;
 
+import ggs.srr.controller.main.dto.LevelDto;
 import ggs.srr.controller.main.dto.ProjectUserInfoDto;
 import ggs.srr.controller.main.dto.ProjectsDto;
 import ggs.srr.controller.user.dto.RankingWalletDto;
@@ -31,7 +32,7 @@ public class MainController {
     private final ProjectRepository projectRepository;
 
     @GetMapping("/levels")
-    public Map<Integer, Integer> levelUserCounts() { return userService.getLevelInfo(); }
+    public LevelDto levelUserCounts() { return userService.getLevelInfo(); }
 
     @GetMapping("/ranking/evalpoint")
     public List<RankingEvalPointDto> rankingEvalPointInfo() { return rankingService.rankingEvalPoint(); }
