@@ -1,7 +1,9 @@
 package ggs.srr.controller.user.dto;
 
 import ggs.srr.domain.user.FtUser;
+import lombok.Data;
 
+@Data
 public class UserDto {
 
     private String intraId;
