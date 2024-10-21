@@ -12,6 +12,8 @@
 ### update
 - /login endpoint api 명세 변경
 - /users endpoint api 명세 변경
+- /users/{intraId} api 개발
+- /levels endpoint api 명세 변경
 
 ## 2024.10.14 개발 로그
 
