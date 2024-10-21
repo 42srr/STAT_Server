@@ -53,6 +53,15 @@ public class UserService {
         return users;
     }
 
+    public UserDto findByIntraIdForApi(String intraId) {
+        Optional<FtUser> byIntraId = userRepository.findByIntraId(intraId);
+        if (byIntraId.isEmpty()) {
+            throw new IllegalArgumentException("intra id 에 해당하는 사용자가 존재하지 않습니다.");
+        }
+        FtUser user = byIntraId.get();
+        return new UserDto(user);
+    }
+
     public Map<Integer, Integer> getLevelInfo() {
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < 21; i++) {
