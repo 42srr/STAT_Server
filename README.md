@@ -7,6 +7,12 @@
 ## API 명세
 - http://118.67.134.143:8080/swagger-ui/index.html
 
+## 2024.10.21 개발 로그
+
+### update
+- /login endpoint api 명세 변경
+- /users endpoint api 명세 변경
+
 ## 2024.10.14 개발 로그
 
 ### update
