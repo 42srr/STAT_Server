@@ -1,5 +1,6 @@
 package ggs.srr.controller.user;
 
+import ggs.srr.controller.user.dto.UserDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.service.user.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<FtUser> getUsers() {
+    public List<UserDto> getUsers() {
         return userService.findAll();
     }
 

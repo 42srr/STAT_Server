@@ -1,7 +1,9 @@
 package ggs.srr.service.user;
 
+import ggs.srr.controller.user.dto.UserDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
+import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +45,12 @@ public class UserService {
         return userRepository.findByIntraId(intraId);
     }
 
-    public List<FtUser> findAll(){
-        return userRepository.findAll();
+    public List<UserDto> findAll(){
+        List<UserDto> users = new ArrayList<>();
+        List<FtUser> findUsers = userRepository.findAll();
+
+        findUsers.forEach((ftUser) -> users.add(new UserDto(ftUser)));
+        return users;
     }
 
     public Map<Integer, Integer> getLevelInfo() {
