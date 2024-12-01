@@ -1,18 +1,16 @@
-package ggs.srr.controller.main;
+package ggs.srr.api.controller.main;
 
-import ggs.srr.controller.main.dto.LevelDto;
-import ggs.srr.controller.main.dto.ProjectUserInfoDto;
-import ggs.srr.controller.main.dto.ProjectsDto;
-import ggs.srr.controller.user.dto.RankingWalletDto;
+import ggs.srr.api.controller.main.dto.LevelDto;
+import ggs.srr.api.controller.main.dto.ProjectUserInfoDto;
+import ggs.srr.api.controller.main.dto.ProjectsDto;
+import ggs.srr.api.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.project.ProjectRepository;
 import ggs.srr.service.user.UserService;
-import lombok.AllArgsConstructor;
 
-import ggs.srr.controller.user.dto.RankingEvalPointDto;
-import ggs.srr.controller.user.dto.RankingWalletDto;
+import ggs.srr.api.controller.user.dto.RankingEvalPointDto;
 import ggs.srr.service.ranking.RankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

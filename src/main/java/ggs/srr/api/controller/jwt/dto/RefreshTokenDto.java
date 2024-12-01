@@ -1,4 +1,4 @@
-package ggs.srr.controller.jwt.dto;
+package ggs.srr.api.controller.jwt.dto;
 
 import lombok.Data;
 

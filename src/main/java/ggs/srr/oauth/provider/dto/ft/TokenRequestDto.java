@@ -1,5 +1,7 @@
 package ggs.srr.oauth.provider.dto.ft;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -12,9 +14,9 @@ public class TokenRequestDto {
     private String client_id;
     private String client_secret;
     private String redirect_uri;
-    private List<String> scopes = new ArrayList<>();
+    private Set<String> scopes = new HashSet<>();
 
-    public void setScope(List<String> scopes){
+    public void setScope(Set<String> scopes){
         for (String scope : scopes) {
             this.scopes.add(scope);
         }

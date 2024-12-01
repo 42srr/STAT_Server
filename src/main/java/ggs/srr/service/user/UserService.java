@@ -1,16 +1,14 @@
 package ggs.srr.service.user;
 
-import ggs.srr.controller.main.dto.LevelDto;
-import ggs.srr.controller.user.dto.UserDto;
+import ggs.srr.api.controller.main.dto.LevelDto;
+import ggs.srr.api.controller.user.dto.UserDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
 import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

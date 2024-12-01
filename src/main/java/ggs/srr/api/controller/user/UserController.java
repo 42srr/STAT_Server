@@ -1,15 +1,12 @@
-package ggs.srr.controller.user;
+package ggs.srr.api.controller.user;
 
-import ggs.srr.controller.user.dto.UserDto;
-import ggs.srr.domain.user.FtUser;
+import ggs.srr.api.controller.user.dto.UserDto;
 import ggs.srr.service.user.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 @RestController
 public class UserController {

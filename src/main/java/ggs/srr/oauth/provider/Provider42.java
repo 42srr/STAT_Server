@@ -1,12 +1,10 @@
 package ggs.srr.oauth.provider;
 
-import ggs.srr.controller.login.LoginInfoDto;
+import ggs.srr.api.controller.login.LoginInfoDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
-import ggs.srr.oauth.auth.AuthenticatedUser;
 import ggs.srr.oauth.auth.AuthenticatedUserManager;
 import ggs.srr.oauth.client.Client;
-import ggs.srr.oauth.provider.dto.JwtToken;
 import ggs.srr.oauth.provider.dto.ft.TokenRequestDto;
 import ggs.srr.oauth.provider.dto.OAuth2Token;
 import ggs.srr.service.user.UserService;

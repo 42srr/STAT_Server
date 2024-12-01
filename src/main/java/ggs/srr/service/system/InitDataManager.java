@@ -1,6 +1,5 @@
 package ggs.srr.service.system;
 
-import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
@@ -40,7 +39,8 @@ public class InitDataManager {
     private final ProjectUserService projectUserService;
 
     @Autowired
-    public InitDataManager(UserService userService, JWTUtil jwtUtil, FtProjectParser projectParser, ProjectUserService projectUserService) {
+    public InitDataManager(UserService userService, JWTUtil jwtUtil, FtProjectParser projectParser,
+                           ProjectUserService projectUserService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.projectParser = projectParser;
@@ -70,7 +70,7 @@ public class InitDataManager {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + oAuth2AccessToken);
         HttpEntity request = new HttpEntity(headers);
-        for(long userId : allUser42ServerId) {
+        for (long userId : allUser42ServerId) {
             String uri = USER_INFO_BASE_URI + "/" + userId;
             String requestURI = UriComponentsBuilder
                     .fromUriString(uri)
@@ -80,13 +80,13 @@ public class InitDataManager {
             RestTemplate restTemplate = new RestTemplate();
 
             // 사용자가 하고 있는 프로젝트 !! -=> project_user
-            ResponseEntity<HashMap> responseEntity = restTemplate.exchange(requestURI, HttpMethod.GET, request, HashMap.class);
+            ResponseEntity<HashMap> responseEntity = restTemplate.exchange(requestURI, HttpMethod.GET, request,
+                    HashMap.class);
             FtUserDataParser ftUserDataParser = new FtUserDataParser();
             log.info("data = {}", responseEntity.getBody());
 
             FtUser user = ftUserDataParser.parseUser(responseEntity);
             List<ProjectStatusDto> projects = projectParser.parseUsersProject(responseEntity);
-
 
             log.info("projects = {}", projects);
             if (userService.findByIntraId(user.getIntraId()).isEmpty()) {
@@ -103,9 +103,8 @@ public class InitDataManager {
             }
         }
         long endTime = System.currentTimeMillis();
-        log.info ("time = {}", endTime - startTime);
+        log.info("time = {}", endTime - startTime);
     }
-
 
 
     private List<Long> getAllUser42ServerId(String oAuth2AccessToken) {
@@ -129,12 +128,14 @@ public class InitDataManager {
                         .build()
                         .toString();
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<ArrayList> response = restTemplate.exchange(uri, HttpMethod.GET, request, ArrayList.class);
+                ResponseEntity<ArrayList> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                        ArrayList.class);
                 ArrayList<HashMap<String, Object>> body = response.getBody();
 
                 log.info("page : {} : body = {}", page, body);
-                if (body == null || body.isEmpty())
+                if (body == null || body.isEmpty()) {
                     break;
+                }
                 addId(ftServerIds, body);
                 page++;
             }
@@ -150,7 +151,7 @@ public class InitDataManager {
 
     private void addId(List<Long> list, ArrayList<HashMap<String, Object>> body) {
 
-        for(int i = 0 ; i < body.size(); i++) {
+        for (int i = 0; i < body.size(); i++) {
             HashMap<String, Object> data = body.get(i);
             long id = (long) (int) data.get("id");
             list.add(id);

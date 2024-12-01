@@ -1,11 +1,14 @@
 package ggs.srr.oauth.client;
 
 
+import java.net.URI;
+import java.util.Set;
 import lombok.Getter;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Getter
 public class Client {
@@ -18,10 +21,10 @@ public class Client {
     private String authorizationUri;
     private String userInfoUri;
     private String tokenUri;
-    private List<String> scope;
+    private Set<String> scope;
 
     public Client(String grantType, String name, String clientId, String clientSecret, String redirectURL,
-                  String authorizationUri, String tokenUri, String userInfoUri ,List<String> scope) {
+                  String authorizationUri, String tokenUri, String userInfoUri ,Set<String> scope) {
         this.grantType = grantType;
         this.name = name;
         this.clientId = clientId;
@@ -31,17 +34,6 @@ public class Client {
         this.tokenUri = tokenUri;
         this.userInfoUri = userInfoUri;
         this.scope = scope;
-    }
-
-
-    public String getAuthorizationUri(){
-        return this.authorizationUri + "?client_id=" + clientId + "&redirect_uri="+ getEncodedRedirectUri() +"&response_type=code";
-    }
-
-
-
-    private String getEncodedRedirectUri(){
-        return URLEncoder.encode(this.redirectURL, StandardCharsets.UTF_8);
     }
 
 }

@@ -1,4 +1,4 @@
-package ggs.srr.controller.user.dto;
+package ggs.srr.api.controller.user.dto;
 
 import ggs.srr.domain.user.FtUser;
 import lombok.Data;

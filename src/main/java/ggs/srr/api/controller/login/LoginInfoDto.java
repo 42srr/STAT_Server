@@ -1,4 +1,4 @@
-package ggs.srr.controller.login;
+package ggs.srr.api.controller.login;
 
 import lombok.Data;
 

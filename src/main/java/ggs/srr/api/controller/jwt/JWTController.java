@@ -1,6 +1,6 @@
-package ggs.srr.controller.jwt;
+package ggs.srr.api.controller.jwt;
 
-import ggs.srr.controller.jwt.dto.RefreshTokenDto;
+import ggs.srr.api.controller.jwt.dto.RefreshTokenDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.provider.dto.JwtToken;
