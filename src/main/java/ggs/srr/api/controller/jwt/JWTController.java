@@ -1,11 +1,12 @@
 package ggs.srr.api.controller.jwt;
 
-import ggs.srr.api.controller.jwt.dto.RefreshTokenDto;
+import ggs.srr.api.ApiResponse;
+import ggs.srr.api.controller.jwt.dto.RefreshTokenRequestDto;
+import ggs.srr.api.controller.jwt.dto.RefreshTokenResponseDTO;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.provider.dto.JwtToken;
 import ggs.srr.service.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,32 +27,29 @@ public class JWTController {
     }
 
     @PostMapping("/refresh")
-    public JwtToken refresh(HttpServletRequest request, @RequestBody RefreshTokenDto dto) {
+    public ApiResponse<RefreshTokenResponseDTO> refresh(@RequestBody RefreshTokenRequestDto dto) {
 
         String refreshToken = dto.getRefreshToken();
         String intraId = jwtUtil.getIntraId(refreshToken);
 
         Optional<FtUser> byIntraId = userService.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
-            throw new RuntimeException("없는 사용자.");
+            throw new RuntimeException("없는 사용자 입니다.");
         }
-        FtUser user = byIntraId.get();
+
         if (!refreshToken.equals(dto.getRefreshToken())) {
-            throw new RuntimeException("초기화 토큰 불일치");
+            throw new RuntimeException("RefreshToken 이 일치하지 않습니다.");
         }
-        String role = getUserRole(intraId);
+
+        FtUser findUser = byIntraId.get();
+        String role = findUser.getRole().getText();
+
         String accessToken = jwtUtil.createJWT(intraId, role, JWTUtil.ACCESS_TOKEN_EXPIRE_MS);
         String newRefreshToken = jwtUtil.createJWT(intraId, role, JWTUtil.REFRESH_TOKEN_EXPIRE_MS);
         userService.updateJWTTokens(intraId, accessToken, newRefreshToken);
-        
-        return new JwtToken(accessToken, newRefreshToken);
+
+        return ApiResponse.ok("ok", new RefreshTokenResponseDTO(accessToken, refreshToken));
 
     }
 
-    private String getUserRole (String intraId) {
-        if (intraId.equals("joojeon") || intraId.equals("jajo")) {
-            return "ADMIN";
-        }
-        return "USER";
-    }
 }

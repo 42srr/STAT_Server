@@ -28,7 +28,4 @@ public class ProjectService {
         return projectRepository.findByProjectName(projectName);
     }
 
-    public Project findById(long id) {
-        return projectRepository.findById(id);
-    }
 }

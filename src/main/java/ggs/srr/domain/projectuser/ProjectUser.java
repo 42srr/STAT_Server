@@ -10,10 +10,11 @@ import lombok.Getter;
 @Getter
 public class ProjectUser {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private long id;
 
-    private String status;
+    private ProjectUserStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -24,7 +25,7 @@ public class ProjectUser {
     private Project project;
 
 
-    public void initUser (FtUser user) {
+    public void initUser(FtUser user) {
         this.user = user;
         user.getProjectUsers().add(this);
     }
@@ -35,6 +36,6 @@ public class ProjectUser {
     }
 
     public void initStatus(String status) {
-        this.status = status;
+        this.status = ProjectUserStatus.getStatus(status);
     }
 }

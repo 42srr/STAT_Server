@@ -8,6 +8,7 @@ import ggs.srr.jwt.JWTFilter;
 import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.client.ClientManager;
 import ggs.srr.oauth.provider.ProviderManager;
+import ggs.srr.security.AuthenticationHolder;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -22,6 +23,7 @@ public class WebConfig {
     private final JWTExceptionHandler jwtExceptionHandler;
     private final ClientManager clientManager;
     private final ProviderManager providerManager;
+    private final AuthenticationHolder authenticationHolder;
 
     @Bean
     public FilterRegistrationBean<Filter> corsFilter(){
@@ -45,7 +47,7 @@ public class WebConfig {
     @Bean
     public FilterRegistrationBean<Filter> jwtFilter(){
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(new JWTFilter(jwtUtil, jwtExceptionHandler));
+        filterRegistrationBean.setFilter(new JWTFilter(jwtUtil, jwtExceptionHandler, authenticationHolder));
         filterRegistrationBean.setOrder(3);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;

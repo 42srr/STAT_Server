@@ -33,7 +33,7 @@ public class UserService {
         if (byIntraId.isEmpty())
             throw new RuntimeException("intra id is invalid");
         FtUser findUser = byIntraId.get();
-        findUser.setJwtToken(accessToken, refreshToken);
+        findUser.updateRefreshToken(refreshToken);
     }
 
     public FtUser findById(long id) {
@@ -53,6 +53,7 @@ public class UserService {
     }
 
     public UserDto findByIntraIdForApi(String intraId) {
+        System.out.println("intraId = " + intraId);
         Optional<FtUser> byIntraId = userRepository.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
             throw new IllegalArgumentException("intra id 에 해당하는 사용자가 존재하지 않습니다.");

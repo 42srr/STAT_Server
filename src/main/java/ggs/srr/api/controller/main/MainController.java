@@ -45,27 +45,10 @@ public class MainController {
         List<ProjectUser> projectUsers = ftUser.get().getProjectUsers();
         List<ProjectUserInfoDto> res = new ArrayList<>();
         for(ProjectUser projectUser : projectUsers) {
-            res.add(new ProjectUserInfoDto(projectUser.getStatus(), projectUser.getProject().getName()));
+            res.add(new ProjectUserInfoDto(projectUser.getStatus().getText(), projectUser.getProject().getName()));
         }
         return res;
     }
 
-    @GetMapping("/projects")
-    public List<ProjectsDto> projectInfo() {
-        List<ProjectsDto> res = new ArrayList<>();
-        List<Project> projects = projectRepository.findAll();
-        for (Project project : projects) {
-            int count = 0;
-            String projectName = project.getName();
-            List<ProjectUser> projectUsers = project.getProjectUsers();
-            for (ProjectUser projectUser : projectUsers) {
-                if (projectUser.getStatus().equals("in_progress")){
-                    count++;
-                }
-            }
-            ProjectsDto projectsDto = new ProjectsDto(project.getName(), count);
-            res.add(projectsDto);
-        }
-        return res;
-    }
+
 }

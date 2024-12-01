@@ -3,7 +3,6 @@ package ggs.srr.api.controller.jwt.dto;
 import lombok.Data;
 
 @Data
-public class RefreshTokenDto {
-
+public class RefreshTokenRequestDto {
     private String refreshToken;
 }

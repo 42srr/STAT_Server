@@ -16,8 +16,6 @@ public class UserDto {
 
     public UserDto(FtUser ftUser) {
         this.intraId = ftUser.getIntraId();
-        this.email = ftUser.getEmail();
-        this.url = ftUser.getUrl();
         this.wallet = ftUser.getWallet();
         this.collectionPoint = ftUser.getCollectionPoint();
         this.level = ftUser.getLevel();
