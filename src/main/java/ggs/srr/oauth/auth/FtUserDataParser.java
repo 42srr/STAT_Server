@@ -14,7 +14,6 @@ public class FtUserDataParser {
     public FtUser parseUser(ResponseEntity<HashMap> responseEntity){
         HashMap<String, Object> body = responseEntity.getBody();
 
-        System.out.println(body);
         int fdId = Integer.parseInt(body.get("id").toString());
         String intraId = body.get("login").toString();
         Role role = getRole(intraId);
