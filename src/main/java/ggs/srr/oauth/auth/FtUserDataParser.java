@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class FtUserDataParser {
 
@@ -59,6 +58,6 @@ public class FtUserDataParser {
         if (adminList.contains(intraId)){
             return Role.ADMIN;
         }
-        return Role.CARDET;
+        return Role.CADET;
     }
 }

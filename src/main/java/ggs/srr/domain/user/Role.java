@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum Role {
-    CARDET("cardet"),
+    CADET("cardet"),
     ADMIN("admin"),
-    VOCAL("vocal");
+    BOCAL("bocal");
 
     private final String text;
 

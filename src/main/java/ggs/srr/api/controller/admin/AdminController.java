@@ -1,5 +1,6 @@
 package ggs.srr.api.controller.admin;
 
+import ggs.srr.api.ApiResponse;
 import ggs.srr.security.AuthenticationHolder;
 import ggs.srr.security.authentication.Authentication;
 import ggs.srr.service.system.InitDataManager;
@@ -21,19 +22,19 @@ public class AdminController {
     private final AuthenticationHolder authenticationHolder;
 
     @GetMapping("/admin/init/users")
-    public String initUsers(HttpServletRequest request) {
+    public ApiResponse<String> initUsers(HttpServletRequest request) {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
         initDataManager.initUser(intraId);
-        return "init user data";
+        return ApiResponse.ok("init user data", null);
     }
 
     @GetMapping("/admin/init/project_users")
-    public String initProjectUsers(HttpServletRequest request) {
+    public ApiResponse<String> initProjectUsers(HttpServletRequest request) {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
         initDataManager.initProjectUser(intraId);
-        return "init user data";
+        return  ApiResponse.ok("init project user data", null);
     }
 
 

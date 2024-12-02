@@ -35,6 +35,7 @@ public class InitDataManager {
     private final String PROJECT_USER_URL_PREFIX = "https://api.intra.42.fr/v2/users/";
     private final String PROJECT_USER_URL_SUFFIX = "/projects_users?filter[cursus]=21&page=";
     private final String NOT_FOUND_ADMIN_USER_EXCEPTION_MESSAGE = "관리자를 찾을 수 없습니다.";
+    private final List<String> balckList = List.of("3b3-179603","tacount", "3b3-179647", "gcoconut");
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
@@ -50,7 +51,6 @@ public class InitDataManager {
 
     public void initProjectUser(String intraId) {
         String oAuth2AccessToken = getAdminOAuth2AccessToken(intraId);
-        System.out.println("oAuth2AccessToken = " + oAuth2AccessToken);
         persistAllUserProjects(oAuth2AccessToken);
     }
 
@@ -100,12 +100,12 @@ public class InitDataManager {
     private void persistAllUserProjects(String oAuth2AccessToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
-            ArrayList<ArrayList<HashMap<String, Object>>> result = new ArrayList<>();
             headers.add("Authorization", "Bearer " + oAuth2AccessToken);
             HttpEntity request = new HttpEntity(headers);
             List<FtUser> users = userRepository.findAll();
             int count = 0;
             for (FtUser user : users) {
+                log.info("username = {}", user.getIntraId());
                 count++;
                 int page = 0;
                 log.info("{} / {}", count, users.size());
@@ -116,19 +116,16 @@ public class InitDataManager {
                             ArrayList.class);
 
                     ArrayList<HashMap<String, Object>> body = response.getBody();
-
-//                    log.info("is empty = {}", isEmptyBody(body));
                     if (isEmptyBody(body)) {
+                        log.info("body is empty");
                         break;
                     }
-                    result.add(body);
-//                    persisUserProjects(body, user);
+                    persisUserProjects(body, user);
                     page++;
                     Thread.sleep(1000);
                 }
             }
 
-            System.out.println("result size = " + result.size());
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
             log.info("access token expire!! 갱신 로직 추가 필요");
@@ -164,6 +161,8 @@ public class InitDataManager {
     private void persistUsers(ArrayList<HashMap<String, Object>> responseBody) {
         responseBody.stream()
                 .filter(this::isStudent)
+                .filter(this::isNotTestAccount)
+                .filter(this::notInBlackList)
                 .map(this::parseToUser)
                 .forEach(userRepository::save);
     }
@@ -173,6 +172,17 @@ public class InitDataManager {
         return !Boolean.parseBoolean(userData.get("staff?").toString());
     }
 
+    private boolean isNotTestAccount(HashMap<String, Object> rawUser) {
+        Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
+        String intraId = userData.get("login").toString();
+        return !intraId.contains("test");
+    }
+
+    private boolean notInBlackList(HashMap<String, Object> rawUser) {
+        Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
+        String intraId = userData.get("login").toString();
+        return !balckList.contains(intraId);
+    }
 
     private FtUser parseToUser(HashMap<String, Object> rawUser) {
 
@@ -181,7 +191,7 @@ public class InitDataManager {
         Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
         long ftServerId = Long.parseLong(userData.get("id").toString());
         String intraId = userData.get("login").toString();
-        Role role = Role.CARDET;
+        Role role = Role.CADET;
         int wallet = Integer.parseInt(userData.get("wallet").toString());
         int correctionPoint = Integer.parseInt(userData.get("correction_point").toString());
         String smallImageUrl = getSmallImageUrl((Map<String, Object>) userData.get("image"));
