@@ -53,7 +53,6 @@ public class UserService {
     }
 
     public UserResponse findByIntraIdForApi(String intraId) {
-        System.out.println("intraId = " + intraId);
         Optional<FtUser> byIntraId = userRepository.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
             throw new IllegalArgumentException("intra id 에 해당하는 사용자가 존재하지 않습니다.");
@@ -65,7 +64,6 @@ public class UserService {
     public LevelDto getLevelInfo() {
 
         LevelDto levelDto = new LevelDto();
-
         List<FtUser> users = userRepository.findAll();
         for (FtUser user : users) {
             int level = (int) Math.floor(user.getLevel());

@@ -36,7 +36,6 @@ public class ProjectController {
             List<ProjectUser> projectUsers = project.getProjectUsers();
             for (ProjectUser projectUser : projectUsers) {
                 ProjectUserStatus status = projectUser.getStatus();
-
                 if (ProjectUserStatus.isInProgress(status)) {
                     count++;
                 }

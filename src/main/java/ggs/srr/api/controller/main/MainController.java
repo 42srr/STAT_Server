@@ -26,28 +26,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MainController {
 
-    /**
-     * DTO 등 수정 필요
-     * 컨트롤러 분리 필요
-     */
-
     private final UserService userService;
-    private final RankingService rankingService;
 
     @GetMapping("/levels")
     public ApiResponse<LevelDto> levelUserCounts() {
         return ApiResponse.ok(userService.getLevelInfo());
-    }
-
-    @GetMapping("/ranking/evalpoint")
-    public ApiResponse<List<RankingEvalPointDto>> rankingEvalPointInfo() {
-        return ApiResponse.ok(rankingService.rankingEvalPoint());
-    }
-
-
-    @GetMapping("/ranking/wallet")
-    public ApiResponse<List<RankingWalletDto>> rankingWalletInfo() {
-        return ApiResponse.ok(rankingService.rankingWallet());
     }
 
 }

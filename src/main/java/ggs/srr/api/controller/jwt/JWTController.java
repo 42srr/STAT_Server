@@ -34,13 +34,7 @@ public class JWTController {
     public ApiResponse<RefreshTokenResponseDTO> refresh(@RequestBody @Valid RefreshTokenRequestDto dto) {
 
         String refreshToken = dto.getRefreshToken();
-        String intraId = "";
-
-        try {
-            intraId = jwtUtil.getIntraId(refreshToken);
-        } catch (MalformedJwtException e) {
-            throw new InvalidRefreshTokenException("올바르지 않은 refresh token 입니다.");
-        }
+        String intraId = getIntraId(refreshToken);
 
         Optional<FtUser> byIntraId = userService.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
@@ -60,6 +54,16 @@ public class JWTController {
 
         return ApiResponse.ok(new RefreshTokenResponseDTO(accessToken, refreshToken));
 
+    }
+
+    private String getIntraId(String refreshToken) {
+        String intraId;
+        try {
+            intraId = jwtUtil.getIntraId(refreshToken);
+        } catch (MalformedJwtException e) {
+            throw new InvalidRefreshTokenException("올바르지 않은 refresh token 입니다.");
+        }
+        return intraId;
     }
 
 }

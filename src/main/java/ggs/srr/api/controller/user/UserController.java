@@ -21,7 +21,6 @@ public class UserController {
     @GetMapping("/users")
     public ApiResponse<UsersResponse> getUsers() {
         List<UserResponse> users = userService.findAll();
-
         return ApiResponse.ok(new UsersResponse(users));
     }
 
