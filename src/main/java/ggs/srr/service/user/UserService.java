@@ -28,7 +28,6 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public void updateJWTTokens(String intraId, String accessToken, String refreshToken) {
-
         Optional<FtUser> byIntraId = findByIntraId(intraId);
         if (byIntraId.isEmpty())
             throw new RuntimeException("intra id is invalid");
