@@ -25,4 +25,8 @@ public class ApiResponse<T> {
         return new ApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), SUCCESS_MESSAGE, data);
     }
 
+    public static <T> ApiResponse<T> badRequest(Exception e) {
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
+    }
+
 }

@@ -60,8 +60,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         authenticationHolder.setAuthentication(new Authentication(intraId, role));
 
-        log.info("intraId = {} role = {}", intraId, role);
+        log.info("intraId = {}", authenticationHolder.getAuthentication().getIntraId());
         filterChain.doFilter(request, response);
+        log.info("end!!!!");
         authenticationHolder.clearHolder();
 
     }

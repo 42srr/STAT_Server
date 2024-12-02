@@ -39,16 +39,4 @@ public class MainController {
     @GetMapping("/ranking/wallet")
     public List<RankingWalletDto> rankingWalletInfo() { return rankingService.rankingWallet(); }
 
-    @GetMapping("/projects/{intraId}")
-    public List<ProjectUserInfoDto> projectUserInfo(@PathVariable String intraId) {
-        Optional<FtUser> ftUser = userService.findByIntraId(intraId);
-        List<ProjectUser> projectUsers = ftUser.get().getProjectUsers();
-        List<ProjectUserInfoDto> res = new ArrayList<>();
-        for(ProjectUser projectUser : projectUsers) {
-            res.add(new ProjectUserInfoDto(projectUser.getStatus().getText(), projectUser.getProject().getName()));
-        }
-        return res;
-    }
-
-
 }

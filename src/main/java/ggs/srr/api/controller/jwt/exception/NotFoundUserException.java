@@ -1,6 +1,7 @@
 package ggs.srr.api.controller.jwt.exception;
 
-public class NotFoundUserException extends RuntimeException{
+public class NotFoundUserException extends JwtControllerException {
+
     public NotFoundUserException() {
         super();
     }
@@ -21,4 +22,5 @@ public class NotFoundUserException extends RuntimeException{
                                     boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
 }

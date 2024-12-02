@@ -3,10 +3,13 @@ package ggs.srr.api.controller.jwt;
 import ggs.srr.api.ApiResponse;
 import ggs.srr.api.controller.jwt.dto.RefreshTokenRequestDto;
 import ggs.srr.api.controller.jwt.dto.RefreshTokenResponseDTO;
+import ggs.srr.api.controller.jwt.exception.InvalidRefreshTokenException;
+import ggs.srr.api.controller.jwt.exception.NotFoundUserException;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.provider.dto.JwtToken;
 import ggs.srr.service.user.UserService;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,15 +33,21 @@ public class JWTController {
     public ApiResponse<RefreshTokenResponseDTO> refresh(@RequestBody RefreshTokenRequestDto dto) {
 
         String refreshToken = dto.getRefreshToken();
-        String intraId = jwtUtil.getIntraId(refreshToken);
+        String intraId = "";
+
+        try {
+            intraId = jwtUtil.getIntraId(refreshToken);
+        } catch (MalformedJwtException e) {
+            throw new InvalidRefreshTokenException("올바르지 않은 refresh token 입니다.");
+        }
 
         Optional<FtUser> byIntraId = userService.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
-            throw new RuntimeException("없는 사용자 입니다.");
+            throw new NotFoundUserException("없는 사용자 입니다.");
         }
 
         if (!refreshToken.equals(dto.getRefreshToken())) {
-            throw new RuntimeException("RefreshToken 이 일치하지 않습니다.");
+            throw new InvalidRefreshTokenException("RefreshToken 이 일치하지 않습니다.");
         }
 
         FtUser findUser = byIntraId.get();
