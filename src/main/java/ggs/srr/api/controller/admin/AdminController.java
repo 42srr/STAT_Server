@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private static final int TOKEN_INDEX = 1;
-    private static final String DELIMITER = " ";
-
     private final InitDataManager initDataManager;
     private final AuthenticationHolder authenticationHolder;
 
@@ -26,7 +23,7 @@ public class AdminController {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
         initDataManager.initUser(intraId);
-        return ApiResponse.ok( null);
+        return ApiResponse.ok(null);
     }
 
     @GetMapping("/admin/init/project_users")
@@ -34,9 +31,8 @@ public class AdminController {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
         initDataManager.initProjectUser(intraId);
-        return  ApiResponse.ok(null);
+        return ApiResponse.ok(null);
     }
-
 
 
 }

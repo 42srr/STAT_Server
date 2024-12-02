@@ -3,6 +3,7 @@ package ggs.srr.api;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 
 @Getter
 public class ApiResponse<T> {
@@ -27,6 +28,10 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> badRequest(Exception e) {
         return new ApiResponse<>(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
+    }
+
+    public static <T> ApiResponse<T> badRequest(Exception e, String message) {
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), message, null);
     }
 
 }

@@ -10,6 +10,7 @@ import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.provider.dto.JwtToken;
 import ggs.srr.service.user.UserService;
 import io.jsonwebtoken.MalformedJwtException;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class JWTController {
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<RefreshTokenResponseDTO> refresh(@RequestBody RefreshTokenRequestDto dto) {
+    public ApiResponse<RefreshTokenResponseDTO> refresh(@RequestBody @Valid RefreshTokenRequestDto dto) {
 
         String refreshToken = dto.getRefreshToken();
         String intraId = "";
