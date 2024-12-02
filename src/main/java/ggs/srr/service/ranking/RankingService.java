@@ -1,7 +1,7 @@
 package ggs.srr.service.ranking;
 
-import ggs.srr.controller.user.dto.RankingEvalPointDto;
-import ggs.srr.controller.user.dto.RankingWalletDto;
+import ggs.srr.api.controller.user.dto.RankingEvalPointDto;
+import ggs.srr.api.controller.user.dto.RankingWalletDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;

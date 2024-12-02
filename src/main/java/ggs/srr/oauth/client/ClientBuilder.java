@@ -1,7 +1,9 @@
 package ggs.srr.oauth.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ClientBuilder {
 
@@ -13,7 +15,7 @@ public class ClientBuilder {
     private String authorizationUri;
     private String tokenUri;
     private String userInfoUri;
-    private List<String> scope = new ArrayList<>();
+    private Set<String> scope = new HashSet<>();
 
     public ClientBuilder grantType(String grant_type){
         this.grant_type = grant_type;

@@ -10,25 +10,21 @@ import java.io.IOException;
 @Slf4j
 public class CorsFilter implements Filter {
 
-
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        log.info("init cors filter");
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
+            throws IOException, ServletException {
+        doFilter((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, chain);
     }
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, origin, content-type, accept, Authorization");
-        chain.doFilter(servletRequest, servletResponse);
+        response.setHeader("Access-Control-Allow-Headers",
+                "x-requested-with, origin, content-type, accept, Authorization");
+        chain.doFilter(request, response);
     }
 
-    @Override
-    public void destroy() {
-        log.info("destroy cors filter");
-    }
 }

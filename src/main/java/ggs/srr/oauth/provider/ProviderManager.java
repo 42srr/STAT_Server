@@ -1,12 +1,8 @@
 package ggs.srr.oauth.provider;
 
 
-import ggs.srr.controller.login.LoginInfoDto;
+import ggs.srr.filter.dto.LoginInfoDto;
 import ggs.srr.oauth.client.Client;
-import ggs.srr.oauth.client.ClientManager;
-import ggs.srr.oauth.provider.dto.JwtToken;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

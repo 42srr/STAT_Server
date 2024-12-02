@@ -1,16 +1,14 @@
 package ggs.srr.service.user;
 
-import ggs.srr.controller.main.dto.LevelDto;
-import ggs.srr.controller.user.dto.UserDto;
+import ggs.srr.api.controller.main.dto.LevelDto;
+import ggs.srr.api.controller.user.dto.UserResponse;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
 import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,12 +28,11 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public void updateJWTTokens(String intraId, String accessToken, String refreshToken) {
-
         Optional<FtUser> byIntraId = findByIntraId(intraId);
         if (byIntraId.isEmpty())
             throw new RuntimeException("intra id is invalid");
         FtUser findUser = byIntraId.get();
-        findUser.setJwtToken(accessToken, refreshToken);
+        findUser.updateRefreshToken(refreshToken);
     }
 
     public FtUser findById(long id) {
@@ -46,27 +43,26 @@ public class UserService {
         return userRepository.findByIntraId(intraId);
     }
 
-    public List<UserDto> findAll(){
-        List<UserDto> users = new ArrayList<>();
+    public List<UserResponse> findAll(){
+        List<UserResponse> users = new ArrayList<>();
         List<FtUser> findUsers = userRepository.findAll();
 
-        findUsers.forEach((ftUser) -> users.add(new UserDto(ftUser)));
+        findUsers.forEach((ftUser) -> users.add(new UserResponse(ftUser)));
         return users;
     }
 
-    public UserDto findByIntraIdForApi(String intraId) {
+    public UserResponse findByIntraIdForApi(String intraId) {
         Optional<FtUser> byIntraId = userRepository.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
             throw new IllegalArgumentException("intra id 에 해당하는 사용자가 존재하지 않습니다.");
         }
         FtUser user = byIntraId.get();
-        return new UserDto(user);
+        return new UserResponse(user);
     }
 
     public LevelDto getLevelInfo() {
 
         LevelDto levelDto = new LevelDto();
-
         List<FtUser> users = userRepository.findAll();
         for (FtUser user : users) {
             int level = (int) Math.floor(user.getLevel());

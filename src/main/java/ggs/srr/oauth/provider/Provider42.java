@@ -1,12 +1,10 @@
 package ggs.srr.oauth.provider;
 
-import ggs.srr.controller.login.LoginInfoDto;
+import ggs.srr.filter.dto.LoginInfoDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
-import ggs.srr.oauth.auth.AuthenticatedUser;
 import ggs.srr.oauth.auth.AuthenticatedUserManager;
 import ggs.srr.oauth.client.Client;
-import ggs.srr.oauth.provider.dto.JwtToken;
 import ggs.srr.oauth.provider.dto.ft.TokenRequestDto;
 import ggs.srr.oauth.provider.dto.OAuth2Token;
 import ggs.srr.service.user.UserService;
@@ -45,17 +43,17 @@ public class Provider42 implements Provider{
         OAuth2Token tokenResponseDto = restTemplate.postForObject(client.getTokenUri(), requestDto, OAuth2Token.class);
         FtUser user = userManager.createFtUser(tokenResponseDto, client);
 
-        String accessToken = jwtUtil.createJWT(user.getIntraId(), user.getRole(), ACCESS_TOKEN_EXPIRE_MS);
-        String refreshToken = jwtUtil.createJWT(user.getIntraId(), user.getRole(), REFRESH_TOKEN_EXPIRE_MS);
+        String accessToken = jwtUtil.createJWT(user.getIntraId(), user.getRole().getText(), ACCESS_TOKEN_EXPIRE_MS);
+        String refreshToken = jwtUtil.createJWT(user.getIntraId(), user.getRole().getText(), REFRESH_TOKEN_EXPIRE_MS);
 
-        user.setJwtToken(accessToken, refreshToken);
+        user.updateRefreshToken(refreshToken);
 
         Optional<FtUser> findUserOptional = userService.findByIntraId(user.getIntraId());
         if (findUserOptional.isEmpty()) {
             userService.save(user);
         } else {
             FtUser findUser = findUserOptional.get();
-            findUser.setJwtToken(accessToken, refreshToken);
+            findUser.updateRefreshToken(refreshToken);
             findUser.setOauth2Token(user.getOAuth2AccessToken(), user.getOauth2RefreshToken());
         }
 

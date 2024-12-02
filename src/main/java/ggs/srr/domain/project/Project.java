@@ -17,7 +17,6 @@ public class Project {
     @Id @GeneratedValue
     private long id;
 
-
     private String name;
 
     @OneToMany(mappedBy = "project")

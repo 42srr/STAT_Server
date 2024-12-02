@@ -2,6 +2,7 @@ package ggs.srr.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ggs.srr.domain.user.Role;
 import ggs.srr.jwt.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,7 +40,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String role = jwtUtil.getRole(token);
 
         if (requestURI.startsWith("/admin")) {
-            if (!role.equals("ADMIN")) {
+            if (!Role.isAdmin(role)) {
                 log.info("authorization fail");
                 handleUnAuthorizationUser(response);
                 return ;
