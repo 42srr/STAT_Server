@@ -1,7 +1,7 @@
 package ggs.srr.service.user;
 
 import ggs.srr.api.controller.main.dto.LevelDto;
-import ggs.srr.api.controller.user.dto.UserDto;
+import ggs.srr.api.controller.user.dto.UserResponse;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
 import java.util.ArrayList;
@@ -44,22 +44,22 @@ public class UserService {
         return userRepository.findByIntraId(intraId);
     }
 
-    public List<UserDto> findAll(){
-        List<UserDto> users = new ArrayList<>();
+    public List<UserResponse> findAll(){
+        List<UserResponse> users = new ArrayList<>();
         List<FtUser> findUsers = userRepository.findAll();
 
-        findUsers.forEach((ftUser) -> users.add(new UserDto(ftUser)));
+        findUsers.forEach((ftUser) -> users.add(new UserResponse(ftUser)));
         return users;
     }
 
-    public UserDto findByIntraIdForApi(String intraId) {
+    public UserResponse findByIntraIdForApi(String intraId) {
         System.out.println("intraId = " + intraId);
         Optional<FtUser> byIntraId = userRepository.findByIntraId(intraId);
         if (byIntraId.isEmpty()) {
             throw new IllegalArgumentException("intra id 에 해당하는 사용자가 존재하지 않습니다.");
         }
         FtUser user = byIntraId.get();
-        return new UserDto(user);
+        return new UserResponse(user);
     }
 
     public LevelDto getLevelInfo() {

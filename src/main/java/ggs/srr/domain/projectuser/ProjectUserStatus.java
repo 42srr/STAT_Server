@@ -24,4 +24,8 @@ public enum ProjectUserStatus {
         }
         return DEFAULT;
     }
+
+    public static boolean isInProgress(ProjectUserStatus status) {
+        return IN_PROGRESS.equals(status);
+    }
 }

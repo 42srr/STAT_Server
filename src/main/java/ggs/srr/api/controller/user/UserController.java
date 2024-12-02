@@ -1,8 +1,8 @@
 package ggs.srr.api.controller.user;
 
-import ggs.srr.api.controller.user.dto.UserDto;
-import ggs.srr.security.AuthenticationHolder;
-import ggs.srr.security.authentication.Authentication;
+import ggs.srr.api.ApiResponse;
+
+import ggs.srr.api.controller.user.dto.UserResponse;
 import ggs.srr.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +16,15 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationHolder authenticationHolder;
 
     @GetMapping("/users")
-    public List<UserDto> getUsers() {
-        return userService.findAll();
+    public ApiResponse<List<UserResponse>> getUsers() {
+        return ApiResponse.ok(userService.findAll());
     }
 
     @GetMapping("/users/{intraId}")
-    public UserDto getUser(@PathVariable("intraId")String intraId) {
-        return userService.findByIntraIdForApi(intraId);
+    public ApiResponse<UserResponse> getUser(@PathVariable("intraId") String intraId) {
+        return ApiResponse.ok(userService.findByIntraIdForApi(intraId));
     }
 
 }

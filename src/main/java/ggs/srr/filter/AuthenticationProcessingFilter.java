@@ -1,7 +1,7 @@
 package ggs.srr.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ggs.srr.api.controller.login.LoginInfoDto;
+import ggs.srr.filter.dto.LoginInfoDto;
 import ggs.srr.oauth.client.Client;
 import ggs.srr.oauth.client.ClientManager;
 import ggs.srr.oauth.provider.ProviderManager;

@@ -57,7 +57,7 @@ public class JWTController {
         String newRefreshToken = jwtUtil.createJWT(intraId, role, JWTUtil.REFRESH_TOKEN_EXPIRE_MS);
         userService.updateJWTTokens(intraId, accessToken, newRefreshToken);
 
-        return ApiResponse.ok("ok", new RefreshTokenResponseDTO(accessToken, refreshToken));
+        return ApiResponse.ok(new RefreshTokenResponseDTO(accessToken, refreshToken));
 
     }
 

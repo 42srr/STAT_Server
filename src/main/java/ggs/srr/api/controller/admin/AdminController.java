@@ -26,7 +26,7 @@ public class AdminController {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
         initDataManager.initUser(intraId);
-        return ApiResponse.ok("init user data", null);
+        return ApiResponse.ok( null);
     }
 
     @GetMapping("/admin/init/project_users")
@@ -34,7 +34,7 @@ public class AdminController {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
         initDataManager.initProjectUser(intraId);
-        return  ApiResponse.ok("init project user data", null);
+        return  ApiResponse.ok(null);
     }
 
 

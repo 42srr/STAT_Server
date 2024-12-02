@@ -4,17 +4,15 @@ import ggs.srr.domain.user.FtUser;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserResponse {
 
     private String intraId;
-    private String email;
-    private String url;
     private int wallet;
     private int collectionPoint;
     private double level;
     private String image;
 
-    public UserDto(FtUser ftUser) {
+    public UserResponse(FtUser ftUser) {
         this.intraId = ftUser.getIntraId();
         this.wallet = ftUser.getWallet();
         this.collectionPoint = ftUser.getCollectionPoint();

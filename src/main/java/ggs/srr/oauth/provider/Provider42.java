@@ -1,6 +1,6 @@
 package ggs.srr.oauth.provider;
 
-import ggs.srr.api.controller.login.LoginInfoDto;
+import ggs.srr.filter.dto.LoginInfoDto;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
 import ggs.srr.oauth.auth.AuthenticatedUserManager;

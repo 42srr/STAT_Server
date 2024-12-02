@@ -1,7 +1,7 @@
 package ggs.srr.oauth.provider;
 
 
-import ggs.srr.api.controller.login.LoginInfoDto;
+import ggs.srr.filter.dto.LoginInfoDto;
 import ggs.srr.oauth.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

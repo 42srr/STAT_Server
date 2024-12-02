@@ -1,5 +1,6 @@
 package ggs.srr.api.controller.main;
 
+import ggs.srr.api.ApiResponse;
 import ggs.srr.api.controller.main.dto.LevelDto;
 import ggs.srr.api.controller.main.dto.ProjectUserInfoDto;
 import ggs.srr.api.controller.main.dto.ProjectsDto;
@@ -25,18 +26,28 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MainController {
 
+    /**
+     * DTO 등 수정 필요
+     * 컨트롤러 분리 필요
+     */
+
     private final UserService userService;
     private final RankingService rankingService;
-    private final ProjectRepository projectRepository;
 
     @GetMapping("/levels")
-    public LevelDto levelUserCounts() { return userService.getLevelInfo(); }
+    public ApiResponse<LevelDto> levelUserCounts() {
+        return ApiResponse.ok(userService.getLevelInfo());
+    }
 
     @GetMapping("/ranking/evalpoint")
-    public List<RankingEvalPointDto> rankingEvalPointInfo() { return rankingService.rankingEvalPoint(); }
+    public ApiResponse<List<RankingEvalPointDto>> rankingEvalPointInfo() {
+        return ApiResponse.ok(rankingService.rankingEvalPoint());
+    }
 
 
     @GetMapping("/ranking/wallet")
-    public List<RankingWalletDto> rankingWalletInfo() { return rankingService.rankingWallet(); }
+    public ApiResponse<List<RankingWalletDto>> rankingWalletInfo() {
+        return ApiResponse.ok(rankingService.rankingWallet());
+    }
 
 }
