@@ -1,6 +1,7 @@
 package ggs.srr.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ggs.srr.api.ApiResponse;
 import ggs.srr.filter.dto.LoginInfoDto;
 import ggs.srr.oauth.client.Client;
 import ggs.srr.oauth.client.ClientManager;
@@ -50,8 +51,9 @@ public class AuthenticationProcessingFilter extends GenericFilterBean {
         String code = request.getParameter("code");
         Client client = clientManager.getClient("42");
         LoginInfoDto loginInfoDto = providerManager.attemptAuthentication(code, client);
+        ApiResponse<LoginInfoDto> result = ApiResponse.ok(loginInfoDto);
         response.setContentType("application/json");
-        response.getWriter().write(new ObjectMapper().writeValueAsString(loginInfoDto));
+        response.getWriter().write(new ObjectMapper().writeValueAsString(result));
 
     }
 
