@@ -1,6 +1,7 @@
 package ggs.srr.domain.user;
 
 import ggs.srr.domain.projectuser.ProjectUser;
+import ggs.srr.domain.reservation.usergroup.UserGroup;
 import ggs.srr.oauth.auth.dto.Image;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,6 +39,9 @@ public class FtUser {
 
     @OneToMany(mappedBy = "user")
     private List<ProjectUser> projectUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserGroup> userGroups = new ArrayList<>();
 
     public FtUser() {
     }
