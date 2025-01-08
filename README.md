@@ -1,30 +1,33 @@
-# 42 SRR BE
-- java version : 21.0.4
-- spring boot version : 3.2.5
+## 42 SRR API Server
 
----
+## 프로젝트 소개
 
-## API 명세
-- http://118.67.134.143:8080/swagger-ui/index.html
+- 42 본과정 활동에 관련된 정보를 가공하여 제공합니다.
+- 개발기간 : 2024.04 ~
 
-## 2024.10.21 개발 로그
 
-### update
-- /login endpoint api 명세 변경
-- /users endpoint api 명세 변경
-- /users/{intraId} api 개발
-- /levels endpoint api 명세 변경
+## 사용기술
 
-## 2024.10.14 개발 로그
+- jdk 17
+- Spring boot 3.2.5
+- Spring MVC
+- JPA / Hibernate
+- MySQL, H2
 
-### update
+## 기능 소개
 
-- 기존 read me 에 있던 api 명세 swagger 를 통해 api page 로 제공
-- 기존 projects/{intra_id} end point 반환값 생성
+### 1. Login 
 
-## issue
+OAuth2 기반 로그인 기능을 제공합니다.
 
-- Authorization grant 가 front 로 전달되는 구조로 변경
-- Authorization grant 를 SRR 서버로 전달 시 자체 jwt token 발급 로직으로 변경
-- 따라서 Redirect URI 를 다시 정해야함
-- projects endpoint 응답시간 너무 오래 걸림
+### 2. User's Information
+
+모든 사용자의 정보 또는 특정 사용자의 정보를 제공합니다.
+
+### 3. Project Information
+
+프로젝트에 대한 정보를 제공합니다. 
+
+### 4. Ranking Information
+
+랭킹 정보를 제공합니다.
