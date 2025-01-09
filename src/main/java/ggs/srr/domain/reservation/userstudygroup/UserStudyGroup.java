@@ -3,8 +3,10 @@ package ggs.srr.domain.reservation.userstudygroup;
 import ggs.srr.domain.reservation.studygroup.StudyGroup;
 import ggs.srr.domain.user.FtUser;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class UserStudyGroup {
 
     @Id @GeneratedValue
