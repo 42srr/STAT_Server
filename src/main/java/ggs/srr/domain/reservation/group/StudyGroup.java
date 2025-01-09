@@ -1,10 +1,7 @@
 package ggs.srr.domain.reservation.group;
 
 import ggs.srr.domain.reservation.usergroup.UserGroup;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -13,10 +10,12 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Group {
+@Table(name = "groups")
+public class StudyGroup {
 
     @Id
     @GeneratedValue
+    @Column(name = "study_group_id")
     private Long id;
 
     @OneToMany(mappedBy = "group")
@@ -26,7 +25,7 @@ public class Group {
 
     private LocalDateTime modifiedAt;
 
-    public Group() {
+    public StudyGroup() {
         createdAt = LocalDateTime.now();
         modifiedAt = LocalDateTime.now();
     }

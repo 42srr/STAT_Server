@@ -1,6 +1,6 @@
 package ggs.srr.domain.reservation.usergroup;
 
-import ggs.srr.domain.reservation.group.Group;
+import ggs.srr.domain.reservation.group.StudyGroup;
 import ggs.srr.domain.user.FtUser;
 import jakarta.persistence.*;
 
@@ -11,16 +11,16 @@ public class UserGroup {
     private Long Id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @JoinColumn(name = "study_group_id")
+    private StudyGroup studyGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private FtUser user;
 
-    public void registerGroup(Group group) {
-        this.group = group;
-        group.getUserGroups().add(this);
+    public void registerGroup(StudyGroup studyGroup) {
+        this.studyGroup = studyGroup;
+        studyGroup.getUserGroups().add(this);
     }
 
     public void registerUser(FtUser user) {
