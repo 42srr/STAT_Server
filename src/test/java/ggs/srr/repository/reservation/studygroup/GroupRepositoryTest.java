@@ -34,7 +34,7 @@ class GroupRepositoryTest {
 
     @DisplayName("그룹 id 로 조회시 null 이 입력될 경우 예외가 발생한다.")
     @Test
-    void nullId() {
+    void findByNull() {
 
         assertThatThrownBy(() -> studyGroupRepository.findById(null))
                 .isInstanceOf(NullGroupIdException.class);
