@@ -21,11 +21,18 @@ public class StudyGroup {
     @OneToMany(mappedBy = "studyGroup")
     private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
+    private String groupName;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    public StudyGroup() {
+    protected StudyGroup() {
+    }
+
+    public StudyGroup(String groupName) {
+
+        this.groupName = groupName;
         createdAt = LocalDateTime.now();
         modifiedAt = LocalDateTime.now();
     }
