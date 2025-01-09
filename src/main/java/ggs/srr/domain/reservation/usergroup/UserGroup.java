@@ -1,6 +1,6 @@
 package ggs.srr.domain.reservation.usergroup;
 
-import ggs.srr.domain.reservation.group.StudyGroup;
+import ggs.srr.domain.reservation.studygroup.StudyGroup;
 import ggs.srr.domain.user.FtUser;
 import jakarta.persistence.*;
 

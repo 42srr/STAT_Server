@@ -1,4 +1,4 @@
-package ggs.srr.domain.reservation.group;
+package ggs.srr.domain.reservation.studygroup;
 
 import ggs.srr.domain.reservation.usergroup.UserGroup;
 import jakarta.persistence.*;
