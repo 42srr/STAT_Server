@@ -7,7 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class GroupRepository {
+public class StudyGroupRepository {
 
     @PersistenceContext
     private EntityManager em;

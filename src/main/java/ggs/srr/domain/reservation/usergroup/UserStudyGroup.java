@@ -5,7 +5,7 @@ import ggs.srr.domain.user.FtUser;
 import jakarta.persistence.*;
 
 @Entity
-public class UserGroup {
+public class UserStudyGroup {
 
     @Id @GeneratedValue
     private Long Id;
@@ -20,11 +20,11 @@ public class UserGroup {
 
     public void registerGroup(StudyGroup studyGroup) {
         this.studyGroup = studyGroup;
-        studyGroup.getUserGroups().add(this);
+        studyGroup.getUserStudyGroups().add(this);
     }
 
     public void registerUser(FtUser user) {
         this.user = user;
-        user.getUserGroups().add(this);
+        user.getUserStudyGroups().add(this);
     }
 }

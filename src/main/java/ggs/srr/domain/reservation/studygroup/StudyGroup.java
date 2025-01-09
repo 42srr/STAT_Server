@@ -1,6 +1,6 @@
 package ggs.srr.domain.reservation.studygroup;
 
-import ggs.srr.domain.reservation.usergroup.UserGroup;
+import ggs.srr.domain.reservation.usergroup.UserStudyGroup;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -18,8 +18,8 @@ public class StudyGroup {
     @Column(name = "study_group_id")
     private Long id;
 
-    @OneToMany(mappedBy = "group")
-    private List<UserGroup> userGroups = new ArrayList<>();
+    @OneToMany(mappedBy = "studyGroup")
+    private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
     private LocalDateTime createdAt;
 

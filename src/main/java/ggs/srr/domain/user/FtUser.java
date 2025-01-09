@@ -1,8 +1,7 @@
 package ggs.srr.domain.user;
 
 import ggs.srr.domain.projectuser.ProjectUser;
-import ggs.srr.domain.reservation.usergroup.UserGroup;
-import ggs.srr.oauth.auth.dto.Image;
+import ggs.srr.domain.reservation.usergroup.UserStudyGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,7 +40,7 @@ public class FtUser {
     private List<ProjectUser> projectUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<UserGroup> userGroups = new ArrayList<>();
+    private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
     public FtUser() {
     }
