@@ -1,4 +1,4 @@
-package ggs.srr.domain.reservation.usergroup;
+package ggs.srr.domain.reservation.userstudygroup;
 
 import ggs.srr.domain.reservation.studygroup.StudyGroup;
 import ggs.srr.domain.user.FtUser;
