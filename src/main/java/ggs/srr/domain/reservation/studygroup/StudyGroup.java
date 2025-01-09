@@ -31,7 +31,6 @@ public class StudyGroup {
     }
 
     public StudyGroup(String groupName) {
-
         this.groupName = groupName;
         createdAt = LocalDateTime.now();
         modifiedAt = LocalDateTime.now();
