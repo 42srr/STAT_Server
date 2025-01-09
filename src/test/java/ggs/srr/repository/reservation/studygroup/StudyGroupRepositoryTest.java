@@ -23,7 +23,7 @@ class StudyGroupRepositoryTest {
     @DisplayName("스터디 그룹을 저장할 경우 id 로 조회가능해야 한다.")
     @Test
     void findById() {
-        StudyGroup studyGroup = new StudyGroup();
+        StudyGroup studyGroup = new StudyGroup("test group");
 
         studyGroupRepository.save(studyGroup);
         Long studyGroupId = studyGroup.getId();

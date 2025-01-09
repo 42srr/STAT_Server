@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserStudyGroupRepository {
 
@@ -22,5 +24,16 @@ public class UserStudyGroupRepository {
         }
 
         return em.find(UserStudyGroup.class, userStudyGroupId);
+    }
+
+    public List<UserStudyGroup> findByUserId(Long userId) {
+
+        if (userId == null) {
+            throw new FindIdNullException("사용자 스터디 그룹을 user id 로 조회할 경우 null 을 입력할 수 없습니다.");
+        }
+
+        return em.createQuery("select ug from UserStudyGroup ug where ug.user.id = :userId", UserStudyGroup.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 }

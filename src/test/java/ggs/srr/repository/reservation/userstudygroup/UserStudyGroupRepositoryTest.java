@@ -13,8 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.groups.Tuple.*;
 
 @SpringBootTest
 @Transactional
@@ -37,7 +40,7 @@ class UserStudyGroupRepositoryTest {
         FtUser ftUser = new FtUser();
         userRepository.save(ftUser);
 
-        StudyGroup studyGroup = new StudyGroup();
+        StudyGroup studyGroup = new StudyGroup("test group");
         studyGroupRepository.save(studyGroup);
 
         UserStudyGroup userStudyGroup = new UserStudyGroup();
@@ -59,6 +62,48 @@ class UserStudyGroupRepositoryTest {
     @Test
     void findByNull() {
         assertThatThrownBy(() -> userStudyGroupRepository.findById(null))
+                .isInstanceOf(FindIdNullException.class);
+    }
+
+    @DisplayName("사용자가 자신의 스터디 그룹을 조회할 경우 모두 조회되어야 한다.")
+    @Test
+    void findByUserId() {
+        FtUser user = new FtUser();
+        userRepository.save(user);
+
+        StudyGroup studyGroup1 = new StudyGroup("test1");
+        StudyGroup studyGroup2 = new StudyGroup("test2");
+
+        studyGroupRepository.save(studyGroup1);
+        studyGroupRepository.save(studyGroup2);
+
+        UserStudyGroup userStudyGroup1 = new UserStudyGroup();
+        UserStudyGroup userStudyGroup2 = new UserStudyGroup();
+
+        userStudyGroup1.registerUser(user);
+        userStudyGroup2.registerUser(user);
+
+        userStudyGroup1.registerGroup(studyGroup1);
+        userStudyGroup2.registerGroup(studyGroup2);
+
+        userStudyGroupRepository.save(userStudyGroup1);
+        userStudyGroupRepository.save(userStudyGroup2);
+
+        List<UserStudyGroup> userStudyGroups = userStudyGroupRepository.findByUserId(user.getId());
+
+        assertThat(userStudyGroups).hasSize(2)
+                .extracting("user", "studyGroup")
+                .containsExactlyInAnyOrder(
+                        tuple(user, studyGroup1),
+                        tuple(user, studyGroup2)
+                );
+
+    }
+
+    @DisplayName("사용자의 스터디 그룹 조회시 null 을 입력할 수 없다.")
+    @Test
+    void findByNullUserId() {
+        assertThatThrownBy(() -> userStudyGroupRepository.findByUserId(null))
                 .isInstanceOf(FindIdNullException.class);
     }
 }
