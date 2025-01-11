@@ -1,10 +1,10 @@
 package ggs.srr.service.user;
 
-import ggs.srr.api.controller.main.dto.LevelDto;
 import ggs.srr.api.controller.user.dto.UserResponse;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
 import java.util.ArrayList;
+import java.util.Comparator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,70 +60,49 @@ public class UserService {
         return new UserResponse(user);
     }
 
-    public LevelDto getLevelInfo() {
-
-        LevelDto levelDto = new LevelDto();
+    public LevelResponseList getLevelInfo() {
         List<FtUser> users = userRepository.findAll();
+        List<LevelResponse> levelResponseList = new ArrayList<>();
+        initializeLevel(levelResponseList);
+
         for (FtUser user : users) {
             int level = (int) Math.floor(user.getLevel());
-            int levelValue = getLevelValue(levelDto, level);
-            setLevelValue(levelDto, level, levelValue + 1);
+            updateLevel(levelResponseList, level);
         }
-        return levelDto;
+        sortLevel(levelResponseList);
+        return new LevelResponseList(levelResponseList);
     }
 
-    private int getLevelValue(LevelDto levelDto, int level) {
-        switch (level) {
-            case 0: return levelDto.getLevel_0();
-            case 1: return levelDto.getLevel_1();
-            case 2: return levelDto.getLevel_2();
-            case 3: return levelDto.getLevel_3();
-            case 4: return levelDto.getLevel_4();
-            case 5: return levelDto.getLevel_5();
-            case 6: return levelDto.getLevel_6();
-            case 7: return levelDto.getLevel_7();
-            case 8: return levelDto.getLevel_8();
-            case 9: return levelDto.getLevel_9();
-            case 10: return levelDto.getLevel_10();
-            case 11: return levelDto.getLevel_11();
-            case 12: return levelDto.getLevel_12();
-            case 13: return levelDto.getLevel_13();
-            case 14: return levelDto.getLevel_14();
-            case 15: return levelDto.getLevel_15();
-            case 16: return levelDto.getLevel_16();
-            case 17: return levelDto.getLevel_17();
-            case 18: return levelDto.getLevel_18();
-            case 19: return levelDto.getLevel_19();
-            case 20: return levelDto.getLevel_20();
-            case 21: return levelDto.getLevel_21();
-            default: return 0; // 유효하지 않은 경우
+    private void initializeLevel(List<LevelResponse> levelResponseList) {
+        for (int i = 0; i < 22; i++) {
+            levelResponseList.add(new LevelResponse(i, 0));
         }
     }
 
-    private void setLevelValue(LevelDto levelDto, int level, int value) {
-        switch (level) {
-            case 0: levelDto.setLevel_0(value); break;
-            case 1: levelDto.setLevel_1(value); break;
-            case 2: levelDto.setLevel_2(value); break;
-            case 3: levelDto.setLevel_3(value); break;
-            case 4: levelDto.setLevel_4(value); break;
-            case 5: levelDto.setLevel_5(value); break;
-            case 6: levelDto.setLevel_6(value); break;
-            case 7: levelDto.setLevel_7(value); break;
-            case 8: levelDto.setLevel_8(value); break;
-            case 9: levelDto.setLevel_9(value); break;
-            case 10: levelDto.setLevel_10(value); break;
-            case 11: levelDto.setLevel_11(value); break;
-            case 12: levelDto.setLevel_12(value); break;
-            case 13: levelDto.setLevel_13(value); break;
-            case 14: levelDto.setLevel_14(value); break;
-            case 15: levelDto.setLevel_15(value); break;
-            case 16: levelDto.setLevel_16(value); break;
-            case 17: levelDto.setLevel_17(value); break;
-            case 18: levelDto.setLevel_18(value); break;
-            case 19: levelDto.setLevel_19(value); break;
-            case 20: levelDto.setLevel_20(value); break;
-            case 21: levelDto.setLevel_21(value); break;
+    private void updateLevel(List<LevelResponse> levelResponseList, int level) {
+        if (!isExistingLevel(levelResponseList.size(), level)) {
+            addExtraLevel(levelResponseList, level);
         }
+        if (isExistingLevel(levelResponseList.size(), level)) {
+            increaseLevelCount(levelResponseList, level);
+        }
+    }
+
+    private boolean isExistingLevel(int levelSize, int level) {
+        return level >= 0 && level < levelSize;
+    }
+    private void addExtraLevel(List<LevelResponse> levelResponseList, int level) {
+        for (int i = 0; i <= level - levelResponseList.size() + 1; i++) {
+            levelResponseList.add(new LevelResponse(levelResponseList.size() + 1, 0));
+        }
+    }
+    
+    private void increaseLevelCount(List<LevelResponse> levelResponseList, int level) {
+        LevelResponse existingLevel = levelResponseList.get(level);
+        levelResponseList.set(level, new LevelResponse(existingLevel.getLevel(), existingLevel.getCount() + 1));
+    }
+
+    private void sortLevel(List<LevelResponse> levelResponseList) {
+        levelResponseList.sort(Comparator.comparingInt(LevelResponse::getLevel));
     }
 }
