@@ -69,7 +69,7 @@ public class UserService {
             int level = (int) Math.floor(user.getLevel());
             updateLevel(levelResponseList, level);
         }
-        sortLevel(levelResponseList);
+
         return new LevelResponseList(levelResponseList);
     }
 
@@ -91,6 +91,7 @@ public class UserService {
     private boolean isExistingLevel(int levelSize, int level) {
         return level >= 0 && level < levelSize;
     }
+
     private void addExtraLevel(List<LevelResponse> levelResponseList, int level) {
         for (int i = 0; i <= level - levelResponseList.size() + 1; i++) {
             levelResponseList.add(new LevelResponse(levelResponseList.size() + 1, 0));
@@ -100,9 +101,5 @@ public class UserService {
     private void increaseLevelCount(List<LevelResponse> levelResponseList, int level) {
         LevelResponse existingLevel = levelResponseList.get(level);
         levelResponseList.set(level, new LevelResponse(existingLevel.getLevel(), existingLevel.getCount() + 1));
-    }
-
-    private void sortLevel(List<LevelResponse> levelResponseList) {
-        levelResponseList.sort(Comparator.comparingInt(LevelResponse::getLevel));
     }
 }
