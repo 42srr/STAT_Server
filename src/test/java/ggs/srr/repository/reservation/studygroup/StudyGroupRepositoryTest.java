@@ -3,7 +3,7 @@ package ggs.srr.repository.reservation.studygroup;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ggs.srr.domain.reservation.studygroup.StudyGroup;
+import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.repository.reservation.exception.FindIdNullException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

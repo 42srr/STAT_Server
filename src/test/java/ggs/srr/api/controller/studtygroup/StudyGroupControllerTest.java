@@ -2,9 +2,9 @@ package ggs.srr.api.controller.studtygroup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ggs.srr.api.controller.studtygroup.request.StudyGroupCreateRequest;
-import ggs.srr.service.reservation.exception.NoSuchUserException;
-import ggs.srr.service.reservation.studygroup.StudyGroupService;
-import ggs.srr.service.reservation.studygroup.request.StudyGroupCreateServiceRequest;
+import ggs.srr.service.studygroup.exception.NoSuchUserException;
+import ggs.srr.service.studygroup.StudyGroupService;
+import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.ArrayList;
 import java.util.List;
 

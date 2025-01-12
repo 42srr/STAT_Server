@@ -1,6 +1,6 @@
 package ggs.srr.api.controller.studtygroup.request;
 
-import ggs.srr.service.reservation.studygroup.request.StudyGroupCreateServiceRequest;
+import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

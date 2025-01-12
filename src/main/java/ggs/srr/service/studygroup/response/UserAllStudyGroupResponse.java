@@ -1,4 +1,4 @@
-package ggs.srr.service.reservation.studygroup.response;
+package ggs.srr.service.studygroup.response;
 
 import lombok.Data;
 

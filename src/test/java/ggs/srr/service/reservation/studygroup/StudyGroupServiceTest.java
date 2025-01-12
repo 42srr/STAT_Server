@@ -2,10 +2,11 @@ package ggs.srr.service.reservation.studygroup;
 
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
-import ggs.srr.service.reservation.exception.NoSuchUserException;
-import ggs.srr.service.reservation.studygroup.request.StudyGroupCreateServiceRequest;
-import ggs.srr.service.reservation.studygroup.request.UserAllStudyGroupServiceRequest;
-import ggs.srr.service.reservation.studygroup.response.UserAllStudyGroupResponse;
+import ggs.srr.service.studygroup.StudyGroupService;
+import ggs.srr.service.studygroup.exception.NoSuchUserException;
+import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
+import ggs.srr.service.studygroup.request.UserAllStudyGroupServiceRequest;
+import ggs.srr.service.studygroup.response.UserAllStudyGroupResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package ggs.srr.repository.reservation.userstudygroup;
 
-import ggs.srr.domain.reservation.studygroup.StudyGroup;
-import ggs.srr.domain.reservation.userstudygroup.UserStudyGroup;
+import ggs.srr.domain.studygroup.StudyGroup;
+import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.reservation.exception.FindIdNullException;
 import ggs.srr.repository.reservation.studygroup.StudyGroupRepository;

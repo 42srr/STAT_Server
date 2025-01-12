@@ -1,16 +1,16 @@
-package ggs.srr.service.reservation.studygroup;
+package ggs.srr.service.studygroup;
 
-import ggs.srr.domain.reservation.studygroup.StudyGroup;
-import ggs.srr.domain.reservation.userstudygroup.UserStudyGroup;
+import ggs.srr.domain.studygroup.StudyGroup;
+import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.reservation.studygroup.StudyGroupRepository;
 import ggs.srr.repository.reservation.userstudygroup.UserStudyGroupRepository;
 import ggs.srr.repository.user.UserRepository;
-import ggs.srr.service.reservation.exception.NoSuchUserException;
-import ggs.srr.service.reservation.studygroup.request.StudyGroupCreateServiceRequest;
-import ggs.srr.service.reservation.studygroup.request.UserAllStudyGroupServiceRequest;
-import ggs.srr.service.reservation.studygroup.response.UserAllStudyGroupResponse;
-import ggs.srr.service.reservation.studygroup.response.UserResponse;
+import ggs.srr.service.studygroup.exception.NoSuchUserException;
+import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
+import ggs.srr.service.studygroup.request.UserAllStudyGroupServiceRequest;
+import ggs.srr.service.studygroup.response.UserAllStudyGroupResponse;
+import ggs.srr.service.studygroup.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

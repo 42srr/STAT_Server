@@ -1,6 +1,6 @@
-package ggs.srr.domain.reservation.userstudygroup;
+package ggs.srr.domain.userstudygroup;
 
-import ggs.srr.domain.reservation.studygroup.StudyGroup;
+import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.user.FtUser;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import lombok.Getter;
 public class UserStudyGroup {
 
     @Id @GeneratedValue
+    @Column(name = "user_study_group")
     private Long Id;
 
     @ManyToOne(fetch = FetchType.LAZY)

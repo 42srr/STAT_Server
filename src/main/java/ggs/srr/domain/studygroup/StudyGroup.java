@@ -1,6 +1,6 @@
-package ggs.srr.domain.reservation.studygroup;
+package ggs.srr.domain.studygroup;
 
-import ggs.srr.domain.reservation.userstudygroup.UserStudyGroup;
+import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import jakarta.persistence.*;
 import lombok.Getter;
 

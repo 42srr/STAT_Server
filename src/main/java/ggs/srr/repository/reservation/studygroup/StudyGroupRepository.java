@@ -1,12 +1,10 @@
 package ggs.srr.repository.reservation.studygroup;
 
-import ggs.srr.domain.reservation.studygroup.StudyGroup;
+import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.repository.reservation.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class StudyGroupRepository {

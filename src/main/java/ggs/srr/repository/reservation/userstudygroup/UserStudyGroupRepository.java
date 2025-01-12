@@ -1,6 +1,6 @@
 package ggs.srr.repository.reservation.userstudygroup;
 
-import ggs.srr.domain.reservation.userstudygroup.UserStudyGroup;
+import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import ggs.srr.repository.reservation.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
