@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -132,6 +133,19 @@ class StudyGroupControllerTest {
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
                 .andExpect(jsonPath("$.message").value("사용자 조회시 id 로 null 을 입력할 수 없습니다."));
+    }
+
+
+    @DisplayName("사용자의 그룹을 조회할 수 있다.")
+    @Test
+    void getUserStudyGroups() throws Exception {
+        mockMvc.perform(
+                        get("/study_groups/{userId}", 3L)
+                )
+                .andDo(print())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("Success"));
     }
 
 }
