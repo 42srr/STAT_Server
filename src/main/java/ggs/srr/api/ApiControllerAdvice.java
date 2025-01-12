@@ -26,7 +26,7 @@ public class ApiControllerAdvice {
         return ApiResponse.badRequest(e, message);
     }
 
-    // study room service exception handlers
+    // study room controller exception handlers
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(EmptyUserIdException.class)
@@ -35,13 +35,14 @@ public class ApiControllerAdvice {
         return ApiResponse.badRequest(e, message);
     }
 
+    // study room service exception handlers
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchUserException.class)
     public ApiResponse<Object> noSuchUserException(NoSuchUserException e) {
         return ApiResponse.badRequest(e, e.getMessage());
     }
 
-    // study room service exception handlers
+    // study room repository exception handlers
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(FindIdNullException.class)
     public ApiResponse<Object> findByNull(FindIdNullException e) {
