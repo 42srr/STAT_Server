@@ -1,6 +1,7 @@
 package ggs.srr.repository.user;
 
 import ggs.srr.domain.user.FtUser;
+import ggs.srr.repository.reservation.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,11 @@ public class UserRepository {
         return user.getId();
     }
 
-    public FtUser findById(long id){
+    public FtUser findById(Long id){
+        if (id == null) {
+            throw new FindIdNullException("사용자 조회시 id 로 null 을 입력할 수 없습니다.");
+        }
+
         return em.find(FtUser.class, id);
     }
 
