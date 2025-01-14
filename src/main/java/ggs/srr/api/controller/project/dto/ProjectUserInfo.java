@@ -1,14 +1,14 @@
-package ggs.srr.api.controller.main.dto;
+package ggs.srr.api.controller.project.dto;
 
 import lombok.Data;
 
 @Data
-public class ProjectUserInfoDto {
+public class ProjectUserInfo {
 
     private String status;
     private String projectName;
 
-    public ProjectUserInfoDto(String status, String projectName) {
+    public ProjectUserInfo(String status, String projectName) {
         this.status = status;
         this.projectName = projectName;
     }

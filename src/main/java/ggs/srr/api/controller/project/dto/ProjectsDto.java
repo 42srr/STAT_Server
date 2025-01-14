@@ -1,4 +1,4 @@
-package ggs.srr.api.controller.main.dto;
+package ggs.srr.api.controller.project.dto;
 
 import lombok.Data;
 
