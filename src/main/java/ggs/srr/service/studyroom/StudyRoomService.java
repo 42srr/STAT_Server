@@ -18,8 +18,8 @@ public class StudyRoomService {
 
     public void registerStudyroom(CreateStudyRoomServiceRequest request) {
         StudyRoom studyRoom = new StudyRoom(request.getName(), request.getImg(),request.getOpenTime(),
-                                            request.getCloseTime(), request.getIsOpen24Hour(), request.getCanDrink(),
-                                            request.getCanEat(), request.getCanUseTool());
+                                            request.getCloseTime(), request.getOpen24Flag(), request.getDrinkFlag(),
+                                            request.getEatFlag(), request.getUseToolFlag());
         studyRoomRepository.save(studyRoom);
     }
 

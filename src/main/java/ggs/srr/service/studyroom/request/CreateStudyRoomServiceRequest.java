@@ -12,10 +12,10 @@ public class CreateStudyRoomServiceRequest {
     String img;
     LocalDateTime openTime;
     LocalDateTime closeTime;
-    int isOpen24Hour;
-    int canDrink;
-    int canEat;
-    int canUseTool;
+    int open24Flag;
+    int drinkFlag;
+    int eatFlag;
+    int useToolFlag;
     LocalDateTime createdAt;
     LocalDateTime modifiedAt;
 
@@ -27,10 +27,10 @@ public class CreateStudyRoomServiceRequest {
         this.img = img;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.isOpen24Hour = option & 1;
-        this.canDrink = (option >> 1) & 1;
-        this.canEat =  (option >> 2) & 1;
-        this.canUseTool =  (option >> 3) & 1;
+        this.open24Flag = option & 1;
+        this.drinkFlag = (option >> 1) & 1;
+        this.eatFlag =  (option >> 2) & 1;
+        this.useToolFlag =  (option >> 3) & 1;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
     }
