@@ -2,7 +2,7 @@ package ggs.srr.repository.studyroom;
 
 import ggs.srr.domain.studyroom.StudyRoom;
 import ggs.srr.repository.reservation.exception.FindIdNullException;
-import ggs.srr.service.studyroom.dto.CreateStudyRoomServiceRequest;
+import ggs.srr.service.studyroom.request.CreateStudyRoomServiceRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

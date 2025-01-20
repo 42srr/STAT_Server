@@ -19,6 +19,6 @@ public class StudyRoomController {
     @PostMapping("/studyroom")
     public ApiResponse<String> createRoom(@Valid @RequestBody CreateStudyRoomRequest createStudyRoomRequest) {
         studyRoomService.registerStudyroom(createStudyRoomRequest.requestStudyRoomtoStudyRoom());
-        return ApiResponse.ok("Successfully created a study room");
+        return ApiResponse.okWithoutData("Successfully created a study room");
     }
 }

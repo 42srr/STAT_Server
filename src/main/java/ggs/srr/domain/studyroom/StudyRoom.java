@@ -1,6 +1,5 @@
 package ggs.srr.domain.studyroom;
 
-import ggs.srr.service.studyroom.dto.CreateStudyRoomServiceRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,10 +24,10 @@ public class StudyRoom {
     private String img;
     private LocalDateTime openTime;
     private LocalDateTime closeTime;
-    private Boolean isOpen24Hour;
-    private Boolean canDrink;
-    private Boolean canEat;
-    private Boolean canUseTool;
+    private int isOpen24Hour;
+    private int canDrink;
+    private int canEat;
+    private int canUseTool;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -36,8 +35,8 @@ public class StudyRoom {
 
     public StudyRoom(String name, String img,
                      LocalDateTime openTime, LocalDateTime closeTime,
-                     Boolean isOpen24Hour, Boolean canDrink
-    ,               Boolean canEat, Boolean canUseTool) {
+                     int isOpen24Hour, int canDrink
+    ,               int canEat, int canUseTool) {
         this.name = name;
         this.img = img;
         this.openTime = openTime;

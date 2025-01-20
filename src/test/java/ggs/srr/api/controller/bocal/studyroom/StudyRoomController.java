@@ -1,30 +1,25 @@
-package ggs.srr.api.controller.studtygroup;
+package ggs.srr.api.controller.bocal.studyroom;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ggs.srr.api.controller.studtygroup.request.StudyGroupCreateRequest;
-import ggs.srr.service.studygroup.exception.NoSuchUserException;
-import ggs.srr.service.studygroup.StudyGroupService;
-import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
+import ggs.srr.api.controller.bocal.StudyRoomController;
+import ggs.srr.api.controller.bocal.dto.CreateStudyRoomRequest;
+import ggs.srr.service.studyroom.StudyRoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = StudyGroupController.class)
-class StudyGroupControllerTest {
+@WebMvcTest(controllers = StudyRoomController.class)
+class StudyRoomControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -33,16 +28,23 @@ class StudyGroupControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    StudyGroupService studyGroupService;
+    StudyRoomService studyRoomService;
 
-    @DisplayName("스터디 그룹을 생성할 수 있어야 한다.")
+    @DisplayName("스터디 룸을 생성할 수 있어야 한다.")
     @Test
-    void createStudyGroup() throws Exception {
+    void createStudyRoom() throws Exception {
 
-        StudyGroupCreateRequest request = new StudyGroupCreateRequest(List.of(1L, 2L, 3L), "test_group");
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name("테스트")
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(4)
+                .build();
 
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/studyroom")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -50,17 +52,23 @@ class StudyGroupControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.status").value("OK"))
-                .andExpect(jsonPath("$.message").value("Success"));
+                .andExpect(jsonPath("$.message").value("Successfully created a study room"));
     }
 
-    @DisplayName("스터디그룹을 만들 때 id 리스트를 null 로 할 수 없다.")
+    @DisplayName("스터디룸 만들 때 id를 null 로 할 수 없다.")
     @Test
-    void idListNull() throws Exception {
+    void idNull() throws Exception {
 
-        StudyGroupCreateRequest request = new StudyGroupCreateRequest(null, "test_group");
-
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(null)
+                .name("테스트")
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(12)
+                .build();
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/studyroom")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -68,17 +76,23 @@ class StudyGroupControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("사용자 id list 는 필수 입니다."));
+                .andExpect(jsonPath("$.message").value("스터디룸 id는 필수입니다."));
     }
 
-    @DisplayName("스터디그룹을 만들 때 id 리스트는 비어있을 수 없다.")
+    @DisplayName("스터디룸 만들 때 name을 null 로 할 수 없다.")
     @Test
-    void emptyIdList() throws Exception {
+    void nameNull() throws Exception {
 
-        StudyGroupCreateRequest request = new StudyGroupCreateRequest(List.of(), "test_group");
-
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name(null)
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(12)
+                .build();
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/studyroom")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -86,20 +100,23 @@ class StudyGroupControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("사용자 id가 비어있을 수 없습니다."));
+                .andExpect(jsonPath("$.message").value("스터디 룸 이름은 필수입니다."));
     }
 
-    @DisplayName("id 리스트 안에 존재하지 않는 회원의 id 가 들어올 수 없다.")
+    @DisplayName("스터디룸 만들 때 img null 로 할 수 없다.")
     @Test
-    void notExistIds() throws Exception {
+    void imgNull() throws Exception {
 
-        StudyGroupCreateRequest request = new StudyGroupCreateRequest(List.of(1L, 2L, 3L), "test_group");
-
-        Mockito.doThrow(new NoSuchUserException("존재하지 않는 회원입니다."))
-                .when(studyGroupService).createStudyGroup(any(StudyGroupCreateServiceRequest.class));
-
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name("test")
+                .img(null)
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(12)
+                .build();
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/studyroom")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -107,24 +124,23 @@ class StudyGroupControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("존재하지 않는 회원입니다."));
+                .andExpect(jsonPath("$.message").value("스터디 룸 사진은 필수입니다."));
     }
 
-    @DisplayName("id 리스트 안에 null 이 들어올 수 없다.")
+    @DisplayName("스터디룸 만들 때 openTime null 로 할 수 없다.")
     @Test
-    void findIdsContainsNull() throws Exception {
+    void openTimeNull() throws Exception {
 
-        ArrayList<Long> userIds = new ArrayList<>();
-        userIds.add(null);
-        userIds.add(1L);
-
-        StudyGroupCreateRequest request = new StudyGroupCreateRequest(userIds, "test_group");
-
-        Mockito.doThrow(new NoSuchUserException("사용자 조회시 id 로 null 을 입력할 수 없습니다."))
-                .when(studyGroupService).createStudyGroup(any(StudyGroupCreateServiceRequest.class));
-
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name("asd")
+                .img("https://example.com/studyroom.jpg")
+                .openTime(null)
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(12)
+                .build();
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/studyroom")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -132,20 +148,102 @@ class StudyGroupControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("사용자 조회시 id 로 null 을 입력할 수 없습니다."));
+                .andExpect(jsonPath("$.message").value("스터디룸 오픈 시간은 필수입니다."));
     }
 
-
-    @DisplayName("사용자의 그룹을 조회할 수 있다.")
+    @DisplayName("스터디룸 만들 때 closetime을 null 로 할 수 없다.")
     @Test
-    void getUserStudyGroups() throws Exception {
+    void closeTimeNull() throws Exception {
+
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name(null)
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(null)
+                .option(12)
+                .build();
         mockMvc.perform(
-                        get("/study_groups/{userId}", 3L)
+                        post("/studyroom")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(jsonPath("$.code").value("200"))
-                .andExpect(jsonPath("$.status").value("OK"))
-                .andExpect(jsonPath("$.message").value("Success"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("스터디룸 닫는 시간은 필수입니다."));
     }
 
+    @DisplayName("스터디룸 만들 때 option값을 -1로 할 수 없다.")
+    @Test
+    void optionMinus() throws Exception {
+
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name(null)
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(-1)
+                .build();
+        mockMvc.perform(
+                        post("/studyroom")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("option은 최소 0부터 시작입니다."));
+    }
+
+    @DisplayName("스터디룸 만들 때 option값은 null일 수 없다.")
+    @Test
+    void optionZero() throws Exception {
+
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name(null)
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(null)
+                .build();
+        mockMvc.perform(
+                        post("/studyroom")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("option은 널일 수 없습니다."));
+    }
+
+    @DisplayName("스터디룸 만들 때 option값은 16이상 불가능하다")
+    @Test
+    void optionFive() throws Exception {
+
+        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+                .studyRoomId(1L)
+                .name(null)
+                .img("https://example.com/studyroom.jpg")
+                .openTime(LocalDateTime.now())
+                .closeTime(LocalDateTime.now().plusHours(3))
+                .option(16)
+                .build();
+        mockMvc.perform(
+                        post("/studyroom")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("option은 최대 15까지 입니다."));
+    }
 }
