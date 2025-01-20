@@ -1,7 +1,8 @@
-package ggs.srr.api.controller.main;
+package ggs.srr.api.controller.level;
 
 import ggs.srr.api.ApiResponse;
-import ggs.srr.api.controller.main.dto.LevelDto;
+import ggs.srr.service.user.LevelResponse;
+import ggs.srr.service.user.LevelResponseList;
 import ggs.srr.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -12,13 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class MainController {
+public class LevelController {
 
     private final UserService userService;
 
     @GetMapping("/levels")
-    public ApiResponse<LevelDto> levelUserCounts() {
+    public ApiResponse<LevelResponseList> levelUserCounts() {
         return ApiResponse.ok(userService.getLevelInfo());
     }
-
 }
