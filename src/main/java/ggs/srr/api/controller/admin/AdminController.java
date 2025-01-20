@@ -33,6 +33,4 @@ public class AdminController {
         initDataManager.initProjectUser(intraId);
         return ApiResponse.ok(null);
     }
-
-
 }
