@@ -1,8 +1,8 @@
 package ggs.srr.api.controller.project;
 
 import ggs.srr.api.ApiResponse;
-import ggs.srr.api.controller.project.dto.ProjectUserInfo;
-import ggs.srr.api.controller.project.dto.ProjectsDto;
+import ggs.srr.api.controller.level.dto.ProjectUserInfo;
+import ggs.srr.api.controller.level.dto.ProjectsDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
