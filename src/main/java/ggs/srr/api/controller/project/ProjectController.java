@@ -1,7 +1,7 @@
 package ggs.srr.api.controller.project;
 
 import ggs.srr.api.ApiResponse;
-import ggs.srr.api.controller.level.dto.ProjectUserInfoDto;
+import ggs.srr.api.controller.level.dto.ProjectUserInfo;
 import ggs.srr.api.controller.level.dto.ProjectsDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
@@ -47,12 +47,12 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/{intraId}")
-    public ApiResponse<List<ProjectUserInfoDto>> projectUserInfo(@PathVariable String intraId) {
+    public ApiResponse<List<ProjectUserInfo>> projectUserInfo(@PathVariable String intraId) {
         Optional<FtUser> ftUser = userService.findByIntraId(intraId);
         List<ProjectUser> projectUsers = ftUser.get().getProjectUsers();
-        List<ProjectUserInfoDto> res = new ArrayList<>();
+        List<ProjectUserInfo> res = new ArrayList<>();
         for (ProjectUser projectUser : projectUsers) {
-            res.add(new ProjectUserInfoDto(projectUser.getStatus().getText(), projectUser.getProject().getName()));
+            res.add(new ProjectUserInfo(projectUser.getStatus().getText(), projectUser.getProject().getName()));
         }
         return ApiResponse.ok(res);
     }
