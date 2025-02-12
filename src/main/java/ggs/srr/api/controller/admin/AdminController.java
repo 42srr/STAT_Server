@@ -26,9 +26,8 @@ public class AdminController {
 
     private final InitDataManager initDataManager;
     private final AuthenticationHolder authenticationHolder;
-    private final APIClient apiClient;
 
-    @GetMapping("/admin/init/users")
+    /*@GetMapping("/admin/init/users")
     public ApiResponse<String> initUsers(HttpServletRequest request) {
         Authentication authentication = authenticationHolder.getAuthentication();
         String intraId = authentication.getIntraId();
@@ -42,7 +41,7 @@ public class AdminController {
         String intraId = authentication.getIntraId();
         initDataManager.initProjectUser(intraId);
         return ApiResponse.ok(null);
-    }
+    }*/
 
     @PostMapping("/admin/projects-user")
     public ApiResponse<List<UsersProjectsResponse>> saveAllUserProjects(@RequestBody UsersRequest usersRequest) {
