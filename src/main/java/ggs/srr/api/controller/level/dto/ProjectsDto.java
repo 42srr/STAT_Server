@@ -1,5 +1,4 @@
 package ggs.srr.api.controller.level.dto;
-
 import lombok.Data;
 
 @Data

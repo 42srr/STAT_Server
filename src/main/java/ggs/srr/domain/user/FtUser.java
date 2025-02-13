@@ -56,6 +56,9 @@ public class FtUser {
         this.image = image;
     }
 
+    public FtUser(int ftServerId, String intraId, String role, int wallet, int correctionPoint, double level, String image) {
+    }
+
     public void updateRefreshToken(String jwtRefreshToken) {
         this.jwtRefreshToken = jwtRefreshToken;
     }

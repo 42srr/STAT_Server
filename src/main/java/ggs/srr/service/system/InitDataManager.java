@@ -7,18 +7,18 @@ import ggs.srr.domain.user.Role;
 import ggs.srr.repository.project.ProjectRepository;
 import ggs.srr.repository.projectuser.ProjectUserRepository;
 import ggs.srr.repository.user.UserRepository;
+import ggs.srr.service.system.dto.ParsingResponseDto;
+import ggs.srr.service.system.dto.UserDto;
+import ggs.srr.service.system.dto.UserProjectResponse.UsersProjectsResponse;
+import ggs.srr.service.system.dto.UserContent;
+import ggs.srr.service.system.dto.UsersRequest;
 import ggs.srr.service.system.exception.NotFoundAdminUserException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,32 +26,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Component
+@Service
 @Transactional
 @RequiredArgsConstructor
 public class InitDataManager {
 
-    private final String CAMPUS_USER_URI = "https://api.intra.42.fr/v2/cursus_users?filter[campus_id]=69&filter[cursus_id]=21&page=";
-    private final String PROJECT_USER_URL_PREFIX = "https://api.intra.42.fr/v2/users/";
-    private final String PROJECT_USER_URL_SUFFIX = "/projects_users?filter[cursus]=21&page=";
+    private final APIClient apiClient;
     private final String NOT_FOUND_ADMIN_USER_EXCEPTION_MESSAGE = "관리자를 찾을 수 없습니다.";
-    private final List<String> balckList = List.of("3b3-179603","tacount", "3b3-179647", "gcoconut");
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final ProjectUserRepository projectUserRepository;
 
     public void initUser(String intraId) {
-
         String oAuth2AccessToken = getAdminOAuth2AccessToken(intraId);
         System.out.println("oAuth2AccessToken = " + oAuth2AccessToken);
         persistAllUsers(oAuth2AccessToken);
-
     }
 
     public void initProjectUser(String intraId) {
         String oAuth2AccessToken = getAdminOAuth2AccessToken(intraId);
         persistAllUserProjects(oAuth2AccessToken);
+    }
+
+    public void initProjects() {
+        List<String> projects = apiClient.fetchProjectsFromFetchProject();
+        if (projects.isEmpty()) {
+        }
+        //디비에 저장하는 로직 필요
     }
 
     private String getAdminOAuth2AccessToken(String intraId) {
@@ -63,31 +65,14 @@ public class InitDataManager {
         return admin.getOAuth2AccessToken();
     }
 
-
     private void persistAllUsers(String oAuth2AccessToken) {
         try {
-
-            int page = 0;
             long startTime = System.currentTimeMillis();
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Bearer " + oAuth2AccessToken);
-            HttpEntity request = new HttpEntity(headers);
-            while (true) {
-                RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<ArrayList> response = restTemplate.exchange(CAMPUS_USER_URI + page, HttpMethod.GET,
-                        request,
-                        ArrayList.class);
-
-                ArrayList<HashMap<String, Object>> body = response.getBody();
-
-                if (isEmptyBody(body)) {
-                    break;
-                }
-
-                persistUsers(body);
-                page++;
-
+            List<UserDto> users = apiClient.fetchUsersFromTurbofetch();
+            if (users.isEmpty()) {
+                return;
             }
+            persistUsers(users);
             long endTime = System.currentTimeMillis();
             log.info("time = {}", endTime - startTime);
 
@@ -99,31 +84,24 @@ public class InitDataManager {
 
     private void persistAllUserProjects(String oAuth2AccessToken) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Bearer " + oAuth2AccessToken);
-            HttpEntity request = new HttpEntity(headers);
-            List<FtUser> users = userRepository.findAll();
+            List<FtUser> allUsers = userRepository.findAll();
             int count = 0;
-            for (FtUser user : users) {
-                log.info("username = {}", user.getIntraId());
+            for (FtUser user : allUsers) {
+                String serverId = String.valueOf(user.getFtServerId());
+                UserContent userContent = new UserContent(user.getIntraId(), serverId);
+                List<UserContent> userIds = new ArrayList<>();
+                userIds.add(userContent);
                 count++;
-                int page = 0;
-                log.info("{} / {}", count, users.size());
-                while (true) {
-                    RestTemplate restTemplate = new RestTemplate();
-                    ResponseEntity<ArrayList> response = restTemplate.exchange(PROJECT_USER_URL_PREFIX + user.getFtServerId() + PROJECT_USER_URL_SUFFIX + page, HttpMethod.GET,
-                            request,
-                            ArrayList.class);
+                UsersRequest usersRequest = new UsersRequest(userIds);
+                List<UsersProjectsResponse> body = apiClient.fetchUserProjectsFromFetchProject(usersRequest);
+                log.info("response getBody: {}", body);
 
-                    ArrayList<HashMap<String, Object>> body = response.getBody();
-                    if (isEmptyBody(body)) {
-                        log.info("body is empty");
-                        break;
-                    }
-                    persisUserProjects(body, user);
-                    page++;
-                    Thread.sleep(1000);
+                if (body == null || body.isEmpty()) {
+                    log.info("body is empty");
+                    continue;
                 }
+                persisUserProjects(body, user);
+                Thread.sleep(1000);
             }
 
         } catch (HttpClientErrorException e) {
@@ -131,83 +109,51 @@ public class InitDataManager {
             log.info("access token expire!! 갱신 로직 추가 필요");
             throw new RuntimeException("access token expired");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    private void persisUserProjects(ArrayList<HashMap<String, Object>> responseBody, FtUser user) {
-        for (HashMap<String, Object> rawProjectUser : responseBody) {
-            if (!isMainCourse(rawProjectUser)) {
-                continue;
+    private void persisUserProjects(List<UsersProjectsResponse> responseBody, FtUser user) {
+        for (UsersProjectsResponse rawProjectUser : responseBody) {
+            for (ParsingResponseDto projectDto : rawProjectUser.getAllProjectsResponse()) {
+                //if (!isMainCourse(rawProjectUser)) {
+                //    continue;
+                //}
+                Project project = parseToProject(projectDto);
+                ProjectUser projectUser = new ProjectUser();
+                projectUser.initUser(user);
+                projectUser.initProject(project);
+                projectUser.initStatus(projectDto.getProjectStatus());
+                projectUserRepository.save(projectUser);
             }
-            Project project = parseToProject(rawProjectUser);
-            ProjectUser projectUser = new ProjectUser();
-            projectUser.initUser(user);
-            projectUser.initProject(project);
-            projectUser.initStatus(rawProjectUser.get("status").toString());
-            projectUserRepository.save(projectUser);
         }
     }
 
-    private boolean isEmptyBody(ArrayList<HashMap<String, Object>> body) {
-        return body == null || body.isEmpty();
-    }
+    //private boolean isMainCourse(ArrayList<HashMap<String, Object>> rawProjectUser) {
+    //    List<Integer> cursusIds = (List<Integer>) rawProjectUser.get("cursus_ids");
+    //    return cursusIds.contains(21);
+    //}
 
-    private boolean isMainCourse(HashMap<String, Object> rawProjectUser) {
-        List<Integer> cursusIds = (List<Integer>) rawProjectUser.get("cursus_ids");
-        return cursusIds.contains(21);
-    }
-
-    private void persistUsers(ArrayList<HashMap<String, Object>> responseBody) {
+    private void persistUsers(List<UserDto> responseBody) {
         responseBody.stream()
-                .filter(this::isStudent)
-                .filter(this::isNotTestAccount)
-                .filter(this::notInBlackList)
-                .map(this::parseToUser)
+                .map(this::convertToFtUser)
                 .forEach(userRepository::save);
     }
 
-    private boolean isStudent(HashMap<String, Object> rawUser) {
-        Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
-        return !Boolean.parseBoolean(userData.get("staff?").toString());
+    private FtUser convertToFtUser(UserDto userDto) {
+        return new FtUser(
+                userDto.getFt_server_id(),
+                userDto.getIntra_id(),
+                userDto.getRole(),
+                userDto.getWallet(),
+                userDto.getCorrection_point(),
+                userDto.getLevel(),
+                userDto.getImage()
+        );
     }
 
-    private boolean isNotTestAccount(HashMap<String, Object> rawUser) {
-        Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
-        String intraId = userData.get("login").toString();
-        return !intraId.contains("test");
-    }
-
-    private boolean notInBlackList(HashMap<String, Object> rawUser) {
-        Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
-        String intraId = userData.get("login").toString();
-        return !balckList.contains(intraId);
-    }
-
-    private FtUser parseToUser(HashMap<String, Object> rawUser) {
-
-        double level = Double.parseDouble(rawUser.get("level").toString());
-
-        Map<String, Object> userData = (Map<String, Object>) rawUser.get("user");
-        long ftServerId = Long.parseLong(userData.get("id").toString());
-        String intraId = userData.get("login").toString();
-        Role role = Role.CADET;
-        int wallet = Integer.parseInt(userData.get("wallet").toString());
-        int correctionPoint = Integer.parseInt(userData.get("correction_point").toString());
-        String smallImageUrl = getSmallImageUrl((Map<String, Object>) userData.get("image"));
-
-        return new FtUser(ftServerId, intraId, role, wallet, correctionPoint, level, smallImageUrl);
-    }
-
-    private String getSmallImageUrl(Map<String, Object> image) {
-        Map<String, String> versions = (Map<String, String>) image.get("versions");
-        return versions.get("small");
-    }
-
-    private Project parseToProject(HashMap<String, Object> rawProjectUser) {
-        Map<String, String> project = (Map<String, String>) rawProjectUser.get("project");
-        String projectName = project.get("name");
-
+    private Project parseToProject(ParsingResponseDto rawProjectUser) {
+        String projectName = rawProjectUser.getProjectName();
         Optional<Project> optional = projectRepository.findByProjectName(projectName);
 
         if (optional.isPresent()) {
@@ -218,5 +164,4 @@ public class InitDataManager {
         projectRepository.save(newProject);
         return newProject;
     }
-
 }
