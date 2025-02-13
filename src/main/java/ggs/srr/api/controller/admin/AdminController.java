@@ -67,7 +67,7 @@ public class AdminController {
             return ApiResponse.badRequest(e, "Fail sorry sorry");
         }
     }
-
+  
     @GetMapping("/admin/users")
     public ApiResponse<List<UserDto>> fetchAllUsers() {
         //List<UserDto> users = apiClient.fetchUsersFromTurbofetch();
