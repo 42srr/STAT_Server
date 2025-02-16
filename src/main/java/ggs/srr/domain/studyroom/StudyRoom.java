@@ -1,24 +1,26 @@
 package ggs.srr.domain.studyroom;
 
+import ggs.srr.domain.reservation.Reservation;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Table(name = "study_room")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyRoom {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "study_room_id")
     private Long id;
+
+    @OneToMany(mappedBy = "studyRoom")
+    private List<Reservation> reservations = new ArrayList<>();
 
     private String name;
     private String img;
@@ -28,10 +30,23 @@ public class StudyRoom {
     private int canDrink;
     private int canEat;
     private int canUseTool;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+
+        //무한루프 방지
+        if (reservation.getStudyRoom() != this) {
+            reservation.setStudyRoom(this);
+        }
+    }
+
+    protected StudyRoom() {
+    }
 
     public StudyRoom(String name, String img,
                      LocalDateTime openTime, LocalDateTime closeTime,

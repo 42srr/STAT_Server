@@ -1,7 +1,7 @@
-package ggs.srr.repository.reservation.studygroup;
+package ggs.srr.repository.studygroup.studygroup;
 
 import ggs.srr.domain.studygroup.StudyGroup;
-import ggs.srr.repository.reservation.exception.FindIdNullException;
+import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

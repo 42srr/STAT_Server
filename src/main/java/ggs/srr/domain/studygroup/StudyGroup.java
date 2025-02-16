@@ -1,5 +1,6 @@
 package ggs.srr.domain.studygroup;
 
+import ggs.srr.domain.reservation.Reservation;
 import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,6 +21,9 @@ public class StudyGroup {
 
     @OneToMany(mappedBy = "studyGroup")
     private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "studyGroup")
+    private List<Reservation> reservations = new ArrayList<>();
 
     private String groupName;
 

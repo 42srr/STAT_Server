@@ -1,10 +1,10 @@
-package ggs.srr.repository.reservation.userstudygroup;
+package ggs.srr.repository.studygroup.userstudygroup;
 
 import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import ggs.srr.domain.user.FtUser;
-import ggs.srr.repository.reservation.exception.FindIdNullException;
-import ggs.srr.repository.reservation.studygroup.StudyGroupRepository;
+import ggs.srr.repository.studygroup.exception.FindIdNullException;
+import ggs.srr.repository.studygroup.studygroup.StudyGroupRepository;
 import ggs.srr.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

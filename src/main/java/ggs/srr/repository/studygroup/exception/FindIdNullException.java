@@ -1,4 +1,4 @@
-package ggs.srr.repository.reservation.exception;
+package ggs.srr.repository.studygroup.exception;
 
 public class FindIdNullException extends RuntimeException {
 

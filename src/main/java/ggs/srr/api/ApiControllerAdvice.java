@@ -1,7 +1,7 @@
 package ggs.srr.api;
 
 import ggs.srr.api.controller.jwt.exception.JwtControllerException;
-import ggs.srr.repository.reservation.exception.FindIdNullException;
+import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import ggs.srr.service.studygroup.exception.EmptyUserIdException;
 import ggs.srr.service.studygroup.exception.NoSuchUserException;
 import org.springframework.http.HttpStatus;
