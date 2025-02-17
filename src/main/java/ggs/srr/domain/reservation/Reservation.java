@@ -35,7 +35,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public void setStudyRoom(StudyRoom studyRoom) {
+    public void initializeStudyRoom(StudyRoom studyRoom) {
         this.studyRoom = studyRoom;
 
         //무한루프 방지
@@ -44,7 +44,7 @@ public class Reservation {
         }
     }
 
-    public void setStudyGroup(StudyGroup studyGroup) {
+    public void initializeStudyGroup(StudyGroup studyGroup) {
         this.studyGroup = studyGroup;
 
         //무한루프 방지

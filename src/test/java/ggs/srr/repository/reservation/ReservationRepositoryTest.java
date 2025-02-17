@@ -40,13 +40,13 @@ public class ReservationRepositoryTest {
         studyGroupRepository.save(studyGroup);
 
         Reservation reservation = new Reservation();
-        reservation.setStudyRoom(studyRoom);
-        reservation.setStudyGroup(studyGroup);
+        reservation.initializeStudyRoom(studyRoom);
+        reservation.initializeStudyGroup(studyGroup);
 
         reservationRepository.save(reservation);
 
         List<Reservation> reservations = reservationRepository.findByStudyRoomId(studyRoom.getId());
-        assertThat(reservations.get(0).getStudyRoom().getId()).isSameAs(studyRoom.getId());
+        assertThat(reservations.get(0).getStudyRoom()).isSameAs(studyRoom);
     }
 
     @DisplayName("예약을 저장할 경우 스터디그룹 id로 조회가능 해야 한다.")
@@ -58,13 +58,13 @@ public class ReservationRepositoryTest {
         studyGroupRepository.save(studyGroup);
 
         Reservation reservation = new Reservation();
-        reservation.setStudyRoom(studyRoom);
-        reservation.setStudyGroup(studyGroup);
+        reservation.initializeStudyRoom(studyRoom);
+        reservation.initializeStudyGroup(studyGroup);
 
         reservationRepository.save(reservation);
 
         List<Reservation> reservations = reservationRepository.findByStudyGroupId(studyGroup.getId());
-        assertThat(reservations.get(0).getStudyGroup().getId()).isSameAs(studyGroup.getId());
+        assertThat(reservations.get(0).getStudyGroup()).isSameAs(studyGroup);
 
     }
 

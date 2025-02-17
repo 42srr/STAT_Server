@@ -41,7 +41,7 @@ public class StudyRoom {
 
         //무한루프 방지
         if (reservation.getStudyRoom() != this) {
-            reservation.setStudyRoom(this);
+            reservation.initializeStudyRoom(this);
         }
     }
 
