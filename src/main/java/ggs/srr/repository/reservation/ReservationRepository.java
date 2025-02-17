@@ -50,9 +50,6 @@ public class ReservationRepository {
         return em.find(Reservation.class, reservationId);
     }
 
-    public void update(Reservation reservation) {
-        em.merge(reservation); //더티체킹
-    }
 
     public void delete(Long studyRoomId) {
         Reservation reservation = em.find(Reservation.class, studyRoomId);
