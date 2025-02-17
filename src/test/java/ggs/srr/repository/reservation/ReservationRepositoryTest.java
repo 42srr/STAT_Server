@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -73,6 +76,42 @@ public class ReservationRepositoryTest {
     void findByNull() {
         assertThatThrownBy(() -> studyRoomRepository.findById(null))
                 .isInstanceOf(FindIdNullException.class);
+    }
+
+    @DisplayName("예약 시작 시간과 종료 시간으로 조회시 해당 되는 예약이 있을 경우 해당되는 모든 예약을 반환해야 한다.")
+    @Test
+    void findByTimeForUpdate() {
+        //given
+        LocalDate date = LocalDate.of(2025, 2, 10);
+        List<Reservation> reservations = createReservations(date);
+        reservations.forEach(reservationRepository::save);
+
+        LocalDateTime startDateTime = LocalDateTime.of(date, LocalTime.of(11, 0));
+        LocalDateTime endDateTime = LocalDateTime.of(date, LocalTime.of(15, 0));
+
+        //when
+        List<Reservation> findReservations = reservationRepository.findByTimeForUpdate(startDateTime, endDateTime);
+
+        //then
+        assertThat(findReservations.size()).isEqualTo(3);
+
+
+    }
+
+    private List<Reservation> createReservations(LocalDate date) {
+        Reservation r1 = new Reservation();
+        Reservation r2 = new Reservation();
+        Reservation r3 = new Reservation();
+        Reservation r4 = new Reservation();
+
+
+        r1.initializeReservationDateTime(LocalDateTime.of(date, LocalTime.of(10, 0)), LocalDateTime.of(date, LocalTime.of(12, 0)));
+        r2.initializeReservationDateTime(LocalDateTime.of(date, LocalTime.of(12, 0)), LocalDateTime.of(date, LocalTime.of(14, 0)));
+        r3.initializeReservationDateTime(LocalDateTime.of(date, LocalTime.of(14, 0)), LocalDateTime.of(date, LocalTime.of(16, 0)));
+        r4.initializeReservationDateTime(LocalDateTime.of(date, LocalTime.of(16, 0)), LocalDateTime.of(date, LocalTime.of(18, 0)));
+
+        return List.of(r1, r2, r3, r4);
+
     }
 }
 
