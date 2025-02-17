@@ -1,10 +1,10 @@
-package ggs.srr.repository.reservation.studygroup;
+package ggs.srr.repository.studygroup.studygroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ggs.srr.domain.studygroup.StudyGroup;
-import ggs.srr.repository.reservation.exception.FindIdNullException;
+import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
