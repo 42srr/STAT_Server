@@ -27,6 +27,9 @@ public class Reservation {
     @JoinColumn(name = "study_group_id")
     private StudyGroup studyGroup;
 
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -51,5 +54,13 @@ public class Reservation {
         if (!studyGroup.getReservations().contains(this)) {
             studyGroup.getReservations().add(this);
         }
+    }
+
+    public void initializeReservationDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (startDateTime.isAfter(endDateTime) || startDateTime.equals(endDateTime)) {
+            throw new IllegalArgumentException("예약 시작 시간은 항상 예약 종료 시간 보다 앞서야 합니다.");
+        }
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
 }

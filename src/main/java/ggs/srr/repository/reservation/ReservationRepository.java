@@ -3,9 +3,11 @@ package ggs.srr.repository.reservation;
 import ggs.srr.domain.reservation.Reservation;
 import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -56,5 +58,12 @@ public class ReservationRepository {
         if (reservation != null) {
             em.remove(reservation);
         }
+    }
+
+    public List<Reservation> findByTimeForUpdate(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return em.createQuery("select r from Reservation r where r.startDateTime < :endDateTime and r.endDateTime > :startDateTime", Reservation.class)
+                .setParameter("startDateTime", startDateTime)
+                .setParameter("endDateTime", endDateTime)
+                .getResultList();
     }
 }
