@@ -17,10 +17,10 @@ public class StudyRoomRepository {
     @Transactional
     public void save(StudyRoom studyRoom) { em.persist(studyRoom); }
 
-    public CreateStudyRoomServiceRequest findById(Long id) {
+    public StudyRoom findById(Long id) {
         if (id == null) {
             throw new FindIdNullException("id로 studyroom 조회시 null을 전달할 수 없습니다.");
         }
-        return em.find(CreateStudyRoomServiceRequest.class, id);
+        return em.find(StudyRoom.class, id);
     }
 }
