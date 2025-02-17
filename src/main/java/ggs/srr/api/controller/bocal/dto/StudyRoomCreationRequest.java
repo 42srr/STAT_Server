@@ -11,7 +11,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class CreateStudyRoomRequest {
+public class StudyRoomCreationRequest {
     @NotNull(message = "스터디룸 id는 필수입니다.")
     Long studyRoomId;
 
@@ -32,11 +32,11 @@ public class CreateStudyRoomRequest {
     @Max(value = 15, message = "option은 최대 15까지 입니다.")
     Integer option;
 
-    public CreateStudyRoomRequest() {
+    public StudyRoomCreationRequest() {
     }
 
     @Builder
-    private CreateStudyRoomRequest(LocalDateTime closeTime, String img, String name, LocalDateTime openTime, Integer option, Long studyRoomId) {
+    private StudyRoomCreationRequest(LocalDateTime closeTime, String img, String name, LocalDateTime openTime, Integer option, Long studyRoomId) {
         this.closeTime = closeTime;
         this.img = img;
         this.name = name;

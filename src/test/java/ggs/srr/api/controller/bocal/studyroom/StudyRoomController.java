@@ -2,7 +2,7 @@ package ggs.srr.api.controller.bocal.studyroom;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ggs.srr.api.controller.bocal.StudyRoomController;
-import ggs.srr.api.controller.bocal.dto.CreateStudyRoomRequest;
+import ggs.srr.api.controller.bocal.dto.StudyRoomCreationRequest;
 import ggs.srr.service.studyroom.StudyRoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class StudyRoomControllerTest {
     @Test
     void createStudyRoom() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name("테스트")
                 .img("https://example.com/studyroom.jpg")
@@ -59,7 +59,7 @@ class StudyRoomControllerTest {
     @Test
     void idNull() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(null)
                 .name("테스트")
                 .img("https://example.com/studyroom.jpg")
@@ -83,7 +83,7 @@ class StudyRoomControllerTest {
     @Test
     void nameNull() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name(null)
                 .img("https://example.com/studyroom.jpg")
@@ -107,7 +107,7 @@ class StudyRoomControllerTest {
     @Test
     void imgNull() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name("test")
                 .img(null)
@@ -131,7 +131,7 @@ class StudyRoomControllerTest {
     @Test
     void openTimeNull() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name("asd")
                 .img("https://example.com/studyroom.jpg")
@@ -155,7 +155,7 @@ class StudyRoomControllerTest {
     @Test
     void closeTimeNull() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name(null)
                 .img("https://example.com/studyroom.jpg")
@@ -179,7 +179,7 @@ class StudyRoomControllerTest {
     @Test
     void optionMinus() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name(null)
                 .img("https://example.com/studyroom.jpg")
@@ -203,7 +203,7 @@ class StudyRoomControllerTest {
     @Test
     void optionZero() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name(null)
                 .img("https://example.com/studyroom.jpg")
@@ -227,7 +227,7 @@ class StudyRoomControllerTest {
     @Test
     void optionFive() throws Exception {
 
-        CreateStudyRoomRequest request = CreateStudyRoomRequest.builder()
+        StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
                 .name(null)
                 .img("https://example.com/studyroom.jpg")
