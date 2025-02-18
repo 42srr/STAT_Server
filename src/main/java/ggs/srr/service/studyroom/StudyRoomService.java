@@ -14,17 +14,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StudyRoomService {
+
     private final StudyRoomRepository studyRoomRepository;
 
-    public void registerStudyroom(CreateStudyRoomServiceRequest request) {
+    public void registerStudyRoom(CreateStudyRoomServiceRequest request) {
         StudyRoom studyRoom = new StudyRoom(request.getName(), request.getImg(),request.getOpenTime(),
                                             request.getCloseTime(), request.getOpen24Flag(), request.getDrinkFlag(),
                                             request.getEatFlag(), request.getUseToolFlag());
         studyRoomRepository.save(studyRoom);
     }
 
-
-    public void modifyStudyroom(CreateStudyRoomServiceRequest createStudyRoomServiceRequest) {
-
-    }
+    /*
+        todo
+        1. study room 수정
+        2. study room 삭제
+    */
 }
