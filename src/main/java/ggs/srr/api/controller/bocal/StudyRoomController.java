@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class StudyRoomController {
+
     private final StudyRoomService studyRoomService;
 
-    @PostMapping("/studyroom")
+    @PostMapping("/study-rooms")
     public ApiResponse<Object> createRoom(@Valid @RequestBody StudyRoomCreationRequest createStudyRoomRequest) {
-        studyRoomService.registerStudyroom(createStudyRoomRequest.requestStudyRoomtoStudyRoom());
+        studyRoomService.registerStudyRoom(createStudyRoomRequest.toServiceRequest());
         return ApiResponse.okWithoutData("Successfully created a study room");
     }
 
