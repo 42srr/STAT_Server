@@ -1,6 +1,9 @@
 package ggs.srr.repository.reservation;
 
 import ggs.srr.domain.reservation.Reservation;
+import ggs.srr.domain.studygroup.StudyGroup;
+import ggs.srr.domain.studyroom.StudyRoom;
+import ggs.srr.repository.reservation.exception.FindByNullException;
 import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
@@ -52,7 +55,6 @@ public class ReservationRepository {
         return em.find(Reservation.class, reservationId);
     }
 
-
     public void delete(Long studyRoomId) {
         Reservation reservation = em.find(Reservation.class, studyRoomId);
         if (reservation != null) {
@@ -60,8 +62,14 @@ public class ReservationRepository {
         }
     }
 
-    public List<Reservation> findByTimeForUpdate(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return em.createQuery("select r from Reservation r where r.startDateTime < :endDateTime and r.endDateTime > :startDateTime", Reservation.class)
+    public List<Reservation> findByTimeForUpdate(LocalDateTime startDateTime, LocalDateTime endDateTime, StudyRoom studyRoom) {
+
+        if (startDateTime == null || endDateTime == null || studyRoom == null) {
+            throw new FindByNullException("null 을 이용해 해당 시간대의 예약 목록을 조회할 수 없습니다.");
+        }
+
+        return em.createQuery("select r from Reservation r where r.studyRoom = :studyRoom and r.startDateTime < :endDateTime and r.endDateTime > :startDateTime", Reservation.class)
+                .setParameter("studyRoom", studyRoom)
                 .setParameter("startDateTime", startDateTime)
                 .setParameter("endDateTime", endDateTime)
                 .getResultList();
