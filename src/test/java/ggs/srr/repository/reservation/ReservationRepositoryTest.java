@@ -111,16 +111,6 @@ public class ReservationRepositoryTest {
         assertThat(findReservations2.size()).isEqualTo(2);
     }
 
-    /*
-        todo
-        쭝구리가 내일 해야할 일
-        1. 기존 예약 조회시 스터디룸 아이디 또한 파라미터로 넘기게 변경해야 한다잇
-        2. 그에 맞는 테스트 코드도 짜야 한다잇
-        3. 동시성 테스트 까지 완료 해야 한다잇
-        4. 나머지는 노가다로 클리어 해야 한다잇
-
-    */
-
     private List<StudyRoom> createStudyRoom() {
         StudyRoom s1 = new StudyRoom("s1", null, LocalTime.of(9, 0), LocalTime.of(18, 0), 0, 0,0,0);
         StudyRoom s2 = new StudyRoom("s2", null, LocalTime.of(9, 0), LocalTime.of(18, 0), 0, 0,0,0);
