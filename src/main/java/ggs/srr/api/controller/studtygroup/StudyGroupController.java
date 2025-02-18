@@ -20,7 +20,7 @@ public class StudyGroupController {
 
     private final StudyGroupService studyGroupService;
 
-    @PostMapping("/study_groups")
+    @PostMapping("/study-groups")
     public ApiResponse<Object> createGroup(@Valid @RequestBody StudyGroupCreateRequest request) {
 
         log.info("userIds = {}", request.getUserIds());
@@ -33,7 +33,7 @@ public class StudyGroupController {
         return ApiResponse.ok(null);
     }
 
-    @GetMapping("/study_groups/{userId}")
+    @GetMapping("/study-groups/{userId}")
     public ApiResponse<List<UserAllStudyGroupResponse>> getUserStudyGroups(@PathVariable(name = "userId") Long userId) {
 
         UserAllStudyGroupRequest request = new UserAllStudyGroupRequest(userId);
