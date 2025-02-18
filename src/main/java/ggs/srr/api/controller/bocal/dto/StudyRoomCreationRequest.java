@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 public class StudyRoomCreationRequest {
@@ -22,10 +22,10 @@ public class StudyRoomCreationRequest {
     String img;
 
     @NotNull(message = "스터디룸 오픈 시간은 필수입니다.")
-    LocalDateTime openTime;
+    LocalTime openTime;
 
     @NotNull(message = "스터디룸 닫는 시간은 필수입니다.")
-    LocalDateTime closeTime;
+    LocalTime closeTime;
 
     @NotNull(message = "option은 널일 수 없습니다.")
     @Min(value = 0, message = "option은 최소 0부터 시작입니다.")
@@ -36,7 +36,7 @@ public class StudyRoomCreationRequest {
     }
 
     @Builder
-    private StudyRoomCreationRequest(LocalDateTime closeTime, String img, String name, LocalDateTime openTime, Integer option, Long studyRoomId) {
+    private StudyRoomCreationRequest(LocalTime closeTime, String img, String name, LocalTime openTime, Integer option, Long studyRoomId) {
         this.closeTime = closeTime;
         this.img = img;
         this.name = name;
@@ -45,7 +45,7 @@ public class StudyRoomCreationRequest {
         this.studyRoomId = studyRoomId;
     }
 
-    public CreateStudyRoomServiceRequest requestStudyRoomtoStudyRoom() {
+    public CreateStudyRoomServiceRequest toServiceRequest() {
         return CreateStudyRoomServiceRequest.builder()
                 .studyRoomId(studyRoomId)
                 .name(name)

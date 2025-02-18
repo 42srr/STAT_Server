@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class StudyRoom {
 
     private String name;
     private String img;
-    private LocalDateTime openTime;
-    private LocalDateTime closeTime;
+    private LocalTime openTime;
+    private LocalTime closeTime;
     private int isOpen24Hour;
     private int canDrink;
     private int canEat;
@@ -49,7 +50,7 @@ public class StudyRoom {
     }
 
     public StudyRoom(String name, String img,
-                     LocalDateTime openTime, LocalDateTime closeTime,
+                     LocalTime openTime, LocalTime closeTime,
                      int isOpen24Hour, int canDrink
     ,               int canEat, int canUseTool) {
         this.name = name;
@@ -63,4 +64,5 @@ public class StudyRoom {
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
     }
+
 }
