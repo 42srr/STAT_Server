@@ -79,10 +79,8 @@ class ReservationServiceTest {
     @Test
     void createReservationAtNotOperatingHour() {
 
-
         //given
         CreateReservationServiceRequest request = createRequest(1L, 1L, 8, 13);
-
 
         //when //then
         assertThatThrownBy(() -> reservationService.createReservation(request))
