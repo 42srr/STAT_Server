@@ -1,5 +1,6 @@
 package ggs.srr.domain.reservation;
 
+import ggs.srr.domain.reservation.exception.InvalidReservationTimeException;
 import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.studyroom.StudyRoom;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "reservation")
 public class Reservation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
     private Long id;
 
@@ -47,6 +48,11 @@ public class Reservation {
         }
     }
 
+    public void updateStudyRoom(StudyRoom studyRoom) {
+        this.studyRoom = studyRoom;
+        studyRoom.getReservations().add(this);
+    }
+
     public void initializeStudyGroup(StudyGroup studyGroup) {
         this.studyGroup = studyGroup;
 
@@ -58,7 +64,15 @@ public class Reservation {
 
     public void initializeReservationDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime) || startDateTime.equals(endDateTime)) {
-            throw new IllegalArgumentException("예약 시작 시간은 항상 예약 종료 시간 보다 앞서야 합니다.");
+            throw new InvalidReservationTimeException("예약 시작 시간은 항상 예약 종료 시간 보다 앞서야 합니다.");
+        }
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
+
+    public void updateReservationDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (startDateTime.isAfter(endDateTime) || startDateTime.equals(endDateTime)) {
+            throw new InvalidReservationTimeException("예약 시작 시간은 항상 예약 종료 시간 보다 앞서야 합니다.");
         }
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
