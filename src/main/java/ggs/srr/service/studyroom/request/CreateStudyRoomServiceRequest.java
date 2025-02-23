@@ -3,6 +3,7 @@ package ggs.srr.service.studyroom.request;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -10,8 +11,8 @@ public class CreateStudyRoomServiceRequest {
     long studyRoomId;
     String name;
     String img;
-    LocalDateTime openTime;
-    LocalDateTime closeTime;
+    LocalTime openTime;
+    LocalTime closeTime;
     int open24Flag;
     int drinkFlag;
     int eatFlag;
@@ -20,7 +21,7 @@ public class CreateStudyRoomServiceRequest {
     LocalDateTime modifiedAt;
 
     @Builder
-    private CreateStudyRoomServiceRequest(long studyRoomId, String name, String img, LocalDateTime openTime, LocalDateTime closeTime,
+    private CreateStudyRoomServiceRequest(long studyRoomId, String name, String img, LocalTime openTime, LocalTime closeTime,
                                          int option) {
         this.studyRoomId = studyRoomId;
         this.name = name;

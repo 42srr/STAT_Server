@@ -15,7 +15,7 @@ import java.util.List;
 public class StudyGroup {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "study_group_id")
     private Long id;
 

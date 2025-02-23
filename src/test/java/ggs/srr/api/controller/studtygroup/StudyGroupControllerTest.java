@@ -42,7 +42,7 @@ class StudyGroupControllerTest {
         StudyGroupCreateRequest request = new StudyGroupCreateRequest(List.of(1L, 2L, 3L), "test_group");
 
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/study-groups")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -60,7 +60,7 @@ class StudyGroupControllerTest {
         StudyGroupCreateRequest request = new StudyGroupCreateRequest(null, "test_group");
 
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/study-groups")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -78,7 +78,7 @@ class StudyGroupControllerTest {
         StudyGroupCreateRequest request = new StudyGroupCreateRequest(List.of(), "test_group");
 
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/study-groups")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -99,7 +99,7 @@ class StudyGroupControllerTest {
                 .when(studyGroupService).createStudyGroup(any(StudyGroupCreateServiceRequest.class));
 
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/study-groups")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -124,7 +124,7 @@ class StudyGroupControllerTest {
                 .when(studyGroupService).createStudyGroup(any(StudyGroupCreateServiceRequest.class));
 
         mockMvc.perform(
-                        post("/study_groups")
+                        post("/study-groups")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -140,7 +140,7 @@ class StudyGroupControllerTest {
     @Test
     void getUserStudyGroups() throws Exception {
         mockMvc.perform(
-                        get("/study_groups/{userId}", 3L)
+                        get("/study-groups/{userId}", 3L)
                 )
                 .andDo(print())
                 .andExpect(jsonPath("$.code").value("200"))

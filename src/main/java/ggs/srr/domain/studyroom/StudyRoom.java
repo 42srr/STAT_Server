@@ -1,12 +1,14 @@
 package ggs.srr.domain.studyroom;
 
 import ggs.srr.domain.reservation.Reservation;
+import ggs.srr.domain.studyroom.exception.InvalidRequestTimeException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,8 @@ public class StudyRoom {
 
     private String name;
     private String img;
-    private LocalDateTime openTime;
-    private LocalDateTime closeTime;
+    private LocalTime openTime;
+    private LocalTime closeTime;
     private int isOpen24Hour;
     private int canDrink;
     private int canEat;
@@ -49,7 +51,7 @@ public class StudyRoom {
     }
 
     public StudyRoom(String name, String img,
-                     LocalDateTime openTime, LocalDateTime closeTime,
+                     LocalTime openTime, LocalTime closeTime,
                      int isOpen24Hour, int canDrink
     ,               int canEat, int canUseTool) {
         this.name = name;
@@ -63,4 +65,12 @@ public class StudyRoom {
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
     }
+
+    public void validateReservationTime(LocalTime startTime, LocalTime endTime) {
+
+        if (openTime.isAfter(startTime) || closeTime.isBefore(endTime)) {
+            throw new InvalidRequestTimeException("해당 시간대에는 예약할 수 없습니다.");
+        }
+    }
+
 }

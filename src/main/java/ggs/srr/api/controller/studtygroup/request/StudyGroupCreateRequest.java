@@ -4,10 +4,12 @@ import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class StudyGroupCreateRequest {
 
     @NotNull(message = "사용자 id list 는 필수 입니다.")

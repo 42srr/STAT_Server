@@ -1,8 +1,7 @@
-package ggs.srr.service.reservation.studygroup;
+package ggs.srr.service.studygroup;
 
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.repository.user.UserRepository;
-import ggs.srr.service.studygroup.StudyGroupService;
 import ggs.srr.service.studygroup.exception.NoSuchUserException;
 import ggs.srr.service.studygroup.request.StudyGroupCreateServiceRequest;
 import ggs.srr.service.studygroup.request.UserAllStudyGroupServiceRequest;

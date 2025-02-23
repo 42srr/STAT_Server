@@ -12,7 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,13 +39,13 @@ class StudyRoomControllerTest {
                 .studyRoomId(1L)
                 .name("테스트")
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(4)
                 .build();
 
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -63,12 +64,12 @@ class StudyRoomControllerTest {
                 .studyRoomId(null)
                 .name("테스트")
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(12)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -87,12 +88,12 @@ class StudyRoomControllerTest {
                 .studyRoomId(1L)
                 .name(null)
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(12)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -111,12 +112,12 @@ class StudyRoomControllerTest {
                 .studyRoomId(1L)
                 .name("test")
                 .img(null)
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(12)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -136,11 +137,11 @@ class StudyRoomControllerTest {
                 .name("asd")
                 .img("https://example.com/studyroom.jpg")
                 .openTime(null)
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(12)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -157,14 +158,14 @@ class StudyRoomControllerTest {
 
         StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
-                .name(null)
+                .name("test")
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
+                .openTime(LocalTime.now())
                 .closeTime(null)
                 .option(12)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -181,14 +182,14 @@ class StudyRoomControllerTest {
 
         StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
-                .name(null)
+                .name("test")
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(-1)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -205,14 +206,14 @@ class StudyRoomControllerTest {
 
         StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
-                .name(null)
+                .name("test")
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(null)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -229,14 +230,14 @@ class StudyRoomControllerTest {
 
         StudyRoomCreationRequest request = StudyRoomCreationRequest.builder()
                 .studyRoomId(1L)
-                .name(null)
+                .name("test")
                 .img("https://example.com/studyroom.jpg")
-                .openTime(LocalDateTime.now())
-                .closeTime(LocalDateTime.now().plusHours(3))
+                .openTime(LocalTime.now())
+                .closeTime(LocalTime.now().plusHours(3))
                 .option(16)
                 .build();
         mockMvc.perform(
-                        post("/studyroom")
+                        post("/study-rooms")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
