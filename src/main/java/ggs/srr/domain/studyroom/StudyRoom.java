@@ -1,6 +1,7 @@
 package ggs.srr.domain.studyroom;
 
 import ggs.srr.domain.reservation.Reservation;
+import ggs.srr.domain.studyroom.exception.InvalidRequestTimeException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,6 +64,13 @@ public class StudyRoom {
         this.canUseTool = canUseTool;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void validateReservationTime(LocalTime startTime, LocalTime endTime) {
+
+        if (openTime.isAfter(startTime) || closeTime.isBefore(endTime)) {
+            throw new InvalidRequestTimeException("해당 시간대에는 예약할 수 없습니다.");
+        }
     }
 
 }
