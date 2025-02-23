@@ -1,16 +1,14 @@
 package ggs.srr.service.user;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.domain.user.Role;
 import ggs.srr.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Comparator;
+
 import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +57,7 @@ class UserServiceTest {
     }
 
     private void saveUser(int size, List<Double> levels) {
-        for (int i = 0 ; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             FtUser user = new FtUser(1, "1", Role.CADET, 0, 0, levels.get(i), null);
             userRepository.save(user);
         }

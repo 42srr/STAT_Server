@@ -1,6 +1,5 @@
 package ggs.srr.repository.reservation;
 
-
 import ggs.srr.domain.reservation.Reservation;
 import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.studyroom.StudyRoom;
@@ -112,8 +111,8 @@ public class ReservationRepositoryTest {
     }
 
     private List<StudyRoom> createStudyRoom() {
-        StudyRoom s1 = new StudyRoom("s1", null, LocalTime.of(9, 0), LocalTime.of(18, 0), 0, 0,0,0);
-        StudyRoom s2 = new StudyRoom("s2", null, LocalTime.of(9, 0), LocalTime.of(18, 0), 0, 0,0,0);
+        StudyRoom s1 = new StudyRoom("s1", null, LocalTime.of(9, 0), LocalTime.of(18, 0), 0, 0, 0, 0);
+        StudyRoom s2 = new StudyRoom("s2", null, LocalTime.of(9, 0), LocalTime.of(18, 0), 0, 0, 0, 0);
         return List.of(s1, s2);
     }
 

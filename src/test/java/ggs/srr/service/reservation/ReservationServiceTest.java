@@ -3,8 +3,6 @@ package ggs.srr.service.reservation;
 import ggs.srr.domain.reservation.Reservation;
 import ggs.srr.domain.studyroom.exception.InvalidRequestTimeException;
 import ggs.srr.repository.reservation.ReservationRepository;
-import ggs.srr.repository.studygroup.studygroup.StudyGroupRepository;
-import ggs.srr.repository.studyroom.StudyRoomRepository;
 import ggs.srr.service.reservation.dto.request.*;
 import ggs.srr.service.reservation.dto.response.FindReservationsResponse;
 import ggs.srr.service.reservation.exception.DuplicateReservationException;
