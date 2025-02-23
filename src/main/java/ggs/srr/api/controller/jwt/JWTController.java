@@ -7,7 +7,6 @@ import ggs.srr.api.controller.jwt.exception.InvalidRefreshTokenException;
 import ggs.srr.api.controller.jwt.exception.NotFoundUserException;
 import ggs.srr.domain.user.FtUser;
 import ggs.srr.jwt.JWTUtil;
-import ggs.srr.oauth.provider.dto.JwtToken;
 import ggs.srr.service.user.UserService;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.validation.Valid;

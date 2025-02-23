@@ -31,7 +31,6 @@ public class ReservationService {
     private final StudyGroupRepository studyGroupRepository;
     private final StudyRoomRepository studyRoomRepository;
 
-    // 예약 생성
     @Transactional
     public void createReservation(CreateReservationServiceRequest request) {
 
@@ -65,7 +64,6 @@ public class ReservationService {
 
     }
 
-    // 사용자 그룹으로 예약 조회
     public FindReservationsResponse findReservationsByStudyGroup(FindReservationByStudyGroupServiceRequest request) {
 
         List<Reservation> findReservations = reservationRepository.findByStudyGroupId(request.getStudyGroupId());
@@ -75,8 +73,6 @@ public class ReservationService {
         return new FindReservationsResponse(responses);
 
     }
-
-    // 스터디룸 별 예약 조회
 
     public FindReservationsResponse findReservationsByStudyRoom(FindReservationByStudyRoomServiceRequest request) {
 
@@ -88,8 +84,6 @@ public class ReservationService {
 
     }
 
-    // 예약 취소
-
     @Transactional
     public void deleteReservation(DeleteReservationServiceRequest request) {
         Reservation findReservation = reservationRepository.findById(request.getReservationId());
@@ -100,8 +94,6 @@ public class ReservationService {
         reservationRepository.remove(findReservation);
     }
 
-
-    // 예약 수정
 
     @Transactional
     public void updateReservation(UpdateReservationServiceRequest request) {

@@ -1,9 +1,7 @@
 package ggs.srr.api;
 
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 
 @Getter
 public class ApiResponse<T> {

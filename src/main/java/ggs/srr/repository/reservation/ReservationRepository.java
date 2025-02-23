@@ -1,11 +1,9 @@
 package ggs.srr.repository.reservation;
 
 import ggs.srr.domain.reservation.Reservation;
-import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.studyroom.StudyRoom;
 import ggs.srr.repository.reservation.exception.FindByNullException;
 import ggs.srr.repository.studygroup.exception.FindIdNullException;
-import ggs.srr.service.reservation.exception.NotFoundReservationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
