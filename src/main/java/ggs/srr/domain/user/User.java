@@ -2,17 +2,13 @@ package ggs.srr.domain.user;
 
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.userstudygroup.UserStudyGroup;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +18,12 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private long ftServerId;
+    private Long ftServerId;
+
+    @Column(unique = true)
     private String intraId;
 
     @Enumerated(EnumType.STRING)
@@ -40,17 +38,17 @@ public class User {
     private String oAuth2AccessToken;
     private String oauth2RefreshToken;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     @OneToMany(mappedBy = "user")
     private List<ProjectUser> projectUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
-
-
     @Builder
-    private User(long ftServerId, String intraId, Role role,
-                  int wallet, int collectionPoint, double level, String image) {
+    private User(Long ftServerId, String intraId, Role role, int wallet, int collectionPoint, double level, String image, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.ftServerId = ftServerId;
         this.intraId = intraId;
         this.role = role;
@@ -58,18 +56,7 @@ public class User {
         this.collectionPoint = collectionPoint;
         this.level = level;
         this.image = image;
-    }
-
-    @Builder
-    private User(int ftServerId, String intraId, String role, int wallet, int correctionPoint, double level, String image) {
-    }
-
-      public void updateRefreshToken(String jwtRefreshToken) {
-        this.jwtRefreshToken = jwtRefreshToken;
-    }
-
-    public void setOauth2Token(String oAuth2AccessToken, String oauth2RefreshToken) {
-        this.oAuth2AccessToken = oAuth2AccessToken;
-        this.oauth2RefreshToken = oauth2RefreshToken;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }

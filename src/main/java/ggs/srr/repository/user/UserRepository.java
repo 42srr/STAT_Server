@@ -2,7 +2,6 @@ package ggs.srr.repository.user;
 
 import ggs.srr.domain.user.User;
 import ggs.srr.exception.repository.common.FindByNullException;
-import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
