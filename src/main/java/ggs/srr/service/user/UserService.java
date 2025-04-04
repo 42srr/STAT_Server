@@ -4,14 +4,17 @@ import ggs.srr.domain.user.User;
 import ggs.srr.exception.service.user.NotFoundUserException;
 import ggs.srr.repository.user.UserRepository;
 import ggs.srr.service.user.request.UserInformationServiceRequest;
+import ggs.srr.service.user.response.LevelDistributionResponse;
 import ggs.srr.service.user.response.UserInformationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
+import static java.util.stream.Collectors.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,6 +34,17 @@ public class UserService {
 
         boolean updatable = isUpdatableUser(findUser, now);
         return new UserInformationResponse(findUser, updatable);
+    }
+
+    public LevelDistributionResponse getUserLevelDistribution() {
+        List<User> users = userRepository.findAll();
+
+        Map<Integer, Long> levelDistributionMap = users.stream()
+                .collect(
+                        groupingBy(user -> (int) Math.floor(user.getLevel()), counting())
+                );
+
+        return new LevelDistributionResponse(levelDistributionMap);
     }
 
     private boolean isUpdatableUser(User user, LocalDateTime now) {
