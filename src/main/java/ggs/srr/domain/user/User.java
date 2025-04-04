@@ -8,14 +8,18 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-public class FtUser {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User {
 
     @Id
     @GeneratedValue
@@ -42,10 +46,10 @@ public class FtUser {
     @OneToMany(mappedBy = "user")
     private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
-    public FtUser() {
-    }
 
-    public FtUser(long ftServerId, String intraId, Role role,
+
+    @Builder
+    private User(long ftServerId, String intraId, Role role,
                   int wallet, int collectionPoint, double level, String image) {
         this.ftServerId = ftServerId;
         this.intraId = intraId;
@@ -56,10 +60,11 @@ public class FtUser {
         this.image = image;
     }
 
-    public FtUser(int ftServerId, String intraId, String role, int wallet, int correctionPoint, double level, String image) {
+    @Builder
+    private User(int ftServerId, String intraId, String role, int wallet, int correctionPoint, double level, String image) {
     }
 
-    public void updateRefreshToken(String jwtRefreshToken) {
+      public void updateRefreshToken(String jwtRefreshToken) {
         this.jwtRefreshToken = jwtRefreshToken;
     }
 
