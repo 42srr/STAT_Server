@@ -2,8 +2,12 @@ package ggs.srr.repository.user;
 
 import ggs.srr.domain.user.User;
 import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.repository.user.dto.UserRankQueryDto;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 @ActiveProfiles("test")
 class UserRepositoryTest {
 
@@ -70,6 +75,75 @@ class UserRepositoryTest {
 
         //then
         assertThat(users).hasSize(2);
+    }
+
+    @DisplayName("사용자를 level 기준으로 정렬한 뒤 maxResult 보다 작은 수의 사용자를 반환할 수 있다.")
+    @ParameterizedTest
+    @CsvSource({"0, 5", "1, 7", "1, 10"})
+    void rankByLevel(int startPosition, int maxResult) {
+        //given
+        for (int i = 0; i < 17; i++) {
+            User user = User.builder().intraId("user " + i).level(2 + (i / 10.0)).build();
+            userRepository.save(user);
+        }
+
+        UserRankQueryDto dto = new UserRankQueryDto(startPosition, maxResult);
+
+        //when
+        List<User> rankedUsers = userRepository.getRankByLevel(dto);
+
+        rankedUsers.stream()
+                .forEach(u -> log.info("level = {}", u.getLevel()));
+
+        //then
+        assertThat(rankedUsers.size()).isLessThanOrEqualTo(maxResult);
+        assertThat(rankedUsers).isSortedAccordingTo((u1, u2) -> Double.compare(u2.getLevel(), u1.getLevel()));
+    }
+
+    @DisplayName("사용자를 wallet 기준으로 정렬한 뒤 maxResult 보다 작은 수의 사용자를 반환할 수 있다.")
+    @ParameterizedTest
+    @CsvSource({"0, 5", "1, 7", "1, 10"})
+    void rankByWallet(int startPosition, int maxResult) {
+        //given
+        for (int i = 0; i < 17; i++) {
+            User user = User.builder().intraId("user " + i).wallet(i).build();
+            userRepository.save(user);
+        }
+
+        UserRankQueryDto dto = new UserRankQueryDto(startPosition, maxResult);
+
+        //when
+        List<User> rankedUsers = userRepository.getRankByWallet(dto);
+
+        rankedUsers.stream()
+                .forEach(u -> log.info("wallet = {}", u.getWallet()));
+
+        //then
+        assertThat(rankedUsers.size()).isLessThanOrEqualTo(maxResult);
+        assertThat(rankedUsers).isSortedAccordingTo((u1, u2) -> u2.getWallet() - u1.getWallet());
+    }
+
+    @DisplayName("사용자를 collection point 기준으로 정렬한 뒤 maxResult 보다 작은 수의 사용자를 반환할 수 있다.")
+    @ParameterizedTest
+    @CsvSource({"0, 5", "1, 7", "1, 10"})
+    void rankByCollectionPoint(int startPosition, int maxResult) {
+        //given
+        for (int i = 0; i < 17; i++) {
+            User user = User.builder().intraId("user " + i).collectionPoint(i).build();
+            userRepository.save(user);
+        }
+
+        UserRankQueryDto dto = new UserRankQueryDto(startPosition, maxResult);
+
+        //when
+        List<User> rankedUsers = userRepository.getRankByCollectionPoint(dto);
+
+        rankedUsers.stream()
+                .forEach(u -> log.info("collection point = {}", u.getCollectionPoint()));
+
+        //then
+        assertThat(rankedUsers.size()).isLessThanOrEqualTo(maxResult);
+        assertThat(rankedUsers).isSortedAccordingTo((u1, u2) -> u2.getCollectionPoint() - u1.getCollectionPoint());
     }
 
 }
