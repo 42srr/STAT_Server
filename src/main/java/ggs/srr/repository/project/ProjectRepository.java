@@ -27,12 +27,6 @@ public class ProjectRepository {
         return Optional.ofNullable(em.find(Project.class, id));
     }
 
-    public Optional<Project> findByProjectName(String projectName) {
-        return em.createQuery("select p from Project p where p.name = :projectName", Project.class)
-                .setParameter("projectName", projectName)
-                .getResultList().stream().findAny();
-    }
-
     public List<Project> findAll() {
         return em.createQuery("select p from Project p", Project.class)
                 .getResultList();
