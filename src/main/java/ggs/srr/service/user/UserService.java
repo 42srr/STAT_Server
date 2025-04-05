@@ -3,7 +3,9 @@ package ggs.srr.service.user;
 import ggs.srr.domain.user.User;
 import ggs.srr.exception.service.user.NotFoundUserException;
 import ggs.srr.repository.user.UserRepository;
+import ggs.srr.repository.user.dto.UserRankQueryDto;
 import ggs.srr.service.user.request.UserInformationServiceRequest;
+import ggs.srr.service.user.request.UserRankingServiceRequest;
 import ggs.srr.service.user.response.LevelDistributionResponse;
 import ggs.srr.service.user.response.UserInformationResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,33 @@ public class UserService {
                 );
 
         return new LevelDistributionResponse(levelDistributionMap);
+    }
+
+    public List<UserInformationResponse> getUserRankingOfLevel(UserRankingServiceRequest request) {
+
+        UserRankQueryDto queryDto = new UserRankQueryDto(request.getStartPosition(), request.getMaxResult());
+
+        return userRepository.getRankByLevel(queryDto).stream()
+                .map(u -> new UserInformationResponse(u, isUpdatableUser(u, LocalDateTime.now())))
+                .collect(toList());
+    }
+
+    public List<UserInformationResponse> getUserRankingOfWallet(UserRankingServiceRequest request) {
+
+        UserRankQueryDto queryDto = new UserRankQueryDto(request.getStartPosition(), request.getMaxResult());
+
+        return userRepository.getRankByWallet(queryDto).stream()
+                .map(u -> new UserInformationResponse(u, isUpdatableUser(u, LocalDateTime.now())))
+                .collect(toList());
+    }
+
+    public List<UserInformationResponse> getUserRankingOfCollectionPoint(UserRankingServiceRequest request) {
+
+        UserRankQueryDto queryDto = new UserRankQueryDto(request.getStartPosition(), request.getMaxResult());
+
+        return userRepository.getRankByCollectionPoint(queryDto).stream()
+                .map(u -> new UserInformationResponse(u, isUpdatableUser(u, LocalDateTime.now())))
+                .collect(toList());
     }
 
     private boolean isUpdatableUser(User user, LocalDateTime now) {
