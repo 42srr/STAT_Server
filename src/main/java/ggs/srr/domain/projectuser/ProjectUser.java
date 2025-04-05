@@ -3,18 +3,24 @@ package ggs.srr.domain.projectuser;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.user.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectUser {
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Enumerated(EnumType.STRING)
     private ProjectUserStatus status;
+
+    private int finalMark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -24,18 +30,14 @@ public class ProjectUser {
     @JoinColumn(name = "project_id")
     private Project project;
 
-
-    public void initUser(User user) {
+    @Builder
+    private ProjectUser(ProjectUserStatus status, int finalMark, User user, Project project) {
+        this.status = status;
+        this.finalMark = finalMark;
         this.user = user;
-        user.getProjectUsers().add(this);
-    }
-
-    public void initProject(Project project) {
         this.project = project;
-        project.getProjectUsers().add(this);
-    }
 
-    public void initStatus(String status) {
-        this.status = ProjectUserStatus.getStatus(status);
+        user.getProjectUsers().add(this);
+        project.getProjectUsers().add(this);
     }
 }

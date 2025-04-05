@@ -15,8 +15,8 @@ public class ProjectUserService {
         this.projectUserRepository = projectUserRepository;
     }
 
-    @Transactional(readOnly = false)
-    public long save(ProjectUser projectUser) {
-        return projectUserRepository.save(projectUser);
-    }
+//    @Transactional(readOnly = false)
+//    public long save(ProjectUser projectUser) {
+//        return projectUserRepository.save(projectUser);
+//    }
 }
