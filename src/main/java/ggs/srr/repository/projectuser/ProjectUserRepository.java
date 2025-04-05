@@ -5,6 +5,8 @@ import ggs.srr.exception.repository.common.FindByNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,6 +25,11 @@ public class ProjectUserRepository {
         }
 
         return Optional.ofNullable(em.find(ProjectUser.class, id));
+    }
+
+    public List<ProjectUser> findAll() {
+        return em.createQuery("select pu from ProjectUser pu", ProjectUser.class)
+                .getResultList();
     }
 
 }
