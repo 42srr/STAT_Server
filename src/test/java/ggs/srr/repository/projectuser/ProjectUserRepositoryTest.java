@@ -154,6 +154,32 @@ class ProjectUserRepositoryTest {
         //then
         assertThat(projectUsers).hasSize(3);
     }
+
+    @DisplayName("사용자의 아이디와 프로젝트의 아이디를 통해 사용자가 진행중인 프로젝트를 조회할 수 있다.")
+    @Test
+    void findByUserIdAndProjectId() {
+        //given
+        User user = createUser("test");
+        Project p1 = createProject("p1");
+        Project p2 = createProject("p2");
+
+        userRepository.save(user);
+        projectRepository.save(p1);
+        projectRepository.save(p2);
+
+        ProjectUser pu1 = createProjectUser(user, p1, IN_PROGRESS);
+        ProjectUser pu2 = createProjectUser(user, p2, IN_PROGRESS);
+
+        projectUserRepository.save(pu1);
+        projectUserRepository.save(pu2);
+        //when
+        ProjectUser findPu = projectUserRepository.findByUserIdAdnProjectId(user.getId(), p1.getId()).get();
+
+        //then
+        assertThat(findPu).isNotNull();
+        assertThat(findPu.getUser().getId()).isEqualTo(user.getId());
+        assertThat(findPu.getProject().getId()).isEqualTo(p1.getId());
+    }
     
     private User createUser(String intraId) {
         return User.builder()
