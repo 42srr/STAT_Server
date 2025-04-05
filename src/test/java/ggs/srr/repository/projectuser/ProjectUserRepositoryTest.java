@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static ggs.srr.domain.projectuser.ProjectUserStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,7 @@ class ProjectUserRepositoryTest {
         //given
         User user = createUser("test");
         Project project = createProject("test");
-        ProjectUser projectUser = createProjectUser(user, project, ProjectUserStatus.DEFAULT);
+        ProjectUser projectUser = createProjectUser(user, project, DEFAULT);
 
         userRepository.save(user);
         projectRepository.save(project);
@@ -74,8 +75,8 @@ class ProjectUserRepositoryTest {
         Project project1 = createProject("test project 1");
         Project project2 = createProject("test project 2");
 
-        ProjectUser projectUser1 = createProjectUser(user, project1, ProjectUserStatus.IN_PROGRESS);
-        ProjectUser projectUser2 = createProjectUser(user, project2, ProjectUserStatus.IN_PROGRESS);
+        ProjectUser projectUser1 = createProjectUser(user, project1, IN_PROGRESS);
+        ProjectUser projectUser2 = createProjectUser(user, project2, IN_PROGRESS);
 
         userRepository.save(user);
 
@@ -90,6 +91,68 @@ class ProjectUserRepositoryTest {
 
         //then
         assertThat(userProjects).hasSize(2);
+    }
+
+    @DisplayName("사용자의 프로젝트를 사용자 아이디와 type 으로 조회할 수 있다.")
+    @Test
+    void findByUserIdAndStatus() {
+        //given
+        User user = createUser("test");
+        Project project1 = createProject("test project 1");
+        Project project2 = createProject("test project 2");
+        Project project3 = createProject("test project 3");
+
+        ProjectUser projectUser1 = createProjectUser(user, project1, IN_PROGRESS);
+        ProjectUser projectUser2 = createProjectUser(user, project2, IN_PROGRESS);
+        ProjectUser projectUser3 = createProjectUser(user, project3, FINISHED);
+
+        userRepository.save(user);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+        projectRepository.save(project3);
+
+        projectUserRepository.save(projectUser1);
+        projectUserRepository.save(projectUser2);
+        projectUserRepository.save(projectUser3);
+
+        //when
+
+        List<ProjectUser> projectUsers = projectUserRepository.findByUserIdAndStatus(user.getId(), IN_PROGRESS);
+
+        //then
+        assertThat(projectUsers).hasSize(2);
+    }
+
+    @DisplayName("사용자의 프로젝트를 사용자 아이디로 조회할 수 있다.")
+    @Test
+    void findByUserId() {
+        //given
+        User user = createUser("test");
+        Project project1 = createProject("test project 1");
+        Project project2 = createProject("test project 2");
+        Project project3 = createProject("test project 3");
+
+        ProjectUser projectUser1 = createProjectUser(user, project1, IN_PROGRESS);
+        ProjectUser projectUser2 = createProjectUser(user, project2, IN_PROGRESS);
+        ProjectUser projectUser3 = createProjectUser(user, project3, FINISHED);
+
+        userRepository.save(user);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+        projectRepository.save(project3);
+
+        projectUserRepository.save(projectUser1);
+        projectUserRepository.save(projectUser2);
+        projectUserRepository.save(projectUser3);
+
+        //when
+
+        List<ProjectUser> projectUsers = projectUserRepository.findByUserId(user.getId());
+
+        //then
+        assertThat(projectUsers).hasSize(3);
     }
     
     private User createUser(String intraId) {
