@@ -2,6 +2,7 @@ package ggs.srr.repository.user;
 
 import ggs.srr.domain.user.User;
 import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.repository.user.dto.UserRankQueryDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,27 @@ public class UserRepository {
         return em.createQuery("select u from User u", User.class)
                 .getResultList();
     }
+
+    public List<User> getRankByLevel(UserRankQueryDto dto) {
+        return em.createQuery("select u from User u order by u.level desc", User.class)
+                .setFirstResult(dto.getStartPosition())
+                .setMaxResults(dto.getMaxResult())
+                .getResultList();
+    }
+
+    public List<User> getRankByWallet(UserRankQueryDto dto) {
+        return em.createQuery("select u from User u order by u.wallet desc", User.class)
+                .setFirstResult(dto.getStartPosition())
+                .setMaxResults(dto.getMaxResult())
+                .getResultList();
+    }
+
+    public List<User> getRankByCollectionPoint(UserRankQueryDto dto) {
+        return em.createQuery("select u from User u order by u.collectionPoint desc", User.class)
+                .setFirstResult(dto.getStartPosition())
+                .setMaxResults(dto.getMaxResult())
+                .getResultList();
+    }
+
 
 }
