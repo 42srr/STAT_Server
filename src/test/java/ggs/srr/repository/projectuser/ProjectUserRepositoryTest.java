@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,6 +64,32 @@ class ProjectUserRepositoryTest {
         assertThatThrownBy(() -> projectUserRepository.findById(null))
                 .isInstanceOf(FindByNullException.class)
                 .hasMessage("사용자의 프로젝트를 조회시 null 을 대입할 수 없습니다.");
+    }
+
+    @DisplayName("모든 사용자의 프로젝트를 조회할 수 있다.")
+    @Test
+    void findAll() {
+        //given
+        User user = createUser("test");
+        Project project1 = createProject("test project 1");
+        Project project2 = createProject("test project 2");
+
+        ProjectUser projectUser1 = createProjectUser(user, project1, ProjectUserStatus.IN_PROGRESS);
+        ProjectUser projectUser2 = createProjectUser(user, project2, ProjectUserStatus.IN_PROGRESS);
+
+        userRepository.save(user);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+
+        projectUserRepository.save(projectUser1);
+        projectUserRepository.save(projectUser2);
+
+        //when
+        List<ProjectUser> userProjects = projectUserRepository.findAll();
+
+        //then
+        assertThat(userProjects).hasSize(2);
     }
     
     private User createUser(String intraId) {
