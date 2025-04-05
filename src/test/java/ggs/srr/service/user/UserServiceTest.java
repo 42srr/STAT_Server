@@ -3,6 +3,7 @@ package ggs.srr.service.user;
 import ggs.srr.domain.user.User;
 import ggs.srr.repository.user.UserRepository;
 import ggs.srr.service.user.request.UserInformationServiceRequest;
+import ggs.srr.service.user.request.UserRankingServiceRequest;
 import ggs.srr.service.user.response.LevelDistributionResponse;
 import ggs.srr.service.user.response.UserInformationResponse;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -76,12 +78,12 @@ class UserServiceTest {
     @Test
     void getUserLevelDistribution() {
         //given
-        User user1 = createUserBy("test1", 1.2);
-        User user2 = createUserBy("test2", 1.7);
-        User user3 = createUserBy("test3", 2.1);
-        User user4 = createUserBy("test4", 4.2);
-        User user5 = createUserBy("test5", 5.2);
-        User user6 = createUserBy("test6", 5.9);
+        User user1 = createUserBy("test1", 1.2, 0, 0);
+        User user2 = createUserBy("test2", 1.7, 0, 0);
+        User user3 = createUserBy("test3", 2.1,0, 0);
+        User user4 = createUserBy("test4", 4.2,0, 0);
+        User user5 = createUserBy("test5", 5.2,0, 0);
+        User user6 = createUserBy("test6", 5.9,0, 0);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -100,10 +102,69 @@ class UserServiceTest {
         assertThat(userLevelDistribution.getDistribution().get(5)).isEqualTo(2);
     }
 
-    private User createUserBy(String intraId, double level) {
+    @DisplayName("사용자의 level ranking 순위를 제공한다.")
+    @Test
+    void getUserRankingOfLevel() {
+        //given
+        for (int i = 0; i < 20; i++) {
+            User user = createUserBy("test " + i, 2.0 + i / 10.0, 0, 0);
+            userRepository.save(user);
+        }
+
+        UserRankingServiceRequest request = new UserRankingServiceRequest(0, 10);
+
+        //when
+        List<UserInformationResponse> userLevelRanking = userService.getUserRankingOfLevel(request);
+
+        //then
+        assertThat(userLevelRanking.size()).isLessThanOrEqualTo(10);
+        assertThat(userLevelRanking).isSortedAccordingTo((r1, r2) -> Double.compare(r2.getLevel(), r1.getLevel()));
+    }
+
+    @DisplayName("사용자의 level ranking 순위를 제공한다.")
+    @Test
+    void getUserRankingOfWallet() {
+        //given
+        for (int i = 0; i < 20; i++) {
+            User user = createUserBy("test " + i, 2.0 + i / 10.0, i + 3, 0);
+            userRepository.save(user);
+        }
+
+        UserRankingServiceRequest request = new UserRankingServiceRequest(0, 10);
+
+        //when
+        List<UserInformationResponse> userLevelRanking = userService.getUserRankingOfWallet(request);
+
+        //then
+        assertThat(userLevelRanking.size()).isLessThanOrEqualTo(10);
+        assertThat(userLevelRanking).isSortedAccordingTo((r1, r2) -> r2.getWallet() - r1.getWallet());
+    }
+
+    @DisplayName("사용자의 level ranking 순위를 제공한다.")
+    @Test
+    void getUserRankingOfCollectionPoint() {
+        //given
+        for (int i = 0; i < 20; i++) {
+            User user = createUserBy("test " + i, 2.0 + i / 10.0, 0, i + 10);
+            userRepository.save(user);
+        }
+
+        UserRankingServiceRequest request = new UserRankingServiceRequest(0, 10);
+
+        //when
+        List<UserInformationResponse> userLevelRanking = userService.getUserRankingOfCollectionPoint(request);
+
+        //then
+        assertThat(userLevelRanking.size()).isLessThanOrEqualTo(10);
+        assertThat(userLevelRanking).isSortedAccordingTo((r1, r2) -> r2.getCollectionPoint() - r1.getCollectionPoint());
+    }
+
+    private User createUserBy(String intraId, double level, int wallet, int collectionPoint) {
         return User.builder()
                 .intraId(intraId)
                 .level(level)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }
