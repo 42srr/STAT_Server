@@ -2,7 +2,6 @@ package ggs.srr.repository.projectuser;
 
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
-import ggs.srr.domain.user.User;
 import ggs.srr.exception.repository.common.FindByNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -45,5 +44,12 @@ public class ProjectUserRepository {
         return em.createQuery("select pu from ProjectUser pu where pu.user.id = :userId", ProjectUser.class)
                 .setParameter("userId", userId)
                 .getResultList();
+    }
+
+    public Optional<ProjectUser> findByUserIdAdnProjectId(Long userId, Long projectId) {
+        return em.createQuery("select pu from ProjectUser pu where pu.user.id = :userId and pu.project.id = :projectId", ProjectUser.class)
+                .setParameter("userId", userId)
+                .setParameter("projectId", projectId)
+                .getResultStream().findAny();
     }
 }
