@@ -2,7 +2,7 @@ package ggs.srr.repository.studygroup.userstudygroup;
 
 import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.userstudygroup.UserStudyGroup;
-import ggs.srr.domain.user.FtUser;
+import ggs.srr.domain.user.User;
 import ggs.srr.repository.studygroup.exception.FindIdNullException;
 import ggs.srr.repository.studygroup.studygroup.StudyGroupRepository;
 import ggs.srr.repository.user.UserRepository;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -32,20 +33,22 @@ class UserStudyGroupRepositoryTest {
 
     @Autowired
     StudyGroupRepository studyGroupRepository;
+    @Autowired
+    private RestClient.Builder builder;
 
     @DisplayName("사용자 스터디그룹을 저장 및 id 로 조회할 수 있다.")
     @Test
     void findById() {
         //given
-        FtUser ftUser = new FtUser();
-        userRepository.save(ftUser);
+        User user = User.builder().build();
+        userRepository.save(user);
 
         StudyGroup studyGroup = new StudyGroup("test group");
         studyGroupRepository.save(studyGroup);
 
         UserStudyGroup userStudyGroup = new UserStudyGroup();
         userStudyGroup.registerGroup(studyGroup);
-        userStudyGroup.registerUser(ftUser);
+        userStudyGroup.registerUser(user);
         userStudyGroupRepository.save(userStudyGroup);
 
         //when
@@ -53,7 +56,7 @@ class UserStudyGroupRepositoryTest {
 
         //then
         assertThat(findUserStudyGroup).isSameAs(userStudyGroup);
-        assertThat(findUserStudyGroup.getUser()).isSameAs(ftUser);
+        assertThat(findUserStudyGroup.getUser()).isSameAs(user);
         assertThat(findUserStudyGroup.getStudyGroup()).isSameAs(studyGroup);
 
     }
@@ -68,7 +71,7 @@ class UserStudyGroupRepositoryTest {
     @DisplayName("사용자가 자신의 스터디 그룹을 조회할 경우 모두 조회되어야 한다.")
     @Test
     void findByUserId() {
-        FtUser user = new FtUser();
+        User user = User.builder().build();
         userRepository.save(user);
 
         StudyGroup studyGroup1 = new StudyGroup("test1");

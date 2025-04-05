@@ -1,6 +1,6 @@
 package ggs.srr.service.reservation.studygroup;
 
-import ggs.srr.domain.user.FtUser;
+import ggs.srr.domain.user.User;
 import ggs.srr.repository.user.UserRepository;
 import ggs.srr.service.studygroup.StudyGroupService;
 import ggs.srr.service.studygroup.exception.NoSuchUserException;
@@ -61,9 +61,9 @@ class StudyGroupServiceTest {
 
 
     private List<Long> createUsers() {
-        FtUser user1 = new FtUser();
-        FtUser user2 = new FtUser();
-        FtUser user3 = new FtUser();
+        User user1 = User.builder().build();
+        User user2 = User.builder().build();
+        User user3 = User.builder().build();
 
         userRepository.save(user1);
         userRepository.save(user2);

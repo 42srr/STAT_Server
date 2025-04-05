@@ -1,7 +1,7 @@
 package ggs.srr.domain.projectuser;
 
 import ggs.srr.domain.project.Project;
-import ggs.srr.domain.user.FtUser;
+import ggs.srr.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -18,14 +18,14 @@ public class ProjectUser {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private FtUser user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
 
-    public void initUser(FtUser user) {
+    public void initUser(User user) {
         this.user = user;
         user.getProjectUsers().add(this);
     }

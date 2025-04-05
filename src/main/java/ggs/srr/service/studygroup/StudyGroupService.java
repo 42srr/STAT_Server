@@ -2,7 +2,7 @@ package ggs.srr.service.studygroup;
 
 import ggs.srr.domain.studygroup.StudyGroup;
 import ggs.srr.domain.userstudygroup.UserStudyGroup;
-import ggs.srr.domain.user.FtUser;
+import ggs.srr.domain.user.User;
 import ggs.srr.repository.studygroup.studygroup.StudyGroupRepository;
 import ggs.srr.repository.studygroup.userstudygroup.UserStudyGroupRepository;
 import ggs.srr.repository.user.UserRepository;
@@ -33,10 +33,7 @@ public class StudyGroupService {
         List<Long> userIds = request.getUserIds();
 
         for (Long userId : userIds) {
-            FtUser user = userRepository.findById(userId);
-            if (user == null) {
-                throw new NoSuchUserException("존재하지 않는 회원입니다.");
-            }
+            User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchUserException("존재하지 않는 회원입니다."));
             UserStudyGroup userStudyGroup = new UserStudyGroup();
 
             userStudyGroup.registerUser(user);
@@ -76,7 +73,7 @@ public class StudyGroupService {
                 .toList();
     }
 
-    private UserResponse toUserResponse(FtUser user) {
+    private UserResponse toUserResponse(User user) {
         UserResponse userResponse = new UserResponse();
 
         userResponse.setUserId(user.getId());

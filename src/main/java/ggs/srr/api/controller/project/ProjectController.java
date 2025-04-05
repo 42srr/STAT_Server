@@ -6,7 +6,7 @@ import ggs.srr.api.controller.level.dto.ProjectsDto;
 import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
-import ggs.srr.domain.user.FtUser;
+import ggs.srr.domain.user.User;
 import ggs.srr.repository.project.ProjectRepository;
 import ggs.srr.service.user.UserService;
 import java.util.ArrayList;
@@ -46,14 +46,14 @@ public class ProjectController {
         return ApiResponse.ok(res);
     }
 
-    @GetMapping("/projects/{intraId}")
-    public ApiResponse<List<ProjectUserInfo>> projectUserInfo(@PathVariable String intraId) {
-        Optional<FtUser> ftUser = userService.findByIntraId(intraId);
-        List<ProjectUser> projectUsers = ftUser.get().getProjectUsers();
-        List<ProjectUserInfo> res = new ArrayList<>();
-        for (ProjectUser projectUser : projectUsers) {
-            res.add(new ProjectUserInfo(projectUser.getStatus().getText(), projectUser.getProject().getName()));
-        }
-        return ApiResponse.ok(res);
-    }
+//    @GetMapping("/projects/{intraId}")
+//    public ApiResponse<List<ProjectUserInfo>> projectUserInfo(@PathVariable String intraId) {
+//        Optional<User> User = userService.findByIntraId(intraId);
+//        List<ProjectUser> projectUsers = User.get().getProjectUsers();
+//        List<ProjectUserInfo> res = new ArrayList<>();
+//        for (ProjectUser projectUser : projectUsers) {
+//            res.add(new ProjectUserInfo(projectUser.getStatus().getText(), projectUser.getProject().getName()));
+//        }
+//        return ApiResponse.ok(res);
+//    }
 }
