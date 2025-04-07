@@ -28,6 +28,16 @@ public class UserRepository {
         return Optional.ofNullable(em.find(User.class, id));
     }
 
+    public Optional<User> findByIntraId(String intraId) {
+        if (intraId == null) {
+            throw new FindByNullException("intraId 로 조회시 null 을 입력할 수 없습ㄴ디ㅏ.");
+        }
+
+        return em.createQuery("select u from User u where u.intraId = :intraId", User.class)
+                .setParameter("intraId", intraId)
+                .getResultStream().findAny();
+    }
+
     public List<User> findAll() {
         return em.createQuery("select u from User u", User.class)
                 .getResultList();
