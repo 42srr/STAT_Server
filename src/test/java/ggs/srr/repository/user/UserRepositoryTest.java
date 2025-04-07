@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -144,6 +145,33 @@ class UserRepositoryTest {
         //then
         assertThat(rankedUsers.size()).isLessThanOrEqualTo(maxResult);
         assertThat(rankedUsers).isSortedAccordingTo((u1, u2) -> u2.getCollectionPoint() - u1.getCollectionPoint());
+    }
+
+    @DisplayName("사용자의 intraId 로 사용자를 조회할 수 있다.")
+    @Test
+    void findByIntraId() {
+        //given
+        User user1 = User.builder()
+                .intraId("test1")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        User user2 = User.builder()
+                .intraId("test2")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        //when
+        User findUser = userRepository.findByIntraId("test1").get();
+
+        //then
+        assertThat(findUser).isNotNull();
+        assertThat(findUser.getId()).isEqualTo(user1.getId());
     }
 
 }
