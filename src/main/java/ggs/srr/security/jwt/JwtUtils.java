@@ -14,31 +14,39 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-import static ggs.srr.exception.security.authentication.ErrorCode.EXPIRED_JWT_ERR;
-import static ggs.srr.exception.security.authentication.ErrorCode.JWT_ERR;
+import static ggs.srr.exception.security.authentication.AuthenticationErrorCode.EXPIRED_JWT_ERR;
+import static ggs.srr.exception.security.authentication.AuthenticationErrorCode.JWT_ERR;
 
 @Slf4j
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret}")
+
     private String secret;
 
-    @Value("${jwt.access_expire_ms}")
+
     private Long accessExpireMs;
 
-    @Value("${jwt.refresh_expire_ms}")
+
     private Long refreshExpireMs;
+
+    public JwtUtils(@Value("${jwt.secret}") String secret,
+                    @Value("${jwt.access_expire_ms}") Long accessExpireMs,
+                    @Value("${jwt.refresh_expire_ms}") Long refreshExpireMs) {
+        this.secret = secret;
+        this.accessExpireMs = accessExpireMs;
+        this.refreshExpireMs = refreshExpireMs;
+    }
 
     public JwtTokenResponse createJwtToken(CreateJwtRequest request, Long nowMs) {
 
-        String accessToken = createAccessToken(request, nowMs,true);
+        String accessToken = createAccessToken(request, nowMs, true);
         String refreshToken = createAccessToken(request, nowMs, false);
 
         return new JwtTokenResponse(accessToken, refreshToken, accessExpireMs / 1000);
     }
 
-    private String createAccessToken(CreateJwtRequest request, Long nowMs,boolean isAccessToken) {
+    private String createAccessToken(CreateJwtRequest request, Long nowMs, boolean isAccessToken) {
         long expireMs = isAccessToken ? accessExpireMs : refreshExpireMs;
 
         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes());

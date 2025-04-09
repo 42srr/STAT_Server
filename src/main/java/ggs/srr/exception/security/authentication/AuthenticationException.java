@@ -2,9 +2,10 @@ package ggs.srr.exception.security.authentication;
 
 public class AuthenticationException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private AuthenticationErrorCode authenticationErrorCode;
 
-    public AuthenticationException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
+    public AuthenticationException(AuthenticationErrorCode authenticationErrorCode) {
+        super(authenticationErrorCode.getMessage());
     }
+
 }

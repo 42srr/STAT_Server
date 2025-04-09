@@ -1,11 +1,14 @@
 package ggs.srr.security.authentication.client;
 
-import ggs.srr.exception.security.client.InvalidAuthenticationRequestException;
+import ggs.srr.exception.security.authentication.AuthenticationException;
 import ggs.srr.security.authentication.response.AuthorizationServerResponse;
 import ggs.srr.security.authentication.response.UserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -13,11 +16,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+import static ggs.srr.exception.security.authentication.AuthenticationErrorCode.INVALID_AUTHORIZATION_ERR;
+
 @Component
 @Slf4j
 public class UserDetailClient {
 
-    public UserDetails getUserDetails(AuthorizationServerResponse authorizationServerResponse) {
+    public UserDetails getUserDetails(AuthorizationServerResponse authorizationServerResponse) throws AuthenticationException {
         RestTemplate template = new RestTemplate();
 
         HttpHeaders headers = getHeaders(authorizationServerResponse);
@@ -36,7 +41,7 @@ public class UserDetailClient {
 
         if (content == null) {
             log.error("UserDetailClient.getUserDetails : 개인 정보를 불러오는데 실패했습니다.");
-            throw new InvalidAuthenticationRequestException("사용자 개인 정보를 불러오는데 실패했습니다.");
+            throw new AuthenticationException(INVALID_AUTHORIZATION_ERR);
         }
 
         content.keySet()

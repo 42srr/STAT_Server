@@ -29,11 +29,12 @@ public class AuthenticationSuccessHandler {
     public void handle(AuthorizationServerResponse authorizationServerResponse, HttpServletResponse response) throws IOException {
         UserDetails details = userDetailClient.getUserDetails(authorizationServerResponse);
 
-        JwtTokenResponse jwtToken = jwtUtils.createJwtToken(new CreateJwtRequest(details.getIntraId(), Role.CADET));
+        Long nowMs = System.currentTimeMillis();
+        JwtTokenResponse jwtToken = jwtUtils.createJwtToken(new CreateJwtRequest(details.getIntraId() ,Role.CADET), nowMs);
         userDetailService.updateUserDetails(details, authorizationServerResponse, jwtToken);
 
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
-                .tokenType("bearer")
+                .tokenType("Bearer")
                 .intraId(details.getIntraId())
                 .accessToken(jwtToken.getAccessToken())
                 .refreshToken(jwtToken.getRefreshToken())
@@ -42,6 +43,7 @@ public class AuthenticationSuccessHandler {
 
         String content = objectMapper.writeValueAsString(ResponseEntity.ok(authenticationResponse));
         response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
         response.getWriter().write(content);
     }
 }

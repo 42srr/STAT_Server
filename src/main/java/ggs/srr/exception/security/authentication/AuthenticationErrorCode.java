@@ -1,6 +1,9 @@
 package ggs.srr.exception.security.authentication;
 
-public enum ErrorCode {
+import lombok.Getter;
+
+@Getter
+public enum AuthenticationErrorCode {
 
     INVALID_AUTHORIZATION_ERR("올바르지 않은 Authorization code 입니다."),
     EXPIRED_JWT_ERR("만료된 JWT Token 입니다."),
@@ -10,11 +13,8 @@ public enum ErrorCode {
 
     private String message;
 
-    ErrorCode(String message) {
+    AuthenticationErrorCode(String message) {
         this.message = message;
     }
 
-    public String getMessage() {
-        return this.message;
-    }
 }
