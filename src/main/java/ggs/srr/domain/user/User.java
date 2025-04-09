@@ -36,7 +36,7 @@ public class User {
 
     private String jwtRefreshToken;
     private String oAuth2AccessToken;
-    private String oauth2RefreshToken;
+    private String oAuth2RefreshToken;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -58,5 +58,18 @@ public class User {
         this.image = image;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void updateAuthenticationServerToken(String oAuth2AccessToken, String oAuth2RefreshToken) {
+        this.oAuth2AccessToken = oAuth2AccessToken;
+        this.oAuth2RefreshToken = oAuth2RefreshToken;
+    }
+
+    public void updateRefreshToken(String jwtRefreshToken) {
+        this.jwtRefreshToken = jwtRefreshToken;
+    }
+
+    public void initializeCreateDateTime(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
