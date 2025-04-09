@@ -69,7 +69,8 @@ public class User {
         this.jwtRefreshToken = jwtRefreshToken;
     }
 
-    public void initializeCreateDateTime(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void initializeDateTime(LocalDateTime dateTime) {
+        this.createdAt = dateTime;
+        this.updatedAt = dateTime;
     }
 }

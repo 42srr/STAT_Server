@@ -36,9 +36,9 @@ public class LoginFilter extends OncePerRequestFilter {
             String content = objectMapper.writeValueAsString(responseEntity);
             response.getWriter().write(content);
 
-            return ;
+            return;
         }
 
-        authenticationManager.authenticate(code, response);
+        authenticationManager.authenticate(request, response, code);
     }
 }

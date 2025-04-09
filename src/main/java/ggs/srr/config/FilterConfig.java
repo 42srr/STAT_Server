@@ -3,6 +3,7 @@ package ggs.srr.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ggs.srr.security.authentication.AuthenticationManager;
 import ggs.srr.security.authentication.filter.AuthenticationFilter;
+import ggs.srr.security.authorization.AuthorizationFilter;
 import ggs.srr.security.jwt.JwtUtils;
 import ggs.srr.security.login.filter.LoginFilter;
 import jakarta.servlet.Filter;
@@ -35,5 +36,14 @@ public class FilterConfig {
         filterFilterRegistrationBean.setOrder(2);
         filterFilterRegistrationBean.addUrlPatterns("/*");
         return filterFilterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> authorizationFilter() {
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new AuthorizationFilter(objectMapper));
+        filterRegistrationBean.setOrder(3);
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
     }
 }

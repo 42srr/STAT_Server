@@ -2,6 +2,7 @@ package ggs.srr.security.authentication;
 
 import ggs.srr.security.authentication.client.AuthenticationClient;
 import ggs.srr.security.authentication.response.AuthorizationServerResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,11 +18,11 @@ public class AuthenticationManager {
     private final AuthenticationFailureHandler failureHandler;
     private final AuthenticationSuccessHandler successHandler;
 
-    public void authenticate(String code, HttpServletResponse response) throws IOException {
+    public void authenticate(HttpServletRequest request, HttpServletResponse response, String code) throws IOException {
 
         try {
             AuthorizationServerResponse authorizationServerResponse = authenticationClient.authenticate(code);
-            successHandler.handle(authorizationServerResponse, response);
+            successHandler.handle(request, response, authorizationServerResponse);
         } catch (HttpStatusCodeException e) {
             failureHandler.handle(e, response);
         }

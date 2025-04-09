@@ -21,13 +21,8 @@ import static ggs.srr.exception.security.authentication.AuthenticationErrorCode.
 @Component
 public class JwtUtils {
 
-
     private String secret;
-
-
     private Long accessExpireMs;
-
-
     private Long refreshExpireMs;
 
     public JwtUtils(@Value("${jwt.secret}") String secret,

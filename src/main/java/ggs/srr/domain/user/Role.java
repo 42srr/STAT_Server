@@ -14,7 +14,7 @@ public enum Role {
         this.text = text;
     }
 
-    public static boolean isAdmin(String role) {
-        return ADMIN.getText().equals(role);
+    public static boolean isAdmin(Role role) {
+        return role == ADMIN;
     }
 }
