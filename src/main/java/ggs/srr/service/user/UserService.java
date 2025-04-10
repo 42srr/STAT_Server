@@ -1,7 +1,8 @@
 package ggs.srr.service.user;
 
 import ggs.srr.domain.user.User;
-import ggs.srr.exception.service.user.NotFoundUserException;
+import ggs.srr.exception.user.UserErrorCode;
+import ggs.srr.exception.user.UserException;
 import ggs.srr.repository.user.UserRepository;
 import ggs.srr.repository.user.dto.UserRankQueryDto;
 import ggs.srr.service.user.request.UserInformationServiceRequest;
@@ -11,6 +12,7 @@ import ggs.srr.service.user.response.UserInformationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +34,7 @@ public class UserService {
 
     public UserInformationResponse findById(UserInformationServiceRequest request, LocalDateTime now) {
         User findUser = userRepository.findById(request.getId())
-                .orElseThrow(() -> new NotFoundUserException("해당 사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserException(UserErrorCode.NOT_FOUND_USER));
 
         boolean updatable = isUpdatableUser(findUser, now);
         return new UserInformationResponse(findUser, updatable);

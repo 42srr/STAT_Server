@@ -1,7 +1,7 @@
 package ggs.srr.repository.project;
 
 import ggs.srr.domain.project.Project;
-import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.exception.repository.FindByNullException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

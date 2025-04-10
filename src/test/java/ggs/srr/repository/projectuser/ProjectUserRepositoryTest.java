@@ -4,7 +4,7 @@ import ggs.srr.domain.project.Project;
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
 import ggs.srr.domain.user.User;
-import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.exception.repository.FindByNullException;
 import ggs.srr.repository.project.ProjectRepository;
 import ggs.srr.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,6 @@ import java.util.List;
 import static ggs.srr.domain.projectuser.ProjectUserStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

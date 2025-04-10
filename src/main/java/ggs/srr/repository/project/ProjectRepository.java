@@ -1,7 +1,7 @@
 package ggs.srr.repository.project;
 
 import ggs.srr.domain.project.Project;
-import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.exception.repository.FindByNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

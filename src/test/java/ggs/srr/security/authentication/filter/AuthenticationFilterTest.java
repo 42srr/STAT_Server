@@ -31,13 +31,15 @@ class AuthenticationFilterTest {
         FilterChain filterChain = mock(FilterChain.class);
         String validAccessToken = "this_is_valid_access_token";
 
-        doNothing().when(jwtUtils)
-                .validateToken(validAccessToken);
+
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + validAccessToken);
         MockHttpServletResponse response = new MockHttpServletResponse();
         AuthenticationFilter authFilter = new AuthenticationFilter(jwtUtils, new ObjectMapper());
+
+        doNothing().when(jwtUtils)
+                .validateToken(validAccessToken);
 
         //when
         authFilter.doFilterInternal(request, response, filterChain);

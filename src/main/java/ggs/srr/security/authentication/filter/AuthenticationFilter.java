@@ -32,6 +32,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
             String accessToken = getAccessToken(request);
             jwtUtils.validateToken(accessToken);
+            jwtUtils.setAttribute(request, accessToken);
             filterChain.doFilter(request, response);
         } catch (AuthenticationException e) {
 

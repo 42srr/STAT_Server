@@ -1,5 +1,6 @@
 package ggs.srr.security.jwt;
 
+import ggs.srr.domain.user.Role;
 import ggs.srr.exception.security.authentication.AuthenticationException;
 import ggs.srr.security.jwt.request.CreateJwtRequest;
 import ggs.srr.security.jwt.response.JwtTokenResponse;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -69,5 +71,16 @@ public class JwtUtils {
             throw new AuthenticationException(JWT_ERR);
         }
 
+    }
+
+    public void setAttribute(HttpServletRequest request, String accessToken) {
+        SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+
+        String intraId = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload().get("intraId").toString();
+        String roleText = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload().get("role").toString();
+        Role role = Role.getRoleBy(roleText);
+
+        request.setAttribute("intraId", intraId);
+        request.setAttribute("role", role);
     }
 }

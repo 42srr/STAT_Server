@@ -1,4 +1,4 @@
-package ggs.srr.exception.service.projectuser;
+package ggs.srr.exception.projectuser;
 
 public class NotFoundProjectUserException extends RuntimeException {
     public NotFoundProjectUserException(String message) {

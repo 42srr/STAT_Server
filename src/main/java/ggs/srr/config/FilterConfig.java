@@ -25,7 +25,7 @@ public class FilterConfig {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new LoginFilter(authenticationManager, objectMapper));
         filterRegistrationBean.setOrder(1);
-        filterRegistrationBean.addUrlPatterns("/login/*");
+        filterRegistrationBean.addUrlPatterns("/login/oauth2/*");
         return filterRegistrationBean;
     }
 

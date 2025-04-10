@@ -2,7 +2,7 @@ package ggs.srr.service.projectuser;
 
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
-import ggs.srr.exception.service.projectuser.NotFoundProjectUserException;
+import ggs.srr.exception.projectuser.NotFoundProjectUserException;
 import ggs.srr.repository.projectuser.ProjectUserRepository;
 import ggs.srr.service.projectuser.request.ProjectUserRequest;
 import ggs.srr.service.projectuser.request.ProjectUsersRequest;

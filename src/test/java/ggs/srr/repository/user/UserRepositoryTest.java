@@ -1,7 +1,7 @@
 package ggs.srr.repository.user;
 
 import ggs.srr.domain.user.User;
-import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.exception.repository.FindByNullException;
 import ggs.srr.repository.user.dto.UserRankQueryDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

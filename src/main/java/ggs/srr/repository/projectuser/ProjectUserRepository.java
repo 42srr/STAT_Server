@@ -2,7 +2,7 @@ package ggs.srr.repository.projectuser;
 
 import ggs.srr.domain.projectuser.ProjectUser;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
-import ggs.srr.exception.repository.common.FindByNullException;
+import ggs.srr.exception.repository.FindByNullException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
