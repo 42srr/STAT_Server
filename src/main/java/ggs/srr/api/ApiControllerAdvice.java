@@ -1,6 +1,5 @@
 package ggs.srr.api;
 
-import ggs.srr.api.controller.ApiResponse;
 import ggs.srr.exception.user.UserException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

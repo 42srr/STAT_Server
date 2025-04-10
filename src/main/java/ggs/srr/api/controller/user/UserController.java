@@ -1,6 +1,6 @@
 package ggs.srr.api.controller.user;
 
-import ggs.srr.api.controller.ApiResponse;
+import ggs.srr.api.ApiResponse;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
 import ggs.srr.service.projectuser.ProjectUserService;
 import ggs.srr.service.projectuser.request.ProjectUserRequest;

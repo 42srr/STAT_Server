@@ -1,4 +1,4 @@
-package ggs.srr.api.controller;
+package ggs.srr.api;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
