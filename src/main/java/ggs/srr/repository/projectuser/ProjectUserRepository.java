@@ -52,4 +52,8 @@ public class ProjectUserRepository {
                 .setParameter("projectId", projectId)
                 .getResultStream().findAny();
     }
+
+    public void deleteAll() {
+        em.createNativeQuery("truncate table project_user").executeUpdate();
+    }
 }
