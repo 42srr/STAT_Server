@@ -31,4 +31,11 @@ public class ProjectRepository {
         return em.createQuery("select p from Project p", Project.class)
                 .getResultList();
     }
+
+    public Optional<Project> findByName(String name) {
+        return em.createQuery("select p from Project p where p.name = :name", Project.class)
+                .setParameter("name", name)
+                .getResultStream()
+                .findAny();
+    }
 }
