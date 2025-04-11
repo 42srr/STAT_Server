@@ -48,4 +48,22 @@ class ProjectRepositoryTest {
                 .hasMessage("project 조회시 null 로 조회할 수 없습니다.");
     }
 
+    @DisplayName("project 를 이름으로 조회할 수 있다.")
+    @Test
+    void findByName() {
+        //given
+        Project project = Project.builder()
+                .name("test")
+                .build();
+
+        projectRepository.save(project);
+
+        //when
+        Project findProject = projectRepository.findByName("test").get();
+
+        //then
+        assertThat(findProject).isNotNull();
+        assertThat(findProject.getId()).isEqualTo(project.getId());
+    }
+
 }
