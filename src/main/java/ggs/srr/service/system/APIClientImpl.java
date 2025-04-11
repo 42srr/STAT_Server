@@ -1,27 +1,22 @@
 package ggs.srr.service.system;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ggs.srr.domain.user.FtUser;
 import ggs.srr.service.system.dto.UserDto;
 import ggs.srr.service.system.dto.UserProjectResponse.UsersProjectsResponse;
 import ggs.srr.service.system.dto.UsersRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -59,16 +54,23 @@ public class APIClientImpl implements APIClient{
     }
 
     @Override
-    public List<UserDto> fetchUsersFromTurbofetch() {
-        String url = TURBOFETCH_URL_BASE + "/users";
+    public List<UserDto> fetchUsersFromTurbofetch(String code) {
         RestTemplate restTemplate = new RestTemplate();
+
+        String url = UriComponentsBuilder
+                .fromHttpUrl(TURBOFETCH_URL_BASE)
+                .path("/users")
+                .queryParam("code", code)
+                .encode()
+                .build()
+                .toUriString();
 
         try {
             ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<Map<String, Object>>() {}
+                    new ParameterizedTypeReference<>() {}
             );
 
             Object data = response.getBody().get("data");

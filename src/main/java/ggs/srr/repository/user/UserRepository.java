@@ -58,11 +58,9 @@ public class UserRepository {
     }
 
     public List<User> getRankByCollectionPoint(UserRankQueryDto dto) {
-        return em.createQuery("select u from User u order by u.collectionPoint desc", User.class)
+        return em.createQuery("select u from User u order by u.correctionPoint desc", User.class)
                 .setFirstResult(dto.getStartPosition())
                 .setMaxResults(dto.getMaxResult())
                 .getResultList();
     }
-
-
 }

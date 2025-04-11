@@ -9,11 +9,7 @@ public class UserRankingServiceRequest {
     private int maxResult;
 
     public UserRankingServiceRequest(int startPosition, int maxResult) {
-        if (startPosition != 0) {
-            this.startPosition = startPosition * maxResult + 1;
-        } else {
-            this.startPosition = 0;
-        }
+        this.startPosition = startPosition * maxResult;
         this.maxResult = maxResult;
     }
 }

@@ -30,7 +30,7 @@ public class User {
     private Role role;
 
     private int wallet;
-    private int collectionPoint;
+    private int correctionPoint;
     private double level;
     private String image;
 
@@ -48,12 +48,12 @@ public class User {
     private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
     @Builder
-    private User(Long ftServerId, String intraId, Role role, int wallet, int collectionPoint, double level, String image, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private User(Long ftServerId, String intraId, Role role, int wallet, int correctionPoint, double level, String image, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.ftServerId = ftServerId;
         this.intraId = intraId;
         this.role = role;
         this.wallet = wallet;
-        this.collectionPoint = collectionPoint;
+        this.correctionPoint = correctionPoint;
         this.level = level;
         this.image = image;
         this.createdAt = createdAt;
@@ -72,5 +72,12 @@ public class User {
     public void initializeDateTime(LocalDateTime dateTime) {
         this.createdAt = dateTime;
         this.updatedAt = dateTime;
+    }
+
+    public void updateInformation(double level, int wallet, int correctionPoint) {
+        this.level = level;
+        this.wallet = wallet;
+        this.correctionPoint = correctionPoint;
+        this.updatedAt = LocalDateTime.now();
     }
 }

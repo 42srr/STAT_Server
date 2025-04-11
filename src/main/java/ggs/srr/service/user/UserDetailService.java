@@ -43,7 +43,7 @@ public class UserDetailService {
                 .ftServerId(details.getFtServerId())
                 .role(role)
                 .wallet(details.getWallet())
-                .collectionPoint(details.getCorrectionPoint())
+                .correctionPoint(details.getCorrectionPoint())
                 .build();
     }
 }

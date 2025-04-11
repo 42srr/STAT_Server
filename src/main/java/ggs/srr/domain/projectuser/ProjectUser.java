@@ -20,7 +20,7 @@ public class ProjectUser {
     @Enumerated(EnumType.STRING)
     private ProjectUserStatus status;
 
-    private int finalMark;
+    private Integer finalMark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

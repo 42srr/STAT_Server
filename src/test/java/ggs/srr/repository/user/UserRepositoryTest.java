@@ -130,7 +130,7 @@ class UserRepositoryTest {
     void rankByCollectionPoint(int startPosition, int maxResult) {
         //given
         for (int i = 0; i < 17; i++) {
-            User user = User.builder().intraId("user " + i).collectionPoint(i).build();
+            User user = User.builder().intraId("user " + i).correctionPoint(i).build();
             userRepository.save(user);
         }
 
@@ -140,11 +140,11 @@ class UserRepositoryTest {
         List<User> rankedUsers = userRepository.getRankByCollectionPoint(dto);
 
         rankedUsers.stream()
-                .forEach(u -> log.info("collection point = {}", u.getCollectionPoint()));
+                .forEach(u -> log.info("collection point = {}", u.getCorrectionPoint()));
 
         //then
         assertThat(rankedUsers.size()).isLessThanOrEqualTo(maxResult);
-        assertThat(rankedUsers).isSortedAccordingTo((u1, u2) -> u2.getCollectionPoint() - u1.getCollectionPoint());
+        assertThat(rankedUsers).isSortedAccordingTo((u1, u2) -> u2.getCorrectionPoint() - u1.getCorrectionPoint());
     }
 
     @DisplayName("사용자의 intraId 로 사용자를 조회할 수 있다.")

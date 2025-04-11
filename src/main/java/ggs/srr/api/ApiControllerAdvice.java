@@ -1,5 +1,6 @@
 package ggs.srr.api;
 
+import ggs.srr.exception.projectuser.ProjectUserException;
 import ggs.srr.exception.user.UserException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,7 +12,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class ApiControllerAdvice {
 
     @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler({IllegalArgumentException.class, UserException.class})
+    @ExceptionHandler({IllegalArgumentException.class, UserException.class, ProjectUserException.class})
     public ApiResponse<String> illegalArgumentException(RuntimeException e) {
         return ApiResponse.badRequest(e.getMessage());
     }

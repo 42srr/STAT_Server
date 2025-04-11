@@ -1,12 +1,12 @@
 package ggs.srr.service.system.dto;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class UserDto {
-    int ft_server_id;
+    long ft_server_id;
     String intra_id;
     String role;
     int wallet;

@@ -8,6 +8,7 @@ import ggs.srr.repository.user.dto.UserRankQueryDto;
 import ggs.srr.service.user.request.UserInformationServiceRequest;
 import ggs.srr.service.user.request.UserRankingServiceRequest;
 import ggs.srr.service.user.response.LevelDistributionResponse;
+import ggs.srr.service.user.response.UserFtIdAndIntraIdResponse;
 import ggs.srr.service.user.response.UserInformationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -82,4 +83,9 @@ public class UserService {
         return Duration.between(user.getUpdatedAt(), now).toHours() >= 12;
     }
 
+    public List<UserFtIdAndIntraIdResponse> getAllUsersFtIdAndIntraId() {
+        return userRepository.findAll().stream()
+                .map(u -> new UserFtIdAndIntraIdResponse(u.getFtServerId(), u.getIntraId()))
+                .toList();
+    }
 }

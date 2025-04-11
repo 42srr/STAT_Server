@@ -54,6 +54,7 @@ public class ProjectUserRepository {
     }
 
     public void deleteAll() {
-        em.createNativeQuery("truncate table project_user").executeUpdate();
+        findAll().stream()
+                .forEach(projectUser -> em.remove(projectUser));
     }
 }

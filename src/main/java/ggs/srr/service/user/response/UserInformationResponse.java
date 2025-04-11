@@ -18,7 +18,7 @@ public class UserInformationResponse {
         this.intraId = user.getIntraId();
         this.level = user.getLevel();
         this.wallet = user.getWallet();
-        this.collectionPoint = user.getCollectionPoint();
+        this.collectionPoint = user.getCorrectionPoint();
         this.imgURL = user.getImage();
         this.updatable = updatable;
     }

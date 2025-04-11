@@ -175,7 +175,7 @@ class UserControllerTest {
                 .intraId(intraId)
                 .role(Role.CADET)
                 .wallet(10)
-                .collectionPoint(10)
+                .correctionPoint(10)
                 .image("image url")
                 .build();
     }

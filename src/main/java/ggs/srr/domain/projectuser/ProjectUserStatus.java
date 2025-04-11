@@ -8,6 +8,7 @@ import java.util.Arrays;
 public enum ProjectUserStatus {
     FINISHED("finished"),
     IN_PROGRESS("in_progress"),
+    NOT_REGISTERED("not_registered"),
     DEFAULT("default")
     ;
 
@@ -18,6 +19,11 @@ public enum ProjectUserStatus {
     }
 
     public static ProjectUserStatus getByText(String text) {
+
+        if (text == null) {
+            return NOT_REGISTERED;
+        }
+
         return Arrays.stream(values())
                 .filter(status -> status.getText().equals(text))
                 .findAny()
