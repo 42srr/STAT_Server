@@ -1,6 +1,7 @@
 package ggs.srr.security.authorization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ggs.srr.api.ApiResponse;
 import ggs.srr.domain.user.Role;
 import ggs.srr.exception.security.authorization.AuthorizationException;
 import jakarta.servlet.FilterChain;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -32,12 +32,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         } catch (AuthorizationException e) {
             String message = e.getMessage();
 
-            ResponseEntity<String> responseEntity = new ResponseEntity<>(
-                    message,
-                    FORBIDDEN
-            );
-
-            response.getWriter().write(objectMapper.writeValueAsString(responseEntity));
+            ApiResponse<String> apiResponse = ApiResponse.forbidden(message);
+            response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
             response.setStatus(FORBIDDEN.value());
             response.setContentType("application/json");
 

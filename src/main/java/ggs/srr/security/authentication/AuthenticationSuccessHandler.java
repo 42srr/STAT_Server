@@ -1,6 +1,7 @@
 package ggs.srr.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ggs.srr.api.ApiResponse;
 import ggs.srr.domain.user.Role;
 import ggs.srr.security.authentication.client.UserDetailClient;
 import ggs.srr.security.authentication.response.AuthenticationResponse;
@@ -14,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class AuthenticationSuccessHandler {
                 .expire(jwtToken.getExpire())
                 .build();
 
-        String content = objectMapper.writeValueAsString(ResponseEntity.ok(authenticationResponse));
+        String content = objectMapper.writeValueAsString(ApiResponse.ok(authenticationResponse));
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.getWriter().write(content);

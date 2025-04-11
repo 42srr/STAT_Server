@@ -1,6 +1,7 @@
 package ggs.srr.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ggs.srr.api.ApiResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,20 +25,21 @@ public class AuthenticationFailureHandler {
 
         log.error("message = {}", message);
 
+        ApiResponse<String> apiResponse = null;
         if (status.is4xxClientError()) {
             log.error("err: 4xx error");
-            message = "Error: Invalid Authorization Code. Please retry";
-        } else if (status.is5xxServerError()){
+            message = "올바르지 않은 Authorization Code 입니다. 다시 시도해 주세요";
+            apiResponse = ApiResponse.unAuthorized(message);
+        } else {
             log.error("err: 5xx error");
-            message = "Error: 42 Authorization Server error. Please retry later";
+            e.printStackTrace();
+            message = "42 Authorization Server 오류 입니다. 나중에 다시 시도해 주세요.";
+            apiResponse = ApiResponse.internalServerError(message);
         }
 
-        ResponseEntity<String> responseEntity = ResponseEntity.badRequest()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(message);
-
-        String content = objectMapper.writeValueAsString(responseEntity);
+        String content = objectMapper.writeValueAsString(apiResponse);
         response.setStatus(status.value());
+        response.setContentType("application/json");
         response.getWriter().write(content);
     }
 }

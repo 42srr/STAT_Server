@@ -21,7 +21,7 @@ public class UserDetailService {
 
     public void updateUserDetails(UserDetails details, AuthorizationServerResponse authorizationServerResponse, JwtTokenResponse jwtToken, Role role) {
         String intraId = details.getIntraId();
-        User findUser = userRepository.findByIntraId(intraId).orElse(createNewUser(details, role));
+        User findUser = userRepository.findByIntraId(intraId).orElseGet(() -> createNewUser(details, role));
 
         findUser.updateAuthenticationServerToken(authorizationServerResponse.getAccessToken(), authorizationServerResponse.getRefreshToken());
         findUser.updateRefreshToken(jwtToken.getRefreshToken());

@@ -23,13 +23,22 @@ public class AuthenticationClient {
     @Value("${security.oauth2.client.42.client-secret}")
     private String clientSecret;
 
+    @Value("${security.oauth2.client.42.grant-type}")
+    private String grantType;
+
+    @Value("${security.oauth2.client.42.redirect-uri}")
+    private String redirectUri;
+
+    @Value("${security.oauth2.client.42.token-uri}")
+    private String tokenUri;
+
     public AuthorizationServerResponse authenticate(String code) {
 
         RestTemplate template = new RestTemplate();
         HttpEntity<Map<String, String>> request = getTokenRequestMessage(code);
 
         ResponseEntity<Map<String, Object>> response = template.exchange(
-                "https://api.intra.42.fr/oauth/token",
+                tokenUri,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<>() {
@@ -53,11 +62,11 @@ public class AuthenticationClient {
     private Map<String, String> createParameter(String code) {
         Map<String, String> params = new HashMap<>();
 
-        params.put("grant_type", "authorization_code");
-        params.put("client_id", "u-s4t2ud-4a50cde47279b31ea6a0d216344bcdea8aa951ea9d57e3c11fa8fa265160753c");
-        params.put("client_secret", "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");
+        params.put("grant_type", grantType);
+        params.put("client_id", clientId);
+        params.put("client_secret", clientSecret);
         params.put("code", code);
-        params.put("redirect_uri", "http://localhost:5173");
+        params.put("redirect_uri", redirectUri);
 
         return params;
     }

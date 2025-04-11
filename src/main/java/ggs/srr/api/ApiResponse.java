@@ -28,4 +28,16 @@ public class ApiResponse<T> {
         return ApiResponse.of(HttpStatus.BAD_REQUEST, data);
     }
 
+    public static <T> ApiResponse<T> unAuthorized(T data) {
+        return ApiResponse.of(HttpStatus.UNAUTHORIZED, data);
+    }
+
+    public static <T> ApiResponse<T> internalServerError(T data) {
+        return ApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, data);
+    }
+
+    public static <T> ApiResponse<T> forbidden(T data) {
+        return ApiResponse.of(HttpStatus.FORBIDDEN, data);
+    }
+
 }
