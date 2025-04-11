@@ -27,10 +27,10 @@ class ProjectUserRepositoryTest {
 
     @Autowired
     ProjectUserRepository projectUserRepository;
-    
+
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     ProjectRepository projectRepository;
 
@@ -179,19 +179,55 @@ class ProjectUserRepositoryTest {
         assertThat(findPu.getUser().getId()).isEqualTo(user.getId());
         assertThat(findPu.getProject().getId()).isEqualTo(p1.getId());
     }
-    
+
+    @DisplayName("모든 사용자의 프로젝트를 삭제할 수 있다.")
+    @Test
+    void deleteAll() {
+        //given
+        User user = createUser("test");
+
+        Project p1 = createProject("test1");
+        Project p2 = createProject("test2");
+        Project p3 = createProject("test3");
+        Project p4 = createProject("test4");
+
+        ProjectUser projectUser1 = createProjectUser(user, p1, FINISHED);
+        ProjectUser projectUser2 = createProjectUser(user, p2, FINISHED);
+        ProjectUser projectUser3 = createProjectUser(user, p3, FINISHED);
+        ProjectUser projectUser4 = createProjectUser(user, p4, FINISHED);
+
+        userRepository.save(user);
+
+        projectRepository.save(p1);
+        projectRepository.save(p2);
+        projectRepository.save(p3);
+        projectRepository.save(p4);
+
+        projectUserRepository.save(projectUser1);
+        projectUserRepository.save(projectUser2);
+        projectUserRepository.save(projectUser3);
+        projectUserRepository.save(projectUser4);
+
+        projectUserRepository.deleteAll();
+        //when
+        List<ProjectUser> all = projectUserRepository.findAll();
+
+        //then
+        assertThat(all).isEmpty();
+    }
+
     private User createUser(String intraId) {
         return User.builder()
                 .intraId(intraId)
                 .build();
     }
-    
+
     private Project createProject(String projectName) {
         return Project.builder()
                 .name(projectName)
                 .build();
     }
-    
+
     private ProjectUser createProjectUser(User user, Project project, ProjectUserStatus status) {
         return ProjectUser
                 .builder()
