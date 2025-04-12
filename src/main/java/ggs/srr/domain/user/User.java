@@ -1,7 +1,6 @@
 package ggs.srr.domain.user;
 
 import ggs.srr.domain.projectuser.ProjectUser;
-import ggs.srr.domain.userstudygroup.UserStudyGroup;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,9 +42,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<ProjectUser> projectUsers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<UserStudyGroup> userStudyGroups = new ArrayList<>();
 
     @Builder
     private User(Long ftServerId, String intraId, Role role, int wallet, int correctionPoint, double level, String image, LocalDateTime createdAt, LocalDateTime updatedAt) {
