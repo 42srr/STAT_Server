@@ -1,8 +1,8 @@
-package ggs.srr.service.system;
+package ggs.srr.service.client;
 
-import ggs.srr.service.system.dto.UserDto;
-import ggs.srr.service.system.dto.UserProjectResponse.UsersProjectsResponse;
-import ggs.srr.service.system.dto.UsersRequest;
+import ggs.srr.service.client.dto.UserDto;
+import ggs.srr.service.client.dto.UserProjectResponse.UsersProjectsResponse;
+import ggs.srr.service.client.dto.UsersRequest;
 
 import java.util.List;
 

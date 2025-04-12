@@ -79,13 +79,17 @@ public class UserService {
                 .collect(toList());
     }
 
-    private boolean isUpdatableUser(User user, LocalDateTime now) {
-        return Duration.between(user.getUpdatedAt(), now).toHours() >= 12;
-    }
-
     public List<UserFtIdAndIntraIdResponse> getAllUsersFtIdAndIntraId() {
         return userRepository.findAll().stream()
                 .map(u -> new UserFtIdAndIntraIdResponse(u.getFtServerId(), u.getIntraId()))
                 .toList();
+    }
+
+    public void updateUser(Long userId) {
+
+    }
+
+    private boolean isUpdatableUser(User user, LocalDateTime now) {
+        return Duration.between(user.getUpdatedAt(), now).toHours() >= 12;
     }
 }

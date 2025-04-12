@@ -1,4 +1,4 @@
-package ggs.srr.service.system.exception;
+package ggs.srr.service.client.exception;
 
 public class NotFoundAdminUserException extends InitDataException{
 

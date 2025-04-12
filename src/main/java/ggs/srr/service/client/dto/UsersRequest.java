@@ -1,4 +1,4 @@
-package ggs.srr.service.system.dto;
+package ggs.srr.service.client.dto;
 
 import java.util.List;
 import lombok.Getter;

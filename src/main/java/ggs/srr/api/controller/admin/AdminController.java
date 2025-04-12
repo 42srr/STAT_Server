@@ -2,10 +2,10 @@ package ggs.srr.api.controller.admin;
 
 import ggs.srr.api.controller.admin.request.InitializeUserRequest;
 import ggs.srr.service.admin.AdminService;
-import ggs.srr.service.system.APIClient;
-import ggs.srr.service.system.dto.UserContent;
-import ggs.srr.service.system.dto.UserDto;
-import ggs.srr.service.system.dto.UsersRequest;
+import ggs.srr.service.client.APIClient;
+import ggs.srr.service.client.dto.UserContent;
+import ggs.srr.service.client.dto.UserDto;
+import ggs.srr.service.client.dto.UsersRequest;
 import ggs.srr.service.user.UserService;
 import ggs.srr.service.user.response.UserFtIdAndIntraIdResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static ggs.srr.service.system.dto.UserProjectResponse.UsersProjectsResponse;
+import static ggs.srr.service.client.dto.UserProjectResponse.UsersProjectsResponse;
 
 @RestController
 @Slf4j

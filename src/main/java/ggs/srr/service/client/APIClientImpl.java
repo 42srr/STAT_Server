@@ -1,9 +1,9 @@
-package ggs.srr.service.system;
+package ggs.srr.service.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ggs.srr.service.system.dto.UserDto;
-import ggs.srr.service.system.dto.UserProjectResponse.UsersProjectsResponse;
-import ggs.srr.service.system.dto.UsersRequest;
+import ggs.srr.service.client.dto.UserDto;
+import ggs.srr.service.client.dto.UserProjectResponse.UsersProjectsResponse;
+import ggs.srr.service.client.dto.UsersRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +25,7 @@ public class APIClientImpl implements APIClient{
 
     private final String FETCHPROJECT_URL_BASE = "http://localhost:8081";
     private final String TURBOFETCH_URL_BASE = "http://localhost:8082";
+    private final String BASE_URL_OF_42 = "https://api.intra.42.fr";
 
     @Override
     public List<String> fetchProjectsFromFetchProject() {
