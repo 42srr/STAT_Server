@@ -43,6 +43,10 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+
+	// testcontainers
+	testImplementation 'org.testcontainers:junit-jupiter' // JUnit5용
+	testImplementation 'org.testcontainers:mysql'      // MySQL 컨테이너 의존성
 }
 
 tasks.named('test') {
