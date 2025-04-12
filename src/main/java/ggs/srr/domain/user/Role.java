@@ -2,6 +2,8 @@ package ggs.srr.domain.user;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum Role {
     CADET("cardet"),
@@ -14,7 +16,14 @@ public enum Role {
         this.text = text;
     }
 
-    public static boolean isAdmin(String role) {
-        return ADMIN.getText().equals(role);
+    public static boolean isAdmin(Role role) {
+        return role == ADMIN;
+    }
+
+    public static Role getRoleBy(String text) {
+        return Arrays.stream(values())
+                .filter(r -> r.getText().equals(text))
+                .findAny()
+                .orElse(CADET);
     }
 }

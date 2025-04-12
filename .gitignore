@@ -1,4 +1,6 @@
 HELP.md
+
+.DS_Store
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -38,7 +40,7 @@ out/
 
 ### yml files ###
 application.yml
-application-dev.yml
+application-prod.yml
 application-local.yml
 application-common.yml
 application-test.yml

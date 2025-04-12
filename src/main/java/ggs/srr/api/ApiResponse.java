@@ -1,41 +1,43 @@
 package ggs.srr.api;
 
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 
 @Getter
 public class ApiResponse<T> {
 
-    private static final String SUCCESS_MESSAGE = "Success";
-
-    private HttpStatus status;
     private int code;
-    private String message;
+    private HttpStatus status;
     private T data;
 
-    private ApiResponse(HttpStatus status, int code, String message, T data) {
+    private ApiResponse(HttpStatus status,  T data) {
+        this.code = status.value();
         this.status = status;
-        this.code = code;
-        this.message = message;
         this.data = data;
     }
 
+    public static <T> ApiResponse<T> of(HttpStatus httpStatus, T data) {
+        return new ApiResponse<>(httpStatus, data);
+    }
+
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), SUCCESS_MESSAGE, data);
+        return ApiResponse.of(HttpStatus.OK, data);
     }
 
-    public static <T> ApiResponse<T> okWithoutData(String msg) {
-        return new ApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), msg, null);
+    public static <T> ApiResponse<T> badRequest(T data) {
+        return ApiResponse.of(HttpStatus.BAD_REQUEST, data);
     }
 
-    public static <T> ApiResponse<T> badRequest(Exception e) {
-        return new ApiResponse<>(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
+    public static <T> ApiResponse<T> unAuthorized(T data) {
+        return ApiResponse.of(HttpStatus.UNAUTHORIZED, data);
     }
 
-    public static <T> ApiResponse<T> badRequest(Exception e, String message) {
-        return new ApiResponse<>(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), message, null);
+    public static <T> ApiResponse<T> internalServerError(T data) {
+        return ApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, data);
+    }
+
+    public static <T> ApiResponse<T> forbidden(T data) {
+        return ApiResponse.of(HttpStatus.FORBIDDEN, data);
     }
 
 }
