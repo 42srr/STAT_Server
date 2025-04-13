@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 import static ggs.srr.exception.security.authorization.AuthorizationErrorCode.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -25,6 +26,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        List<String> whiteList = List.of("/swagger", "/api-docs");
+
+        String requestUri = request.getRequestURI();
+
+        for (String uri : whiteList) {
+            if (requestUri.startsWith(uri)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
 
         try {
             validateAuthorization(request);

@@ -8,6 +8,7 @@ import ggs.srr.service.client.dto.UserDto;
 import ggs.srr.service.client.dto.UsersRequest;
 import ggs.srr.service.user.UserService;
 import ggs.srr.service.user.response.UserFtIdAndIntraIdResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import static ggs.srr.service.client.dto.UserProjectResponse.UsersProjectsRespon
 
 @RestController
 @Slf4j
+@Tag(name = "관리자 API - BETA", description = "관리자 API 목록입니다.")
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {

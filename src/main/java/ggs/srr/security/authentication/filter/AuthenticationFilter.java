@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 import static ggs.srr.exception.security.authentication.AuthenticationErrorCode.INVALID_TOKEN_FORMAT_ERR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -28,6 +29,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         log.debug("AuthenticationFilter.doFilterInternal");
+        List<String> whiteList = List.of("/swagger", "/api-docs");
+
+        String requestUri = request.getRequestURI();
+
+        for (String uri : whiteList) {
+            if (requestUri.startsWith(uri)) {
+                filterChain.doFilter(request, response);
+                return ;
+            }
+        }
 
         try {
             String accessToken = getAccessToken(request);
