@@ -92,6 +92,58 @@ class ProjectUserRepositoryTest {
         assertThat(userProjects).hasSize(2);
     }
 
+    @DisplayName("모든 사용자의 종료 프로젝트를 조회할 수 있다.")
+    @Test
+    void findFinished() {
+        //given
+        User user = createUser("test");
+        Project project1 = createProject("test project 1");
+        Project project2 = createProject("test project 2");
+
+        ProjectUser projectUser1 = createProjectUser(user, project1, IN_PROGRESS);
+        ProjectUser projectUser2 = createProjectUser(user, project2, FINISHED);
+
+        userRepository.save(user);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+
+        projectUserRepository.save(projectUser1);
+        projectUserRepository.save(projectUser2);
+
+        //when
+        List<ProjectUser> userProjects = projectUserRepository.findFinished();
+
+        //then
+        assertThat(userProjects).hasSize(1);
+    }
+
+    @DisplayName("모든 사용자의 진행 프로젝트를 조회할 수 있다.")
+    @Test
+    void findInProgress() {
+        //given
+        User user = createUser("test");
+        Project project1 = createProject("test project 1");
+        Project project2 = createProject("test project 2");
+
+        ProjectUser projectUser1 = createProjectUser(user, project1, IN_PROGRESS);
+        ProjectUser projectUser2 = createProjectUser(user, project2, FINISHED);
+
+        userRepository.save(user);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+
+        projectUserRepository.save(projectUser1);
+        projectUserRepository.save(projectUser2);
+
+        //when
+        List<ProjectUser> userProjects = projectUserRepository.findInProgress();
+
+        //then
+        assertThat(userProjects).hasSize(1);
+    }
+
     @DisplayName("사용자의 프로젝트를 사용자 아이디와 type 으로 조회할 수 있다.")
     @Test
     void findByUserIdAndStatus() {
