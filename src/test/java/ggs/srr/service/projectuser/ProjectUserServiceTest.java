@@ -80,6 +80,79 @@ class ProjectUserServiceTest {
         assertThat(content.get(project2.getName()).get(FINISHED)).isEqualTo(2);
     }
 
+    @DisplayName("모든 사용자의 종료 프로젝트의 분포를 확인할 수 있어야 한다.")
+    @Test
+    void getProjectUserDistributionFinished() {
+        //given
+        User user1 = createUser("test1");
+        User user2 = createUser("test2");
+
+        Project project1 = createProject("p1");
+        Project project2 = createProject("p2");
+
+        ProjectUser pu1 = createProjectUser(user1, project1, IN_PROGRESS);
+        ProjectUser pu2 = createProjectUser(user1, project2, FINISHED);
+
+        ProjectUser pu3 = createProjectUser(user2, project1, FINISHED);
+        ProjectUser pu4 = createProjectUser(user2, project2, FINISHED);
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+
+        projectUserRepository.save(pu1);
+        projectUserRepository.save(pu2);
+        projectUserRepository.save(pu3);
+        projectUserRepository.save(pu4);
+
+        //when
+        ProjectUserDistributionResponse projectUserDistribution = projectUserService.getProjectUserDistributionFinished();
+        Map<String, Map<ProjectUserStatus, Long>> content = projectUserDistribution.getDistribution();
+
+        //then
+        assertThat(content.size() == 2).isEqualTo(true);
+        assertThat(content.get(project1.getName()).get(FINISHED)).isEqualTo(1);
+        assertThat(content.get(project2.getName()).get(FINISHED)).isEqualTo(2);
+    }
+
+    @DisplayName("모든 사용자의 진행 프로젝트의 분포를 확인할 수 있어야 한다.")
+    @Test
+    void getProjectUserDistributionInProgress() {
+        //given
+        User user1 = createUser("test1");
+        User user2 = createUser("test2");
+
+        Project project1 = createProject("p1");
+        Project project2 = createProject("p2");
+
+        ProjectUser pu1 = createProjectUser(user1, project1, IN_PROGRESS);
+        ProjectUser pu2 = createProjectUser(user1, project2, FINISHED);
+
+        ProjectUser pu3 = createProjectUser(user2, project1, FINISHED);
+        ProjectUser pu4 = createProjectUser(user2, project2, FINISHED);
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+
+        projectUserRepository.save(pu1);
+        projectUserRepository.save(pu2);
+        projectUserRepository.save(pu3);
+        projectUserRepository.save(pu4);
+
+        //when
+        ProjectUserDistributionResponse projectUserDistribution = projectUserService.getProjectUserDistributionInProgress();
+        Map<String, Map<ProjectUserStatus, Long>> content = projectUserDistribution.getDistribution();
+
+        //then
+        assertThat(content.size() == 1).isEqualTo(true);
+        assertThat(content.get(project1.getName()).get(IN_PROGRESS)).isEqualTo(1);
+    }
+
     @DisplayName("DEFAULT 타입으로 사용자의 프로젝트를 조회할 경우 진행중, 모든 사용자 프로젝트가 조회된다.")
     @Test
     void getUserDefaultProjects() {
