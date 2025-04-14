@@ -85,8 +85,10 @@ public class UserService {
                 .toList();
     }
 
-    public void updateUser(Long userId) {
-
+    public Long getUserIdByIntraId(String intraId) {
+        User findUser = userRepository.findByIntraId(intraId)
+                .orElseThrow(() -> new UserException(UserErrorCode.NOT_FOUND_USER));
+        return findUser.getId();
     }
 
     private boolean isUpdatableUser(User user, LocalDateTime now) {

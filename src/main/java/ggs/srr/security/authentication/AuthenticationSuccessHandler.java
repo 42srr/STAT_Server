@@ -11,6 +11,7 @@ import ggs.srr.security.jwt.JwtUtils;
 import ggs.srr.security.jwt.request.CreateJwtRequest;
 import ggs.srr.security.jwt.response.JwtTokenResponse;
 import ggs.srr.service.user.UserDetailService;
+import ggs.srr.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +27,17 @@ public class AuthenticationSuccessHandler {
 
     private final UserDetailClient userDetailClient;
     private final UserDetailService userDetailService;
+    private final UserService userService;
     private final JwtUtils jwtUtils;
     private final ObjectMapper objectMapper;
 
     @Value("${admin}")
     private List<String> adminIntraIdList;
 
-    public AuthenticationSuccessHandler(UserDetailClient userDetailClient, UserDetailService userDetailService, JwtUtils jwtUtils, ObjectMapper objectMapper) {
+    public AuthenticationSuccessHandler(UserDetailClient userDetailClient, UserDetailService userDetailService, UserService userService, JwtUtils jwtUtils, ObjectMapper objectMapper) {
         this.userDetailClient = userDetailClient;
         this.userDetailService = userDetailService;
+        this.userService = userService;
         this.jwtUtils = jwtUtils;
         this.objectMapper = objectMapper;
     }
@@ -50,10 +53,12 @@ public class AuthenticationSuccessHandler {
         Long nowMs = System.currentTimeMillis();
         JwtTokenResponse jwtToken = jwtUtils.createJwtToken(new CreateJwtRequest(details.getIntraId(), role), nowMs);
         userDetailService.updateUserDetails(details, authorizationServerResponse, jwtToken, role);
+        Long userId = userService.getUserIdByIntraId(details.getIntraId());
 
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .tokenType("Bearer")
                 .intraId(details.getIntraId())
+                .userId(userId)
                 .accessToken(jwtToken.getAccessToken())
                 .refreshToken(jwtToken.getRefreshToken())
                 .expire(jwtToken.getExpire())
