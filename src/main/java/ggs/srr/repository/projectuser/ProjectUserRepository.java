@@ -33,6 +33,16 @@ public class ProjectUserRepository {
                 .getResultList();
     }
 
+    public List<ProjectUser> findInProgress() {
+        return em.createQuery("select pu from ProjectUser pu where pu.status = 'IN_PROGRESS'", ProjectUser.class)
+                .getResultList();
+    }
+
+    public List<ProjectUser> findFinished() {
+        return em.createQuery("select pu from ProjectUser pu where pu.status = 'FINISHED'", ProjectUser.class)
+                .getResultList();
+    }
+
     public List<ProjectUser> findByUserIdAndStatus(Long userId, ProjectUserStatus status) {
         return em.createQuery("select pu from ProjectUser pu where pu.user.id = :userId and pu.status = :status", ProjectUser.class)
                 .setParameter("userId", userId)
