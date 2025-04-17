@@ -58,7 +58,7 @@ class ProjectControllerTest {
         mockMvc.perform(
                         get("/api/projects/distribution?type=finished")
                 ).andDo(print())
-                .andExpect(status().isBadRequest()) // 한번더 또 한번더 또또
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.data").exists());
