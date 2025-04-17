@@ -38,8 +38,8 @@ class ProjectControllerTest {
 
         //when //then
         mockMvc.perform(
-                get("/api/projects/distribution")
-        ).andDo(print())
+                        get("/api/projects/distribution")
+                ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.status").value("OK"))

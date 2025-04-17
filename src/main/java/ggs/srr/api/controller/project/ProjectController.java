@@ -20,8 +20,8 @@ public class ProjectController {
 
     @GetMapping("/distribution")
     public ApiResponse<ProjectUserDistributionResponse> getProjectsDistribution(
-            @RequestParam("type") String type)
-    {
+            @RequestParam(name = "type", required = false, defaultValue = "default") String type) {
+
         ProjectUserDistributionResponse response;
         if (type.equals("in-progress")) {
             response = projectUserService.getProjectUserDistributionInProgress();
