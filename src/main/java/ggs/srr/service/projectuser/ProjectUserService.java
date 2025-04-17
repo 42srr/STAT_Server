@@ -40,6 +40,30 @@ public class ProjectUserService {
         return new ProjectUserDistributionResponse(distribution);
     }
 
+    public ProjectUserDistributionResponse getProjectUserDistributionFinished() {
+
+        Map<String, Map<ProjectUserStatus, Long>> distribution = projectUserRepository.findFinished().stream()
+                .collect(groupingBy(projectUser -> projectUser.getProject().getName(),
+                        groupingBy(ProjectUser::getStatus, counting()
+                        )));
+
+        initializeExcludedStatus(distribution);
+
+        return new ProjectUserDistributionResponse(distribution);
+    }
+
+    public ProjectUserDistributionResponse getProjectUserDistributionInProgress() {
+
+        Map<String, Map<ProjectUserStatus, Long>> distribution = projectUserRepository.findInProgress().stream()
+                .collect(groupingBy(projectUser -> projectUser.getProject().getName(),
+                        groupingBy(ProjectUser::getStatus, counting()
+                        )));
+
+        initializeExcludedStatus(distribution);
+
+        return new ProjectUserDistributionResponse(distribution);
+    }
+
     public List<ProjectUserInformationResponse> getUserProjects(ProjectUsersRequest request) {
 
         Long userId = request.getUserId();

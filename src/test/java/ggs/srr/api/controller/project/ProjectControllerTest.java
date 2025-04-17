@@ -46,6 +46,42 @@ class ProjectControllerTest {
                 .andExpect(jsonPath("$.data").exists());
     }
 
+    @DisplayName("사용자의 종료 프로젝트 분포를 확인할 수 있다.")
+    @Test
+    void getProjectsDistributionFinished() throws Exception {
+        //given
+
+        when(projectUserService.getProjectUserDistributionFinished())
+                .thenReturn(createProjectDistribution());
+
+        //when //then
+        mockMvc.perform(
+                        get("/api/projects/distribution?type=finished")
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.data").exists());
+    }
+
+    @DisplayName("사용자의 진행 프로젝트 분포를 확인할 수 있다.")
+    @Test
+    void getProjectsDistributionInprogress() throws Exception {
+        //given
+
+        when(projectUserService.getProjectUserDistributionInProgress())
+                .thenReturn(createProjectDistribution());
+
+        //when //then
+        mockMvc.perform(
+                        get("/api/projects/distribution?type=in-progress")
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.data").exists());
+    }
+
     private ProjectUserDistributionResponse createProjectDistribution() {
         Map<String, Map<ProjectUserStatus, Long>> distribution = new HashMap<>();
         return new ProjectUserDistributionResponse(distribution);
