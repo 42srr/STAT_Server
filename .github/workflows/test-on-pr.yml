@@ -1,7 +1,5 @@
-## workflow name
 name: Run Test on Pull Request
 
-## pr 이 main branch 로 열릴 때 마다 실행
 on:
   pull_request:
     branches: [ "main" ]
@@ -9,6 +7,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: application.yml  # 여기에 environment 이름 지정
 
     steps:
       - name: Checkout repository
@@ -22,6 +21,11 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
+
+      - name: Restore application.yml from secret
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.APP_YML }}" > src/main/resources/application.yml
 
       - name: Run tests
         run: ./gradlew clean test
