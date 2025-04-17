@@ -28,6 +28,7 @@ class ProjectControllerTest {
     @MockBean
     ProjectUserService projectUserService;
 
+    // 안돌아 가는 코드
     @DisplayName("사용자의 프로젝트 분포를 확인할 수 있다.")
     @Test
     void getProjectsDistribution() throws Exception {
