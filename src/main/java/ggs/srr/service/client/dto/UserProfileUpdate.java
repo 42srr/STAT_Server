@@ -1,19 +1,23 @@
 package ggs.srr.service.client.dto;
 
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class UserUpdateDto {
-    private double level;
-    private int wallet;
-    private int correction_point;
-    private List<ProjectDetailInfo> projects;
+@Getter
+public class UserProfileUpdate {
+    private final double level;
+    private final int collection_point;
+    private final int wallet;
+    private final List<ProjectDetailInfo> in_progress_projects;
+    private final List<ProjectDetailInfo> finished_projects;
 
-    public UserUpdateDto(double level, int correction_point, int wallet, List<ProjectDetailInfo> projects) {
+    public UserProfileUpdate(double level, int collection_point, int wallet,
+                             List<ProjectDetailInfo> in_progress_projects,
+                             List<ProjectDetailInfo> finished_projects) {
         this.level = level;
-        this.correction_point = correction_point;
+        this.collection_point = collection_point;
         this.wallet = wallet;
-        this.projects = projects;
+        this.in_progress_projects = in_progress_projects;
+        this.finished_projects = finished_projects;
     }
 }
