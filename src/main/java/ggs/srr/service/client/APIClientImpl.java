@@ -1,9 +1,17 @@
 package ggs.srr.service.client;
 
+import static ggs.srr.exception.user.UserErrorCode.ACCESS_TOKEN_EXPIRED;
+import static ggs.srr.exception.user.UserErrorCode.API_FETCH_FAILED;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ggs.srr.exception.user.UserException;
+import ggs.srr.service.client.dto.ProjectDetailInfo;
 import ggs.srr.service.client.dto.UserDto;
 import ggs.srr.service.client.dto.UserProjectResponse.UsersProjectsResponse;
+import ggs.srr.service.client.dto.UserProfileUpdate;
 import ggs.srr.service.client.dto.UsersRequest;
+import ggs.srr.service.user.request.UserUpdateServiceRequest;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,11 +33,13 @@ public class APIClientImpl implements APIClient{
 
     private final String FETCHPROJECT_URL_BASE = "http://localhost:8081";
     private final String TURBOFETCH_URL_BASE = "http://localhost:8082";
-    private final String BASE_URL_OF_42 = "https://api.intra.42.fr";
+   // private final String BASE_URL_OF_42 = "https://api.intra.42.fr";
+    private final String USER_URL_PREFIX = "https://api.intra.42.fr/v2/users/";
+    private final String PROJECT_USER_URL_SUFFIX = "/projects_users?filter[cursus]=21&page=";
 
     @Override
     public List<String> fetchProjectsFromFetchProject() {
-        String url = FETCHPROJECT_URL_BASE + "/projects";
+        String url = FETCHPROJECT_URL_BASE + "/in_progress_projects";
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -49,7 +59,7 @@ public class APIClientImpl implements APIClient{
                 return Collections.emptyList();
             }
         } catch (HttpClientErrorException e) {
-            log.error("Error fetching projects from FetchProject: {}", e.getResponseBodyAsString());
+            log.error("Error fetching in_progress_projects from FetchProject: {}", e.getResponseBodyAsString());
             throw e;
         }
     }
@@ -117,8 +127,173 @@ public class APIClientImpl implements APIClient{
                 return Collections.emptyList();
             }
         } catch (HttpClientErrorException e) {
-            log.error("Error fetching user projects from FetchProject: {}", e.getResponseBodyAsString());
+            log.error("Error fetching user in_progress_projects from FetchProject: {}", e.getResponseBodyAsString());
             throw e;
+        }
+    }
+
+    @Override
+    public UserProfileUpdate fetchUserUpdatableInformation(UserUpdateServiceRequest request) {
+        //String oAuth2RefreshToken = request.getOAuth2RefreshToken();
+        String oAuth2AccessToken = request.getOAuth2AccessToken();
+        Long targetFtServerId = request.getTargetFtServerId();
+
+        Map<String, Object> userProfile = fetchUserProfileFrom42API(oAuth2AccessToken, targetFtServerId);
+        log.info("User info fetched: level={}, wallet={}, correctionPoint={}",
+                userProfile.get("level"), userProfile.get("wallet"), userProfile.get("correction_point"));
+
+        List<ProjectDetailInfo> projects = fetchUserProjectsFrom42API(oAuth2AccessToken, targetFtServerId);
+        log.info("Projects fetched: {} projects found", projects.size());
+        return createUserProfileUpdate(userProfile, projects);
+    }
+
+    private Map<String, Object> fetchUserProfileFrom42API(String accessToken, Long targetFtServerId) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = createAuthHeader(accessToken);
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        try {
+            String url = USER_URL_PREFIX + targetFtServerId;
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    httpEntity,
+                    new ParameterizedTypeReference<Map<String, Object>>() {}
+            );
+            Map<String, Object> profile = response.getBody();
+
+            if (profile != null) {
+                extractLevelFromProfile(profile);
+            }
+
+            return profile;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                log.error("Unauthorized access to 42 API. Token might be expired. Please re-login.");
+                throw new UserException(ACCESS_TOKEN_EXPIRED);
+            }
+            log.error("API fetch failed from 42 API: {}", e.getResponseBodyAsString());
+            throw new UserException(API_FETCH_FAILED);
+        }
+    }
+
+    private List<ProjectDetailInfo> fetchUserProjectsFrom42API(String accessToken, Long targetFtServerId) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = createAuthHeader(accessToken);
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+        List<ProjectDetailInfo> allProjects = new ArrayList<>();
+
+        int page = 1;
+        while (true) {
+            try {
+                String url = USER_URL_PREFIX + targetFtServerId + PROJECT_USER_URL_SUFFIX + page;
+                ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        httpEntity,
+                        new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+                );
+
+                List<Map<String, Object>> body = response.getBody();
+                if (body == null || body.isEmpty()) {
+                    break;
+                }
+
+                for (Map<String, Object> data : body) {
+                    ProjectDetailInfo project = parseProjectData(data);
+                    allProjects.add(project);
+                }
+
+                page++;
+                delayRequest();
+            } catch (HttpClientErrorException e) {
+                if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    log.error("Unauthorized access to 42 API. Token might be expired. Please re-login.");
+                    throw new UserException(ACCESS_TOKEN_EXPIRED);
+                }
+                log.error("API fetch failed from 42 API: {}", e.getResponseBodyAsString());
+                throw new UserException(API_FETCH_FAILED);
+            }
+        }
+
+        return allProjects;
+    }
+
+    private UserProfileUpdate createUserProfileUpdate(Map<String, Object> userProfile,
+                                                      List<ProjectDetailInfo> projects) {
+        double level = Double.parseDouble(userProfile.get("level").toString());
+        int wallet = Integer.parseInt(userProfile.get("wallet").toString());
+        int correctionPoint = Integer.parseInt(userProfile.get("correction_point").toString());
+
+        List<ProjectDetailInfo> inProgressProjects = new ArrayList<>();
+        List<ProjectDetailInfo> finishedProjects = new ArrayList<>();
+
+        for (ProjectDetailInfo project : projects) {
+            String status = project.getProjectStatus();
+            if ("in_progress".equals(status)) {
+                inProgressProjects.add(project);
+            } else if ("finished".equals(status)) {
+                finishedProjects.add(project);
+            }
+        }
+
+        return new UserProfileUpdate(level, wallet, correctionPoint, inProgressProjects, finishedProjects);
+    }
+
+    private HttpHeaders createAuthHeader(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        return headers;
+    }
+
+    private void extractLevelFromProfile(Map<String, Object> profile) {
+        if (profile.containsKey("level")) {
+            log.info("Level extracted from 42 API: {}", profile.get("level"));
+            return;
+        }
+
+        if (!profile.containsKey("cursus_users"))
+            return;
+
+        List<Map<String, Object>> cursusUsers = (List<Map<String, Object>>) profile.get("cursus_users");
+        if (cursusUsers.isEmpty())
+            return;
+
+        for (Map<String, Object> cursusUser : cursusUsers) {
+            if (cursusUser.containsKey("level")) {
+                Object levelObj = cursusUser.get("level");
+                double level = Double.parseDouble(levelObj.toString());
+                profile.put("level", level);
+                log.info("Level found in cursus_users: {}", level);
+                break;
+            }
+        }
+    }
+
+    private ProjectDetailInfo parseProjectData(Map<String, Object> data) {
+        Map<String, Object> project = (Map<String, Object>) data.get("project");
+        String projectName = (String) project.get("name");
+
+        Integer finalMark = null;
+        String status = null;
+
+
+        List<Map<String, Object>> teams = (List<Map<String, Object>>) data.get("teams");
+        if (teams != null && !teams.isEmpty()) {
+            Map<String, Object> lastTeam = teams.get(teams.size() - 1);
+            finalMark = (Integer) lastTeam.get("final_mark");
+            status = (String) lastTeam.get("status");
+        }
+        log.info("finalMark: {}", finalMark);
+        if (finalMark == null) finalMark = 0;
+        return new ProjectDetailInfo(projectName, finalMark, status);
+    }
+
+    private void delayRequest() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            log.warn("Thread interrupted while fetching user in_progress_projects from 42 API.");
         }
     }
 }
