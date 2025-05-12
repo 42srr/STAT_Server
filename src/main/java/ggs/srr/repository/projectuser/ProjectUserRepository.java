@@ -67,4 +67,10 @@ public class ProjectUserRepository {
         findAll().stream()
                 .forEach(projectUser -> em.remove(projectUser));
     }
+
+    public void deleteById(Long userId) {
+        em.createQuery("delete from ProjectUser pu where pu.user.id = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+    }
 }
