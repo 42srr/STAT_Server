@@ -268,6 +268,35 @@ class ProjectUserRepositoryTest {
         assertThat(all).isEmpty();
     }
 
+    @Test
+    void deleteById() {
+        User test1 = createUser("test1");
+        User test2 = createUser("test2");
+
+        Project tp1 = createProject("test1");
+        Project tp2 = createProject("test2");
+
+        ProjectUser pu1 = createProjectUser(test1, tp1, IN_PROGRESS);
+        ProjectUser pu2 = createProjectUser(test1, tp2, FINISHED);
+        ProjectUser pu3 = createProjectUser(test2, tp1, IN_PROGRESS);
+
+        userRepository.save(test1);
+        userRepository.save(test2);
+
+        projectRepository.save(tp1);
+        projectRepository.save(tp2);
+
+        projectUserRepository.save(pu1);
+        projectUserRepository.save(pu2);
+        projectUserRepository.save(pu3);
+
+        projectUserRepository.deleteById(test1.getId());
+
+        List<ProjectUser> result = projectUserRepository.findAll();
+
+        assertThat(result).hasSize(1);
+    }
+
     private User createUser(String intraId) {
         return User.builder()
                 .intraId(intraId)

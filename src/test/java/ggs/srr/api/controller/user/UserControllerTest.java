@@ -6,6 +6,7 @@ import ggs.srr.domain.user.Role;
 import ggs.srr.domain.user.User;
 import ggs.srr.exception.user.UserErrorCode;
 import ggs.srr.exception.user.UserException;
+import ggs.srr.service.client.APIClient;
 import ggs.srr.service.projectuser.ProjectUserService;
 import ggs.srr.service.projectuser.request.ProjectUserRequest;
 import ggs.srr.service.projectuser.request.ProjectUsersRequest;
@@ -15,6 +16,7 @@ import ggs.srr.service.user.request.UserInformationServiceRequest;
 import ggs.srr.service.user.request.UserRankingServiceRequest;
 import ggs.srr.service.user.response.LevelDistributionResponse;
 import ggs.srr.service.user.response.UserInformationResponse;
+import ggs.srr.service.user.response.UserUpdateResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +50,9 @@ class UserControllerTest {
 
     @MockBean
     ProjectUserService projectUserService;
+
+    @MockBean
+    APIClient apiClient;
 
     @DisplayName("단일 사용자의 정보를 조회할 수 있다.")
     @Test
@@ -169,6 +175,36 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.data").exists());
     }
+
+    @DisplayName("사용자 개인의 정보를 스스로 업데이트 할 수 있다.")
+    @Test
+    void updateUserSelf() throws Exception {
+        when(userService.findById(any(UserInformationServiceRequest.class), any(LocalDateTime.class)))
+                .thenReturn(new UserInformationResponse(createUser("testuser"), true));
+
+        UserUpdateResponse anyResponse = new UserUpdateResponse(
+                createUser("testuser"),
+                false,
+                List.of(),
+                List.of()
+        );
+
+        when(userService.updateUserProfile(any(Long.class), any()))
+                .thenReturn(anyResponse);
+
+        mockMvc.perform(
+                        patch("/api/users/10")
+                                .header("Authorization", "Bearer mock-jwt-token")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.data").exists());
+
+    }
+
+    // UserId가 없을 때
 
     private User createUser(String intraId) {
         return User.builder()
