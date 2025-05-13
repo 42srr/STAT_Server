@@ -10,6 +10,6 @@ public class UserProjectResponse {
     @Getter
     public static class UsersProjectsResponse {
         String intraId;
-        List<ParsingResponseDto> allProjectsResponse;
+        List<ProjectDetailInfo> allProjectsResponse;
     }
 }

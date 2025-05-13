@@ -70,10 +70,10 @@ public class User {
         this.updatedAt = dateTime;
     }
 
-    public void updateInformation(double level, int wallet, int correctionPoint) {
+    public void updateInformation(double level, int wallet, int collectionPoint) {
         this.level = level;
         this.wallet = wallet;
-        this.correctionPoint = correctionPoint;
+        this.correctionPoint = collectionPoint;
         this.updatedAt = LocalDateTime.now();
     }
 }

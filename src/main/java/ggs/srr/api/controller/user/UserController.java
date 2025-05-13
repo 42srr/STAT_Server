@@ -2,6 +2,12 @@ package ggs.srr.api.controller.user;
 
 import ggs.srr.api.ApiResponse;
 import ggs.srr.domain.projectuser.ProjectUserStatus;
+import ggs.srr.exception.user.UserErrorCode;
+import ggs.srr.exception.user.UserException;
+import ggs.srr.service.client.APIClient;
+import ggs.srr.service.client.dto.ProjectDetailInfo;
+import ggs.srr.service.client.dto.UserProfileUpdate;
+import ggs.srr.service.client.dto.UserProjectResponse;
 import ggs.srr.service.projectuser.ProjectUserService;
 import ggs.srr.service.projectuser.request.ProjectUserRequest;
 import ggs.srr.service.projectuser.request.ProjectUsersRequest;
@@ -9,11 +15,17 @@ import ggs.srr.service.projectuser.response.ProjectUserInformationResponse;
 import ggs.srr.service.user.UserService;
 import ggs.srr.service.user.request.UserInformationServiceRequest;
 import ggs.srr.service.user.request.UserRankingServiceRequest;
+import ggs.srr.service.user.request.UserUpdateServiceRequest;
 import ggs.srr.service.user.response.LevelDistributionResponse;
 import ggs.srr.service.user.response.UserInformationResponse;
+import ggs.srr.service.user.response.UserUpdateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +42,7 @@ public class UserController {
 
     private final UserService userService;
     private final ProjectUserService projectUserService;
+    private final APIClient apiClient;
 
     @Operation(summary = "사용자 개인의 정보", description = "고유 아이디, 인트라 아이디, 레벨, 알타리안 달러, 평가 포인트, 사진 url, 업데이트 가능한지 에 대한 정보를 담고 있습니다.")
     @Parameter(name = "userId", description = "사용자 고유 아이디")
@@ -95,5 +108,27 @@ public class UserController {
 
         ProjectUserInformationResponse userProject = projectUserService.getUserProject(new ProjectUserRequest(userId, projectId));
         return ApiResponse.ok(userProject);
+    }
+
+    @Operation(summary = "사용자 정보 셀프 업데이트", description = "사용자가 레벨, 알타리안 달러, 평가 포인트, 진행중인 과제를 스스로 업데이트할 수 있으며, 12시간마다 한 번만 가능합니다.")
+    @Parameter(name = "userId", description = "사용자 고유 id를 의미합니다.")
+    @PatchMapping("/{userId}")
+    public ApiResponse<UserUpdateResponse> updateSelfInfoData(HttpServletRequest request, @PathVariable Long userId) {
+        String requesterIntraId = (String) request.getAttribute("intraId");
+
+        UserInformationResponse targetUserInfo = userService.findById(new UserInformationServiceRequest(userId),
+                LocalDateTime.now());
+
+        if (!targetUserInfo.isUpdatable()) {
+            throw new UserException(UserErrorCode.UPDATE_NOT_AVAILABLE);
+        }
+
+        UserUpdateServiceRequest updateUserRequest = userService.getUserUpdateRequest(requesterIntraId, userId);
+
+        UserProfileUpdate userUpdateDto = apiClient.fetchUserUpdatableInformation(updateUserRequest);
+
+        UserUpdateResponse updatedUserProfile = userService.updateUserProfile(userId, userUpdateDto);
+
+        return ApiResponse.ok(updatedUserProfile);
     }
 }
