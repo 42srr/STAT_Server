@@ -237,7 +237,7 @@ public class APIClientImpl implements APIClient{
             }
         }
 
-        return new UserProfileUpdate(level, wallet, correctionPoint, inProgressProjects, finishedProjects);
+        return new UserProfileUpdate(level, correctionPoint, wallet, inProgressProjects, finishedProjects);
     }
 
     private HttpHeaders createAuthHeader(String accessToken) {
@@ -248,25 +248,53 @@ public class APIClientImpl implements APIClient{
 
     private void extractLevelFromProfile(Map<String, Object> profile) {
         if (profile.containsKey("level")) {
-            log.info("Level extracted from 42 API: {}", profile.get("level"));
+            log.info("Level already exists at top level: {}", profile.get("level"));
             return;
         }
 
-        if (!profile.containsKey("cursus_users"))
+        if (!profile.containsKey("cursus_users")) {
+            log.warn("No cursus_users found in profile");
             return;
+        }
 
         List<Map<String, Object>> cursusUsers = (List<Map<String, Object>>) profile.get("cursus_users");
-        if (cursusUsers.isEmpty())
+        if (cursusUsers == null || cursusUsers.isEmpty()) {
+            log.warn("cursus_users is null or empty");
             return;
+        }
 
+        Double level = null;
         for (Map<String, Object> cursusUser : cursusUsers) {
-            if (cursusUser.containsKey("level")) {
-                Object levelObj = cursusUser.get("level");
-                double level = Double.parseDouble(levelObj.toString());
-                profile.put("level", level);
-                log.info("Level found in cursus_users: {}", level);
-                break;
+            Map<String, Object> cursus = (Map<String, Object>) cursusUser.get("cursus");
+            if (cursus != null) {
+                Object cursusId = cursus.get("id");
+                log.debug("Found cursus with id: {}", cursusId);
+
+                if (cursusId != null && ("21".equals(cursusId.toString()) || Integer.valueOf(21).equals(cursusId))) {
+                    Object levelObj = cursusUser.get("level");
+                    if (levelObj != null) {
+                        level = Double.parseDouble(levelObj.toString());
+                        log.info("Found level {} in cursus_id 21", level);
+                        break;
+                    }
+                }
             }
+        }
+
+        if (level == null && !cursusUsers.isEmpty()) {
+            Map<String, Object> lastCursus = cursusUsers.get(cursusUsers.size() - 1);
+            Object levelObj = lastCursus.get("level");
+            if (levelObj != null) {
+                level = Double.parseDouble(levelObj.toString());
+                log.info("Using level {} from last cursus", level);
+            }
+        }
+
+        if (level != null) {
+            profile.put("level", level);
+        } else {
+            log.error("Could not find level in any cursus_users");
+            profile.put("level", 0.0); // 기본값 설정
         }
     }
 
